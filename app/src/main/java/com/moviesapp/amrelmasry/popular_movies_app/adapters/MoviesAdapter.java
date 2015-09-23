@@ -28,14 +28,8 @@ public class MoviesAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        // create a new ImageView for each item referenced by the Adapter
-
-
         View view = LayoutInflater.from(context).inflate(R.layout.movie_item, parent, false);
 
-
-//        Uri uri = Uri.parse("https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg");
-//        imageView.setImageResource(mThumbIds[position]);
         return view;
 
 
@@ -45,12 +39,11 @@ public class MoviesAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         PopularCursor moviesCursor = new PopularCursor(cursor);
+        ImageView imageView = (ImageView) view;
+        imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
 
-        while (moviesCursor.moveToNext()) {
-            ImageView imageView = (ImageView) view;
-            imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
-            Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + moviesCursor.getPosterPath()).into(imageView);
-        }
+
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + moviesCursor.getPosterPath()).into(imageView);
 
 
     }
