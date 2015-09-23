@@ -24,6 +24,11 @@ public class PopularColumns implements BaseColumns {
     public static final String TITLE = "title";
 
     /**
+     * Movie ID in the API
+     */
+    public static final String MOVIE_API_ID = "movie_api_id";
+
+    /**
      * Movie plot
      */
     public static final String OVERVIEW = "overview";
@@ -50,6 +55,7 @@ public class PopularColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             TITLE,
+            MOVIE_API_ID,
             OVERVIEW,
             RELEASE_DATE,
             POSTER_PATH,
@@ -61,6 +67,7 @@ public class PopularColumns implements BaseColumns {
         if (projection == null) return true;
         for (String c : projection) {
             if (c.equals(TITLE) || c.contains("." + TITLE)) return true;
+            if (c.equals(MOVIE_API_ID) || c.contains("." + MOVIE_API_ID)) return true;
             if (c.equals(OVERVIEW) || c.contains("." + OVERVIEW)) return true;
             if (c.equals(RELEASE_DATE) || c.contains("." + RELEASE_DATE)) return true;
             if (c.equals(POSTER_PATH) || c.contains("." + POSTER_PATH)) return true;

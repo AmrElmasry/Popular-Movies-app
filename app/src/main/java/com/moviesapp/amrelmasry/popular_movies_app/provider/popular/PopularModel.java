@@ -20,6 +20,13 @@ public interface PopularModel extends BaseModel {
     String getTitle();
 
     /**
+     * Movie ID in the API
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    String getMovieApiId();
+
+    /**
      * Movie plot
      * Cannot be {@code null}.
      */

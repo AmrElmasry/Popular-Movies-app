@@ -26,6 +26,7 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
             + PopularColumns.TABLE_NAME + " ( "
             + PopularColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + PopularColumns.TITLE + " TEXT NOT NULL, "
+            + PopularColumns.MOVIE_API_ID + " TEXT NOT NULL, "
             + PopularColumns.OVERVIEW + " TEXT NOT NULL, "
             + PopularColumns.RELEASE_DATE + " TEXT NOT NULL, "
             + PopularColumns.POSTER_PATH + " TEXT NOT NULL, "

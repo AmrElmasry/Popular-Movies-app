@@ -39,6 +39,18 @@ public class PopularCursor extends AbstractCursor implements PopularModel {
     }
 
     /**
+     * Movie ID in the API
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    public String getMovieApiId() {
+        String res = getStringOrNull(PopularColumns.MOVIE_API_ID);
+        if (res == null)
+            throw new NullPointerException("The value of 'movie_api_id' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
      * Movie plot
      * Cannot be {@code null}.
      */

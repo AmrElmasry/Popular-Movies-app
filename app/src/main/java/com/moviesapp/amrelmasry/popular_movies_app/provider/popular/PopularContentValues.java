@@ -50,6 +50,16 @@ public class PopularContentValues extends AbstractContentValues {
 
 
     /**
+     * Movie ID in the API
+     */
+    public PopularContentValues putMovieApiId(@NonNull String value) {
+        if (value == null) throw new IllegalArgumentException("movieApiId must not be null");
+        mContentValues.put(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+
+    /**
      * Movie plot
      */
     public PopularContentValues putOverview(@NonNull String value) {

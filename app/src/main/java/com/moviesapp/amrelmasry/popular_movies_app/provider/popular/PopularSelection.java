@@ -118,6 +118,46 @@ public class PopularSelection extends AbstractSelection<PopularSelection> {
         return this;
     }
 
+    public PopularSelection movieApiId(String... value) {
+        addEquals(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+    public PopularSelection movieApiIdNot(String... value) {
+        addNotEquals(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+    public PopularSelection movieApiIdLike(String... value) {
+        addLike(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+    public PopularSelection movieApiIdContains(String... value) {
+        addContains(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+    public PopularSelection movieApiIdStartsWith(String... value) {
+        addStartsWith(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+    public PopularSelection movieApiIdEndsWith(String... value) {
+        addEndsWith(PopularColumns.MOVIE_API_ID, value);
+        return this;
+    }
+
+    public PopularSelection orderByMovieApiId(boolean desc) {
+        orderBy(PopularColumns.MOVIE_API_ID, desc);
+        return this;
+    }
+
+    public PopularSelection orderByMovieApiId() {
+        orderBy(PopularColumns.MOVIE_API_ID, false);
+        return this;
+    }
+
     public PopularSelection overview(String... value) {
         addEquals(PopularColumns.OVERVIEW, value);
         return this;
