@@ -18,6 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.moviesapp.amrelmasry.popular_movies_app.provider.MoviesProvider"
+            android:authorities="com.moviesapp.amrelmasry.popular_movies_app.provider"
+            android:exported="false" />
+
     </application>
 
 </manifest>
