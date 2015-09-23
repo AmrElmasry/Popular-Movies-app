@@ -13,7 +13,6 @@ import android.widget.GridView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularContentValues;
 import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
 
 /**
@@ -46,17 +45,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onStart() {
         super.onStart();
-        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies();
+        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity());
         fetchPopularMovies.execute();
 
-        PopularContentValues contentValues = new PopularContentValues();
 
-        contentValues.putTitle("The movie");
-        contentValues.putOverview("Overview");
-        contentValues.putReleaseDate("11/11/2015");
-        contentValues.putVoteAverage("5.5");
-        contentValues.putPosterPath("/kqjL17yufvn9OVLyXYpvtyrFfak.jpg");
-        getActivity().getContentResolver().insert(PopularColumns.CONTENT_URI, contentValues.values());
     }
 
     @Override

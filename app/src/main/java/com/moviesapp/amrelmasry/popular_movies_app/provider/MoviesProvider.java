@@ -1,20 +1,20 @@
 package com.moviesapp.amrelmasry.popular_movies_app.provider;
 
-import java.util.Arrays;
-
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.BuildConfig;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.BaseContentProvider;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
 
+import java.util.Arrays;
+
 public class MoviesProvider extends BaseContentProvider {
+
     private static final String TAG = MoviesProvider.class.getSimpleName();
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
