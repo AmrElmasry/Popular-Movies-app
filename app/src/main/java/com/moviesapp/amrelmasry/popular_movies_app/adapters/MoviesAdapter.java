@@ -30,19 +30,13 @@ public class MoviesAdapter extends CursorAdapter {
 
         // create a new ImageView for each item referenced by the Adapter
 
-        ImageView imageView;
-        imageView = new ImageView(mContext);
-        imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setPadding(8, 8, 8, 8);
-
 
         View view = LayoutInflater.from(context).inflate(R.layout.movie_item, parent, false);
 
 
 //        Uri uri = Uri.parse("https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg");
 //        imageView.setImageResource(mThumbIds[position]);
-        return imageView;
+        return view;
 
 
     }
@@ -54,6 +48,7 @@ public class MoviesAdapter extends CursorAdapter {
 
         while (moviesCursor.moveToNext()) {
             ImageView imageView = (ImageView) view;
+            imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
             Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + moviesCursor.getPosterPath()).into(imageView);
         }
 
