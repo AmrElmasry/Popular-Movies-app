@@ -47,7 +47,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             public void onLoadMore(int page, int totalItemsCount) {
 
 
-                fetchMovies(pageNumber);
+                fetchMovies(pageNumber, false);
                 pageNumber++;
             }
         });
@@ -60,12 +60,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onStart() {
         super.onStart();
 
-        fetchMovies(1);
+        fetchMovies(1, true);
+
 
     }
 
-    private void fetchMovies(Integer page) {
-        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page);
+
+    private void fetchMovies(Integer page, boolean isInitialFetch) {
+        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page, isInitialFetch);
         fetchPopularMovies.execute();
     }
 

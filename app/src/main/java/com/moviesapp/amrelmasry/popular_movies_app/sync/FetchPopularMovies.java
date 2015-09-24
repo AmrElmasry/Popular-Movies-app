@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularContentValues;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularSelection;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.ConnectionUtilities;
 
 import org.json.JSONArray;
@@ -18,10 +19,12 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
     private final Integer page;
+    boolean isInitialFetch;
 
-    public FetchPopularMovies(Context mContext, Integer page) {
+    public FetchPopularMovies(Context mContext, Integer page, boolean isInitialFetch) {
         this.mContext = mContext;
         this.page = page;
+        this.isInitialFetch = isInitialFetch;
     }
 
     // make api call , bring popular movies and store them in DB by provider
@@ -56,7 +59,15 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
         String JSONstr = ConnectionUtilities.getJSONString(uri);
 
         if (JSONstr != null) {
-            insertMoviesIntoDB(JSONstr);
+            if (isInitialFetch) {
+                // initial fetch , clear database and insert new data
+                deletOldDataOnDB();
+                insertMoviesIntoDB(JSONstr);
+            } else {
+                // scroll fetch
+                insertMoviesIntoDB(JSONstr);
+
+            }
         }
 
 
@@ -90,4 +101,14 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
             Log.e("JSONError", "Couldn't parse JSON String");
         }
     }
+
+    private void deletOldDataOnDB() {
+
+        PopularSelection where = new PopularSelection();
+        where.query(mContext);
+        where.delete(mContext);
+
+    }
+
+
 }
