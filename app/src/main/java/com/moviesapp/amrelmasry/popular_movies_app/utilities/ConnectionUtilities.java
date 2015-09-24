@@ -16,6 +16,8 @@ import java.net.URL;
 public class ConnectionUtilities {
 
 
+    public static boolean isDBReady = false;
+
     public static String getJSONString(Uri uri) {
 
         HttpURLConnection urlConnection = null;

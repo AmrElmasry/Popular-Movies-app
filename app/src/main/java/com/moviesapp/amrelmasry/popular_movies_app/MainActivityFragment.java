@@ -1,5 +1,6 @@
 package com.moviesapp.amrelmasry.popular_movies_app;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesAdapter;
@@ -25,12 +27,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private MoviesAdapter moviesAdapter;
     private Integer pageNumber;
 
+    private String fetchType = "FETCH_POPULAR"; // TODO change later
+
+    static final int COL_MOVIE_API_ID = 1;
+
 
     public MainActivityFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -52,6 +58,24 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             }
         });
 
+        moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+
+
+                Intent intent = new Intent(getActivity(), MovieDetails.class);
+                String movieAPIID = cursor.getString(COL_MOVIE_API_ID);
+
+                intent.putExtra(getString(R.string.movie_api_id), movieAPIID);
+
+                intent.putExtra(getString(R.string.fetch_type), fetchType);
+                startActivity(intent);
+
+            }
+        });
+
 
         return rootView;
     }
@@ -61,7 +85,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         super.onStart();
 
         fetchMovies(1, true);
-
 
     }
 
@@ -84,8 +107,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+//        if (ConnectionUtilities.isDBReady) {
+//            moviesAdapter.swapCursor(cursor);
+//
+//        } else {
+//            Toast.makeText(getActivity(), "Not Ready, No Loader", Toast.LENGTH_SHORT).show();
+//        }
         moviesAdapter.swapCursor(cursor);
-
     }
 
     @Override
