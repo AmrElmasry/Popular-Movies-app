@@ -45,6 +45,5 @@ public class MoviesAdapter extends CursorAdapter {
 
         Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + moviesCursor.getPosterPath()).into(imageView);
 
-
     }
 }

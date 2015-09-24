@@ -29,7 +29,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private String fetchType = "FETCH_POPULAR"; // TODO change later
 
-    static final int COL_MOVIE_API_ID = 1;
+    static final int COL_MOVIE_API_ID = 2;
 
 
     public MainActivityFragment() {

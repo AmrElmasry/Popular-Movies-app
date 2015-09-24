@@ -31,9 +31,6 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
-        if (isInitialFetch) {
-            ConnectionUtilities.isDBReady = false;
-        }
 
         final String BASE_URL =
                 "http://api.themoviedb.org/3/discover/movie?";
@@ -66,7 +63,6 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
                 // initial fetch , clear database and insert new data
                 deletOldDataOnDB();
                 insertMoviesIntoDB(JSONstr);
-                ConnectionUtilities.isDBReady = true;
             } else {
                 // scroll fetch
                 insertMoviesIntoDB(JSONstr);
