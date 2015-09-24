@@ -17,9 +17,11 @@ import org.json.JSONObject;
 public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
+    private final Integer page;
 
-    public FetchPopularMovies(Context mContext) {
+    public FetchPopularMovies(Context mContext, Integer page) {
         this.mContext = mContext;
+        this.page = page;
     }
 
     // make api call , bring popular movies and store them in DB by provider
@@ -31,7 +33,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
                 "http://api.themoviedb.org/3/discover/movie?";
 
 //        String page_num = pageIndex.toString();
-        String page_num = "1";
+        String page_num = page.toString();
 
         // populariy URL example : "http://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc&api_key=27c124869ccb88b1134ed9504b7e38af"
         // top rated URL example : "http://api.themoviedb.org/3/movie/top_rated?page=1&api_key=27c124869ccb88b1134ed9504b7e38af"
@@ -53,8 +55,9 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
         String JSONstr = ConnectionUtilities.getJSONString(uri);
 
-
-        insertMoviesIntoDB(JSONstr);
+        if (JSONstr != null) {
+            insertMoviesIntoDB(JSONstr);
+        }
 
 
         return null;

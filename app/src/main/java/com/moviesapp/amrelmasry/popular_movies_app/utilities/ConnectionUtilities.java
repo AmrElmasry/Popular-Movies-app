@@ -20,7 +20,7 @@ public class ConnectionUtilities {
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
-        String JsonStr;
+        String JsonStr = null;
 
         try {
 
@@ -55,7 +55,7 @@ public class ConnectionUtilities {
             Log.i("Success", JsonStr);
 
         } catch (Exception e) {
-            Log.e("Error is", "Error ", e);
+            Log.e("Connection Error", "Can't download JSON ", e);
             return null;
         } finally {
             if (urlConnection != null) {
@@ -65,7 +65,8 @@ public class ConnectionUtilities {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e("Error", "Error closing stream", e);
+                    Log.e("Connection Error", "Can't close reader ", e);
+
                 }
             }
         }

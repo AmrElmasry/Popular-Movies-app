@@ -14,6 +14,7 @@ import android.widget.GridView;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.CustomScrollListener;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -22,6 +23,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private static final int MOVIES_LOADER = 0;
     private MoviesAdapter moviesAdapter;
+    private Integer pageNumber;
 
 
     public MainActivityFragment() {
@@ -38,6 +40,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         moviesGridView.setAdapter(moviesAdapter);
 
+        pageNumber = 2;
+
+        moviesGridView.setOnScrollListener(new CustomScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+
+
+                fetchMovies(pageNumber);
+                pageNumber++;
+            }
+        });
+
 
         return rootView;
     }
@@ -45,10 +59,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onStart() {
         super.onStart();
-        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity());
+
+        fetchMovies(1);
+
+    }
+
+    private void fetchMovies(Integer page) {
+        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page);
         fetchPopularMovies.execute();
-
-
     }
 
     @Override
