@@ -37,14 +37,30 @@ public class MovieDetailsFragment extends Fragment {
         {
 
             PopularSelection where = new PopularSelection();
+            PopularSelection where2 = new PopularSelection();
+
             where.movieApiId(movieApiId);
+            where2.movieApiId(movieApiId);
 
             PopularCursor newCursor1 = where.query(getActivity());
-
-
-            cursor = newCursor1;
+            PopularCursor newCursor2 = where.query(getActivity());
 
             newCursor1.moveToNext();
+            newCursor2.moveToNext();
+
+            if (newCursor1 == newCursor2) {
+                Log.i("CURSOR", "Equals");
+                Log.i("CURSOR", newCursor1.getTitle());
+                Log.i("CURSOR", newCursor2.getTitle());
+
+            } else {
+                Log.i("CURSOR", "NOT Equals");
+                Log.i("CURSOR", newCursor1.getTitle());
+                Log.i("CURSOR", newCursor2.getTitle());
+
+            }
+
+            cursor = newCursor1;
 
 
         }

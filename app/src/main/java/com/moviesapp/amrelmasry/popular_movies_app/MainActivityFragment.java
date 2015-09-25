@@ -80,11 +80,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
 
         fetchMovies(1, true);
+        pageNumber = 2;
 
     }
 

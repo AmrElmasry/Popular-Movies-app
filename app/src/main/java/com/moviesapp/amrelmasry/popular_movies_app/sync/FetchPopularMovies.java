@@ -1,12 +1,15 @@
 package com.moviesapp.amrelmasry.popular_movies_app.sync;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.moviesapp.amrelmasry.popular_movies_app.R;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularContentValues;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularCursor;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularSelection;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.ConnectionUtilities;
 
@@ -20,6 +23,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
     private final Context mContext;
     private final Integer page;
     boolean isInitialFetch;
+    SharedPreferences preferences;
 
     public FetchPopularMovies(Context mContext, Integer page, boolean isInitialFetch) {
         this.mContext = mContext;
@@ -58,11 +62,26 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
         String JSONstr = ConnectionUtilities.getJSONString(uri);
 
+
         if (JSONstr != null) {
             if (isInitialFetch) {
                 // initial fetch , clear database and insert new data
-                deletOldDataOnDB();
-                insertMoviesIntoDB(JSONstr);
+
+                if (JSONStringChanged(JSONstr)) {
+                    saveLastJSONString(JSONstr);
+                    deleteAllDataOnDB();
+                    insertMoviesIntoDB(JSONstr);
+
+                } else {
+                    if (firstTimeSaving()) {
+                        insertMoviesIntoDB(JSONstr);
+                    } else {
+                        deleteOldDataOnDB();
+
+                    }
+                }
+
+
             } else {
                 // scroll fetch
                 insertMoviesIntoDB(JSONstr);
@@ -102,13 +121,67 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    private void deletOldDataOnDB() {
+    private void deleteOldDataOnDB() {
+
+
+        // TODO Create another method to delete only if first page isn't new
 
         PopularSelection where = new PopularSelection();
-        where.query(mContext);
-        where.delete(mContext);
+        PopularCursor cursor = where.query(mContext);
+        Integer count = cursor.getCount();
+        Log.i("CURSOR", "First Cursor size = " + count.toString());
+
+
+        Integer rowsToDel = count - 20;
+
+        String whereClause =
+                String.format(PopularColumns._ID + " IN ( SELECT DISTINCT _id FROM " + PopularColumns.TABLE_NAME + " ORDER BY _id DESC LIMIT " + rowsToDel.toString() + "  ) ");
+
+
+        Integer deletedRows = mContext.getContentResolver().delete(PopularColumns.CONTENT_URI,
+                whereClause, null);
+
+        Log.i("CURSOR", "Deleted Rows = " + deletedRows.toString());
+
+
+        PopularSelection where3 = new PopularSelection();
+        PopularCursor cursor2 = where3.query(mContext);
+        Integer count2 = cursor2.getCount();
+        Log.i("CURSOR", "Second Cursor size = " + count2.toString());
+
 
     }
 
+    private void deleteAllDataOnDB() {
+
+//        PopularSelection where = new PopularSelection();
+//        where.query(mContext);
+//        where.delete(mContext);
+        mContext.getContentResolver().delete(PopularColumns.CONTENT_URI, null, null);
+
+    }
+
+    private boolean JSONStringChanged(String JSONStr) {
+
+        preferences = mContext.getSharedPreferences("JSON", 0);
+        String lastJSONstr = preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default));
+
+        return lastJSONstr.equals(JSONStr);
+    }
+
+    private void saveLastJSONString(String JSONStr) {
+        preferences = mContext.getSharedPreferences("JSON", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(mContext.getString(R.string.last_json_str), JSONStr);
+        editor.commit();
+    }
+
+    private boolean firstTimeSaving() {
+        preferences = mContext.getSharedPreferences("JSON", 0);
+        String lastJSONstr = preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default));
+
+        return lastJSONstr.equals(mContext.getString(R.string.last_json_str_default));
+
+    }
 
 }
