@@ -67,23 +67,39 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
             if (isInitialFetch) {
                 // initial fetch , clear database and insert new data
 
-                if (JSONStringChanged(JSONstr)) {
+                if (sameLastJSON(JSONstr)) {
+
+                    deleteOldDataOnDB();
+                    Log.i("CURSOR", "CASE = 1 ");
+
+
+//                    if (firstTimeSaving()) {
+//                        insertMoviesIntoDB(JSONstr);
+//
+//                        Log.i("CURSOR", "Initial Fetch & JSON Is NOT CHANGED & first Time");
+//
+//                    } else {
+//                        Log.i("CURSOR", "Initial Fetch & JSON Is NOT CHANGED & Not first Time");
+//
+//                        deleteOldDataOnDB();
+//
+//                    }
+
+
+                } else {
+                    Log.i("CURSOR", "CASE = 2 ");
+
                     saveLastJSONString(JSONstr);
                     deleteAllDataOnDB();
                     insertMoviesIntoDB(JSONstr);
 
-                } else {
-                    if (firstTimeSaving()) {
-                        insertMoviesIntoDB(JSONstr);
-                    } else {
-                        deleteOldDataOnDB();
-
-                    }
                 }
 
 
             } else {
                 // scroll fetch
+                Log.i("CURSOR", "CASE = 3 ");
+
                 insertMoviesIntoDB(JSONstr);
 
             }
@@ -161,24 +177,33 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
     }
 
-    private boolean JSONStringChanged(String JSONStr) {
+    private boolean sameLastJSON(String JSONStr) {
+
 
         preferences = mContext.getSharedPreferences("JSON", 0);
         String lastJSONstr = preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default));
 
-        return lastJSONstr.equals(JSONStr);
+        Log.i("CURSOR", "SAME LAST JSON ? = " + (lastJSONstr.equals(JSONStr)));
+        Log.i("CURSOR", lastJSONstr);
+        Log.i("CURSOR", JSONStr);
+
+
+        return (lastJSONstr.equals(JSONStr));
     }
 
     private void saveLastJSONString(String JSONStr) {
         preferences = mContext.getSharedPreferences("JSON", 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(mContext.getString(R.string.last_json_str), JSONStr);
-        editor.commit();
+        Log.i("CURSOR", "Saved Succesfully");
+        editor.apply();
     }
 
     private boolean firstTimeSaving() {
         preferences = mContext.getSharedPreferences("JSON", 0);
         String lastJSONstr = preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default));
+
+        Log.i("CURSOR", lastJSONstr);
 
         return lastJSONstr.equals(mContext.getString(R.string.last_json_str_default));
 
