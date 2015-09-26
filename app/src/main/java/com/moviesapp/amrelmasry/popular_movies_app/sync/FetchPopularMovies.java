@@ -7,10 +7,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularContentValues;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularCursor;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularSelection;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesContentValues;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesCursor;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesSelection;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.ConnectionUtilities;
 
 import org.json.JSONArray;
@@ -89,6 +89,8 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
                 } else {
                     Log.i("CURSOR", "CASE = 2 ");
 
+                    Log.i("CURSOR", "SIZE of RETREIVED JSON  " + JSONstr.length());
+
                     saveLastJSONString(JSONstr);
                     deleteAllDataOnDB();
                     insertMoviesIntoDB(JSONstr);
@@ -119,16 +121,16 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
                 JSONObject movieObj = moviesArray.getJSONObject(i);
 
-                PopularContentValues contentValues = new PopularContentValues();
+                PopularMoviesContentValues contentValues = new PopularMoviesContentValues();
 
-                contentValues.putMovieApiId(movieObj.getString("id"))
+                contentValues.putApiId(movieObj.getString("id"))
                         .putTitle(movieObj.getString("title"))
                         .putOverview(movieObj.getString("overview"))
                         .putReleaseDate(movieObj.getString("release_date"))
                         .putVoteAverage(movieObj.getString("vote_average"))
                         .putPosterPath(movieObj.getString("poster_path"));
 
-                mContext.getContentResolver().insert(PopularColumns.CONTENT_URI, contentValues.values());
+                mContext.getContentResolver().insert(PopularMoviesColumns.CONTENT_URI, contentValues.values());
 
 
             }
@@ -142,8 +144,8 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
         // TODO Create another method to delete only if first page isn't new
 
-        PopularSelection where = new PopularSelection();
-        PopularCursor cursor = where.query(mContext);
+        PopularMoviesSelection where = new PopularMoviesSelection();
+        PopularMoviesCursor cursor = where.query(mContext);
         Integer count = cursor.getCount();
         Log.i("CURSOR", "First Cursor size = " + count.toString());
 
@@ -151,17 +153,17 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
         Integer rowsToDel = count - 20;
 
         String whereClause =
-                String.format(PopularColumns._ID + " IN ( SELECT DISTINCT _id FROM " + PopularColumns.TABLE_NAME + " ORDER BY _id DESC LIMIT " + rowsToDel.toString() + "  ) ");
+                String.format(PopularMoviesColumns._ID + " IN ( SELECT DISTINCT _id FROM " + PopularMoviesColumns.TABLE_NAME + " ORDER BY " + PopularMoviesColumns._ID + " DESC LIMIT " + rowsToDel.toString() + "  ) ");
 
 
-        Integer deletedRows = mContext.getContentResolver().delete(PopularColumns.CONTENT_URI,
+        Integer deletedRows = mContext.getContentResolver().delete(PopularMoviesColumns.CONTENT_URI,
                 whereClause, null);
 
         Log.i("CURSOR", "Deleted Rows = " + deletedRows.toString());
 
 
-        PopularSelection where3 = new PopularSelection();
-        PopularCursor cursor2 = where3.query(mContext);
+        PopularMoviesSelection where3 = new PopularMoviesSelection();
+        PopularMoviesCursor cursor2 = where3.query(mContext);
         Integer count2 = cursor2.getCount();
         Log.i("CURSOR", "Second Cursor size = " + count2.toString());
 
@@ -173,7 +175,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 //        PopularSelection where = new PopularSelection();
 //        where.query(mContext);
 //        where.delete(mContext);
-        mContext.getContentResolver().delete(PopularColumns.CONTENT_URI, null, null);
+        mContext.getContentResolver().delete(PopularMoviesColumns.CONTENT_URI, null, null);
 
     }
 
@@ -181,11 +183,21 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
 
         preferences = mContext.getSharedPreferences("JSON", 0);
-        String lastJSONstr = preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default));
+
+        String lastJSONstr = String.valueOf(preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default)));
 
         Log.i("CURSOR", "SAME LAST JSON ? = " + (lastJSONstr.equals(JSONStr)));
-        Log.i("CURSOR", lastJSONstr);
-        Log.i("CURSOR", JSONStr);
+
+        StringBuilder sb = new StringBuilder();
+        for (char a : lastJSONstr.toCharArray()) {
+            sb.append(a);
+        }
+        sb.reverse();
+        Log.i("CURSOR", "First JSON IS " + sb.length());
+
+        Log.i("CURSOR", "SECOND JSON IS " + JSONStr.length());
+
+        Log.i("CURSOR", "OVER JSON IS " + sb);
 
 
         return (lastJSONstr.equals(JSONStr));
@@ -194,6 +206,8 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
     private void saveLastJSONString(String JSONStr) {
         preferences = mContext.getSharedPreferences("JSON", 0);
         SharedPreferences.Editor editor = preferences.edit();
+        Log.i("CURSOR", "Size BEFORE Saving " + JSONStr.length() + " - Saved Succesfully");
+
         editor.putString(mContext.getString(R.string.last_json_str), JSONStr);
         Log.i("CURSOR", "Saved Succesfully");
         editor.apply();

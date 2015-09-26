@@ -12,7 +12,9 @@ import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.BuildConfig;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.BaseContentProvider;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 
 public class MoviesProvider extends BaseContentProvider {
     private static final String TAG = MoviesProvider.class.getSimpleName();
@@ -25,16 +27,26 @@ public class MoviesProvider extends BaseContentProvider {
     public static final String AUTHORITY = "com.moviesapp.amrelmasry.popular_movies_app.provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
-    private static final int URI_TYPE_POPULAR = 0;
-    private static final int URI_TYPE_POPULAR_ID = 1;
+    private static final int URI_TYPE_FAVORITES_MOVIES = 0;
+    private static final int URI_TYPE_FAVORITES_MOVIES_ID = 1;
+
+    private static final int URI_TYPE_MOST_RATED_MOVIES = 2;
+    private static final int URI_TYPE_MOST_RATED_MOVIES_ID = 3;
+
+    private static final int URI_TYPE_POPULAR_MOVIES = 4;
+    private static final int URI_TYPE_POPULAR_MOVIES_ID = 5;
 
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, PopularColumns.TABLE_NAME, URI_TYPE_POPULAR);
-        URI_MATCHER.addURI(AUTHORITY, PopularColumns.TABLE_NAME + "/#", URI_TYPE_POPULAR_ID);
+        URI_MATCHER.addURI(AUTHORITY, FavoritesMoviesColumns.TABLE_NAME, URI_TYPE_FAVORITES_MOVIES);
+        URI_MATCHER.addURI(AUTHORITY, FavoritesMoviesColumns.TABLE_NAME + "/#", URI_TYPE_FAVORITES_MOVIES_ID);
+        URI_MATCHER.addURI(AUTHORITY, MostRatedMoviesColumns.TABLE_NAME, URI_TYPE_MOST_RATED_MOVIES);
+        URI_MATCHER.addURI(AUTHORITY, MostRatedMoviesColumns.TABLE_NAME + "/#", URI_TYPE_MOST_RATED_MOVIES_ID);
+        URI_MATCHER.addURI(AUTHORITY, PopularMoviesColumns.TABLE_NAME, URI_TYPE_POPULAR_MOVIES);
+        URI_MATCHER.addURI(AUTHORITY, PopularMoviesColumns.TABLE_NAME + "/#", URI_TYPE_POPULAR_MOVIES_ID);
     }
 
     @Override
@@ -51,10 +63,20 @@ public class MoviesProvider extends BaseContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCHER.match(uri);
         switch (match) {
-            case URI_TYPE_POPULAR:
-                return TYPE_CURSOR_DIR + PopularColumns.TABLE_NAME;
-            case URI_TYPE_POPULAR_ID:
-                return TYPE_CURSOR_ITEM + PopularColumns.TABLE_NAME;
+            case URI_TYPE_FAVORITES_MOVIES:
+                return TYPE_CURSOR_DIR + FavoritesMoviesColumns.TABLE_NAME;
+            case URI_TYPE_FAVORITES_MOVIES_ID:
+                return TYPE_CURSOR_ITEM + FavoritesMoviesColumns.TABLE_NAME;
+
+            case URI_TYPE_MOST_RATED_MOVIES:
+                return TYPE_CURSOR_DIR + MostRatedMoviesColumns.TABLE_NAME;
+            case URI_TYPE_MOST_RATED_MOVIES_ID:
+                return TYPE_CURSOR_ITEM + MostRatedMoviesColumns.TABLE_NAME;
+
+            case URI_TYPE_POPULAR_MOVIES:
+                return TYPE_CURSOR_DIR + PopularMoviesColumns.TABLE_NAME;
+            case URI_TYPE_POPULAR_MOVIES_ID:
+                return TYPE_CURSOR_ITEM + PopularMoviesColumns.TABLE_NAME;
 
         }
         return null;
@@ -98,12 +120,28 @@ public class MoviesProvider extends BaseContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
-            case URI_TYPE_POPULAR:
-            case URI_TYPE_POPULAR_ID:
-                res.table = PopularColumns.TABLE_NAME;
-                res.idColumn = PopularColumns._ID;
-                res.tablesWithJoins = PopularColumns.TABLE_NAME;
-                res.orderBy = PopularColumns.DEFAULT_ORDER;
+            case URI_TYPE_FAVORITES_MOVIES:
+            case URI_TYPE_FAVORITES_MOVIES_ID:
+                res.table = FavoritesMoviesColumns.TABLE_NAME;
+                res.idColumn = FavoritesMoviesColumns._ID;
+                res.tablesWithJoins = FavoritesMoviesColumns.TABLE_NAME;
+                res.orderBy = FavoritesMoviesColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_MOST_RATED_MOVIES:
+            case URI_TYPE_MOST_RATED_MOVIES_ID:
+                res.table = MostRatedMoviesColumns.TABLE_NAME;
+                res.idColumn = MostRatedMoviesColumns._ID;
+                res.tablesWithJoins = MostRatedMoviesColumns.TABLE_NAME;
+                res.orderBy = MostRatedMoviesColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_POPULAR_MOVIES:
+            case URI_TYPE_POPULAR_MOVIES_ID:
+                res.table = PopularMoviesColumns.TABLE_NAME;
+                res.idColumn = PopularMoviesColumns._ID;
+                res.tablesWithJoins = PopularMoviesColumns.TABLE_NAME;
+                res.orderBy = PopularMoviesColumns.DEFAULT_ORDER;
                 break;
 
             default:
@@ -111,7 +149,9 @@ public class MoviesProvider extends BaseContentProvider {
         }
 
         switch (matchedId) {
-            case URI_TYPE_POPULAR_ID:
+            case URI_TYPE_FAVORITES_MOVIES_ID:
+            case URI_TYPE_MOST_RATED_MOVIES_ID:
+            case URI_TYPE_POPULAR_MOVIES_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

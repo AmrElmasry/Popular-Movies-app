@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularCursor;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularSelection;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesCursor;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesSelection;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -36,14 +36,14 @@ public class MovieDetailsFragment extends Fragment {
         if (fetchType.equals("FETCH_POPULAR")) // TODO edit later from resources
         {
 
-            PopularSelection where = new PopularSelection();
-            PopularSelection where2 = new PopularSelection();
+            PopularMoviesSelection where = new PopularMoviesSelection();
+            PopularMoviesSelection where2 = new PopularMoviesSelection();
 
-            where.movieApiId(movieApiId);
-            where2.movieApiId(movieApiId);
+            where.apiId(movieApiId);
+            where2.apiId(movieApiId);
 
-            PopularCursor newCursor1 = where.query(getActivity());
-            PopularCursor newCursor2 = where.query(getActivity());
+            PopularMoviesCursor newCursor1 = where.query(getActivity());
+            PopularMoviesCursor newCursor2 = where.query(getActivity());
 
             newCursor1.moveToNext();
             newCursor2.moveToNext();

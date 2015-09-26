@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesAdapter;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.CustomScrollListener;
 
@@ -104,7 +104,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), PopularColumns.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(getActivity(), PopularMoviesColumns.CONTENT_URI, null, null, null, null);
     }
 
     @Override

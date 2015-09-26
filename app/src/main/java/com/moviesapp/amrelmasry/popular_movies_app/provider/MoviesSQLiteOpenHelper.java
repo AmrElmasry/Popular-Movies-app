@@ -10,7 +10,9 @@ import android.os.Build;
 import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.BuildConfig;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 
 public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = MoviesSQLiteOpenHelper.class.getSimpleName();
@@ -22,15 +24,37 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
     private final MoviesSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
-    public static final String SQL_CREATE_TABLE_POPULAR = "CREATE TABLE IF NOT EXISTS "
-            + PopularColumns.TABLE_NAME + " ( "
-            + PopularColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + PopularColumns.TITLE + " TEXT NOT NULL, "
-            + PopularColumns.MOVIE_API_ID + " TEXT NOT NULL, "
-            + PopularColumns.OVERVIEW + " TEXT NOT NULL, "
-            + PopularColumns.RELEASE_DATE + " TEXT NOT NULL, "
-            + PopularColumns.POSTER_PATH + " TEXT NOT NULL, "
-            + PopularColumns.VOTE_AVERAGE + " TEXT NOT NULL "
+    public static final String SQL_CREATE_TABLE_FAVORITES_MOVIES = "CREATE TABLE IF NOT EXISTS "
+            + FavoritesMoviesColumns.TABLE_NAME + " ( "
+            + FavoritesMoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + FavoritesMoviesColumns.TITLE + " TEXT NOT NULL, "
+            + FavoritesMoviesColumns.API_ID + " TEXT NOT NULL, "
+            + FavoritesMoviesColumns.OVERVIEW + " TEXT NOT NULL, "
+            + FavoritesMoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
+            + FavoritesMoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
+            + FavoritesMoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
+            + " );";
+
+    public static final String SQL_CREATE_TABLE_MOST_RATED_MOVIES = "CREATE TABLE IF NOT EXISTS "
+            + MostRatedMoviesColumns.TABLE_NAME + " ( "
+            + MostRatedMoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + MostRatedMoviesColumns.TITLE + " TEXT NOT NULL, "
+            + MostRatedMoviesColumns.API_ID + " TEXT NOT NULL, "
+            + MostRatedMoviesColumns.OVERVIEW + " TEXT NOT NULL, "
+            + MostRatedMoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
+            + MostRatedMoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
+            + MostRatedMoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
+            + " );";
+
+    public static final String SQL_CREATE_TABLE_POPULAR_MOVIES = "CREATE TABLE IF NOT EXISTS "
+            + PopularMoviesColumns.TABLE_NAME + " ( "
+            + PopularMoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + PopularMoviesColumns.TITLE + " TEXT NOT NULL, "
+            + PopularMoviesColumns.API_ID + " TEXT NOT NULL, "
+            + PopularMoviesColumns.OVERVIEW + " TEXT NOT NULL, "
+            + PopularMoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
+            + PopularMoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
+            + PopularMoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
             + " );";
 
     // @formatter:on
@@ -87,7 +111,9 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
-        db.execSQL(SQL_CREATE_TABLE_POPULAR);
+        db.execSQL(SQL_CREATE_TABLE_FAVORITES_MOVIES);
+        db.execSQL(SQL_CREATE_TABLE_MOST_RATED_MOVIES);
+        db.execSQL(SQL_CREATE_TABLE_POPULAR_MOVIES);
         mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 

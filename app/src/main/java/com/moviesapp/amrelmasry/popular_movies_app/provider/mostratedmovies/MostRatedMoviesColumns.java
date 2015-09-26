@@ -1,16 +1,18 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.popular;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.MoviesProvider;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 
 /**
  * popular movies.
  */
-public class PopularColumns implements BaseColumns {
-    public static final String TABLE_NAME = "popular";
+public class MostRatedMoviesColumns implements BaseColumns {
+    public static final String TABLE_NAME = "most_rated_movies";
     public static final Uri CONTENT_URI = Uri.parse(MoviesProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
     /**
@@ -26,7 +28,7 @@ public class PopularColumns implements BaseColumns {
     /**
      * Movie ID in the API
      */
-    public static final String MOVIE_API_ID = "movie_api_id";
+    public static final String API_ID = "api_id";
 
     /**
      * Movie plot
@@ -55,7 +57,7 @@ public class PopularColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             TITLE,
-            MOVIE_API_ID,
+            API_ID,
             OVERVIEW,
             RELEASE_DATE,
             POSTER_PATH,
@@ -67,7 +69,7 @@ public class PopularColumns implements BaseColumns {
         if (projection == null) return true;
         for (String c : projection) {
             if (c.equals(TITLE) || c.contains("." + TITLE)) return true;
-            if (c.equals(MOVIE_API_ID) || c.contains("." + MOVIE_API_ID)) return true;
+            if (c.equals(API_ID) || c.contains("." + API_ID)) return true;
             if (c.equals(OVERVIEW) || c.contains("." + OVERVIEW)) return true;
             if (c.equals(RELEASE_DATE) || c.contains("." + RELEASE_DATE)) return true;
             if (c.equals(POSTER_PATH) || c.contains("." + POSTER_PATH)) return true;

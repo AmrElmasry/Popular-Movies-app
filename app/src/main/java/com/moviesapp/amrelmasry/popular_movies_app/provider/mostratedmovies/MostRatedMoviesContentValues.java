@@ -1,4 +1,4 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.popular;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies;
 
 import java.util.Date;
 
@@ -11,12 +11,12 @@ import android.support.annotation.Nullable;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.AbstractContentValues;
 
 /**
- * Content values wrapper for the {@code popular} table.
+ * Content values wrapper for the {@code most_rated_movies} table.
  */
-public class PopularContentValues extends AbstractContentValues {
+public class MostRatedMoviesContentValues extends AbstractContentValues {
     @Override
     public Uri uri() {
-        return PopularColumns.CONTENT_URI;
+        return MostRatedMoviesColumns.CONTENT_URI;
     }
 
     /**
@@ -25,7 +25,7 @@ public class PopularContentValues extends AbstractContentValues {
      * @param contentResolver The content resolver to use.
      * @param where The selection to use (can be {@code null}).
      */
-    public int update(ContentResolver contentResolver, @Nullable PopularSelection where) {
+    public int update(ContentResolver contentResolver, @Nullable MostRatedMoviesSelection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
@@ -35,16 +35,16 @@ public class PopularContentValues extends AbstractContentValues {
      * @param contentResolver The content resolver to use.
      * @param where The selection to use (can be {@code null}).
      */
-    public int update(Context context, @Nullable PopularSelection where) {
+    public int update(Context context, @Nullable MostRatedMoviesSelection where) {
         return context.getContentResolver().update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
     /**
      * Movie tilte
      */
-    public PopularContentValues putTitle(@NonNull String value) {
+    public MostRatedMoviesContentValues putTitle(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("title must not be null");
-        mContentValues.put(PopularColumns.TITLE, value);
+        mContentValues.put(MostRatedMoviesColumns.TITLE, value);
         return this;
     }
 
@@ -52,9 +52,9 @@ public class PopularContentValues extends AbstractContentValues {
     /**
      * Movie ID in the API
      */
-    public PopularContentValues putMovieApiId(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("movieApiId must not be null");
-        mContentValues.put(PopularColumns.MOVIE_API_ID, value);
+    public MostRatedMoviesContentValues putApiId(@NonNull String value) {
+        if (value == null) throw new IllegalArgumentException("apiId must not be null");
+        mContentValues.put(MostRatedMoviesColumns.API_ID, value);
         return this;
     }
 
@@ -62,9 +62,9 @@ public class PopularContentValues extends AbstractContentValues {
     /**
      * Movie plot
      */
-    public PopularContentValues putOverview(@NonNull String value) {
+    public MostRatedMoviesContentValues putOverview(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("overview must not be null");
-        mContentValues.put(PopularColumns.OVERVIEW, value);
+        mContentValues.put(MostRatedMoviesColumns.OVERVIEW, value);
         return this;
     }
 
@@ -72,9 +72,9 @@ public class PopularContentValues extends AbstractContentValues {
     /**
      * Movie release date
      */
-    public PopularContentValues putReleaseDate(@NonNull String value) {
+    public MostRatedMoviesContentValues putReleaseDate(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("releaseDate must not be null");
-        mContentValues.put(PopularColumns.RELEASE_DATE, value);
+        mContentValues.put(MostRatedMoviesColumns.RELEASE_DATE, value);
         return this;
     }
 
@@ -82,9 +82,9 @@ public class PopularContentValues extends AbstractContentValues {
     /**
      * Movie poster path
      */
-    public PopularContentValues putPosterPath(@NonNull String value) {
+    public MostRatedMoviesContentValues putPosterPath(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("posterPath must not be null");
-        mContentValues.put(PopularColumns.POSTER_PATH, value);
+        mContentValues.put(MostRatedMoviesColumns.POSTER_PATH, value);
         return this;
     }
 
@@ -92,9 +92,9 @@ public class PopularContentValues extends AbstractContentValues {
     /**
      * Movie vote average
      */
-    public PopularContentValues putVoteAverage(@NonNull String value) {
+    public MostRatedMoviesContentValues putVoteAverage(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("voteAverage must not be null");
-        mContentValues.put(PopularColumns.VOTE_AVERAGE, value);
+        mContentValues.put(MostRatedMoviesColumns.VOTE_AVERAGE, value);
         return this;
     }
 

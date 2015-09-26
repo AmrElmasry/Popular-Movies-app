@@ -10,7 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popular.PopularCursor;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesCursor;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -38,7 +38,7 @@ public class MoviesAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        PopularCursor moviesCursor = new PopularCursor(cursor);
+        PopularMoviesCursor moviesCursor = new PopularMoviesCursor(cursor);
         ImageView imageView = (ImageView) view;
         imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
 

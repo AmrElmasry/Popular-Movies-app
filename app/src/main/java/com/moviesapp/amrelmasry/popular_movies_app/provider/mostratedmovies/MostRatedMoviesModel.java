@@ -1,4 +1,4 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.popular;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.BaseModel;
 
@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 /**
  * popular movies.
  */
-public interface PopularModel extends BaseModel {
+public interface MostRatedMoviesModel extends BaseModel {
 
     /**
      * Movie tilte
@@ -24,7 +24,7 @@ public interface PopularModel extends BaseModel {
      * Cannot be {@code null}.
      */
     @NonNull
-    String getMovieApiId();
+    String getApiId();
 
     /**
      * Movie plot
