@@ -1,12 +1,18 @@
 package com.moviesapp.amrelmasry.popular_movies_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
+
 public class MainActivity extends AppCompatActivity {
+
+    private String mShowMoviesby;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +21,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mShowMoviesby = Utilities.getShowMoviesBy(this);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String showBy = Utilities.getShowMoviesBy(this);
+
+
+        if (showBy != null && !showBy.equals(mShowMoviesby)) {
+
+            MainActivityFragment mainf = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.mainActivityFragment);
+            if (null != mainf) {
+                mainf.onShowByChanged(showBy);
+            }
+            mShowMoviesby = showBy;
+        }
     }
 
     @Override
@@ -34,9 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
+
+
 }

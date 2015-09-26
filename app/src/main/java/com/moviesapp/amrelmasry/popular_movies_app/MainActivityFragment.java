@@ -2,6 +2,7 @@ package com.moviesapp.amrelmasry.popular_movies_app;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -14,9 +15,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesAdapter;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.CustomScrollListener;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,12 +28,14 @@ import com.moviesapp.amrelmasry.popular_movies_app.utilities.CustomScrollListene
 public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int MOVIES_LOADER = 0;
+
     private MoviesAdapter moviesAdapter;
     private Integer pageNumber;
+    String showMoviesBy;
 
     private String fetchType = "FETCH_POPULAR"; // TODO change later
 
-    static final int COL_MOVIE_API_ID = 2;
+    static final int COL_MOVIE_API_ID = 2; // TODO complete columns
 
 
     public MainActivityFragment() {
@@ -85,36 +91,71 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onStart() {
         super.onStart();
 
-        fetchMovies(1, true);
         pageNumber = 2;
+
+        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
+            fetchMovies(1, true);
+        }
+
 
     }
 
 
     private void fetchMovies(Integer page, boolean isInitialFetch) {
-        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page, isInitialFetch);
+
+        String tableName = null;
+        Uri tableUri = null;
+
+        if (showMoviesBy.equals(getString(R.string.pref_sort_by_popular))) {
+
+            tableName = PopularMoviesColumns.TABLE_NAME;
+            tableUri = PopularMoviesColumns.CONTENT_URI;
+
+        } else if (showMoviesBy.equals(getString(R.string.pref_sort_by_most_rated))) {
+
+            tableName = MostRatedMoviesColumns.TABLE_NAME;
+            tableUri = MostRatedMoviesColumns.CONTENT_URI;
+        }
+
+        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page, isInitialFetch, tableName, tableUri);
         fetchPopularMovies.execute();
+    }
+
+    void onShowByChanged(String updatedShowBy) {
+        showMoviesBy = updatedShowBy;
+        getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
+
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+
+        showMoviesBy = Utilities.getShowMoviesBy(getActivity());
+
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), PopularMoviesColumns.CONTENT_URI, null, null, null, null);
+
+
+        if (showMoviesBy.equals(getString(R.string.pref_sort_by_popular))) {
+            return new CursorLoader(getActivity(), PopularMoviesColumns.CONTENT_URI, null, null, null, null);
+
+        } else if (showMoviesBy.equals(getString(R.string.pref_sort_by_most_rated))) {
+            return new CursorLoader(getActivity(), MostRatedMoviesColumns.CONTENT_URI, null, null, null, null);
+
+        } else if (showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
+            return new CursorLoader(getActivity(), FavoritesMoviesColumns.CONTENT_URI, null, null, null, null);
+
+        }
+
+        return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        if (ConnectionUtilities.isDBReady) {
-//            moviesAdapter.swapCursor(cursor);
-//
-//        } else {
-//            Toast.makeText(getActivity(), "Not Ready, No Loader", Toast.LENGTH_SHORT).show();
-//        }
         moviesAdapter.swapCursor(cursor);
     }
 
