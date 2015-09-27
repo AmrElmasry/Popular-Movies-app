@@ -40,6 +40,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
     private Uri getUri() {
 
 
+        // TODO BUILD URI PARAMS IN DETAILS
         if (mtableName.equals(PopularMoviesColumns.TABLE_NAME)) {
             final String BASE_URL =
                     "http://api.themoviedb.org/3/discover/movie?";
@@ -142,7 +143,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
                 JSONObject movieObj = moviesArray.getJSONObject(i);
 
-                PopularMoviesContentValues contentValues = new PopularMoviesContentValues();
+                PopularMoviesContentValues contentValues = new PopularMoviesContentValues(); // TODO USE MORE GENERIC OR USE BULD INSERT WITH DEFAULT CONTENTVALUES
 
                 contentValues.putApiId(movieObj.getString("id"))
                         .putTitle(movieObj.getString("title"))

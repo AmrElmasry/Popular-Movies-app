@@ -5,7 +5,8 @@
     <string name="title_activity_movie_details">MovieDetails</string>
 
     <string name="movie_api_id">MovieAPIID</string>
-    <string name="fetch_type">FertchMoviesType</string>
+    <string name="table_name">TableName</string>
+    <string name="table_Uri">TableUri</string>
 
 
     <string name="last_popular_movies_json_str">LastPopularMoviesJSONString</string>

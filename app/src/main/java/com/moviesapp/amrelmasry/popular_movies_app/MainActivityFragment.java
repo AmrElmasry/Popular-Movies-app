@@ -33,10 +33,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private Integer pageNumber;
     String showMoviesBy;
 
-    private String fetchType = "FETCH_POPULAR"; // TODO change later
-
-    static final int COL_MOVIE_API_ID = 2; // TODO complete columns
-
 
     public MainActivityFragment() {
     }
@@ -67,16 +63,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String tableName = Utilities.getTableName(showMoviesBy, getActivity());
+                Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
 
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 
-
                 Intent intent = new Intent(getActivity(), MovieDetails.class);
-                String movieAPIID = cursor.getString(COL_MOVIE_API_ID);
+
+                String movieAPIID = cursor.getString(Utilities.COL_API_ID);
 
                 intent.putExtra(getString(R.string.movie_api_id), movieAPIID);
+                intent.putExtra(getString(R.string.table_name), tableName);
+                intent.putExtra(getString(R.string.table_Uri), tableUri.toString());
 
-                intent.putExtra(getString(R.string.fetch_type), fetchType);
                 startActivity(intent);
 
             }
@@ -103,19 +102,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private void fetchMovies(Integer page, boolean isInitialFetch) {
 
-        String tableName = null;
-        Uri tableUri = null;
+        String tableName = Utilities.getTableName(showMoviesBy, getActivity());
+        Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
 
-        if (showMoviesBy.equals(getString(R.string.pref_sort_by_popular))) {
-
-            tableName = PopularMoviesColumns.TABLE_NAME;
-            tableUri = PopularMoviesColumns.CONTENT_URI;
-
-        } else if (showMoviesBy.equals(getString(R.string.pref_sort_by_most_rated))) {
-
-            tableName = MostRatedMoviesColumns.TABLE_NAME;
-            tableUri = MostRatedMoviesColumns.CONTENT_URI;
-        }
 
         FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page, isInitialFetch, tableName, tableUri);
         fetchPopularMovies.execute();

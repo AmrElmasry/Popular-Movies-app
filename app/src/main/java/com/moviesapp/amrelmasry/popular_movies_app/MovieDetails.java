@@ -13,6 +13,19 @@ public class MovieDetails extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // get intent extras and pass it to fragment
+        if (savedInstanceState == null) {
+
+            MovieDetailsFragment f = MovieDetailsFragment.newInstance(
+                    getIntent().getStringExtra(getString(R.string.movie_api_id)),
+                    getIntent().getStringExtra(getString(R.string.table_name)),
+                    getIntent().getStringExtra(getString(R.string.table_Uri)),
+                    this);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.details_fragment, f)
+                    .commit();
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

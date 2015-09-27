@@ -10,7 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesCursor;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -38,12 +38,12 @@ public class MoviesAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        PopularMoviesCursor moviesCursor = new PopularMoviesCursor(cursor);
         ImageView imageView = (ImageView) view;
         imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
 
+        String posterPath = cursor.getString(Utilities.COL_POSTER_PATH);
 
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + moviesCursor.getPosterPath()).into(imageView);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(imageView);
 
     }
 }
