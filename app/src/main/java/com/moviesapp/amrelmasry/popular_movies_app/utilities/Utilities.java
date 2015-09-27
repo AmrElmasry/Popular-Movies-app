@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 
@@ -43,6 +44,10 @@ public class Utilities {
 
             tableUri = MostRatedMoviesColumns.CONTENT_URI;
         }
+        else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_favorites))) {
+
+            tableUri = FavoritesMoviesColumns.CONTENT_URI;
+        }
 
         return tableUri;
     }
@@ -57,7 +62,12 @@ public class Utilities {
         } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_most_rated))) {
 
             tableName = MostRatedMoviesColumns.TABLE_NAME;
+        } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_favorites))) {
+
+            tableName = FavoritesMoviesColumns.TABLE_NAME;
         }
+
+
         return tableName;
     }
 }

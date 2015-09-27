@@ -10,8 +10,8 @@ import android.util.Log;
 import com.moviesapp.amrelmasry.popular_movies_app.R;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesContentValues;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.ConnectionUtilities;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -143,17 +143,27 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
                 JSONObject movieObj = moviesArray.getJSONObject(i);
 
-                PopularMoviesContentValues contentValues = new PopularMoviesContentValues(); // TODO USE MORE GENERIC OR USE BULD INSERT WITH DEFAULT CONTENTVALUES
+//                PopularMoviesContentValues contentValues = new PopularMoviesContentValues(); // TODO USE MORE GENERIC OR USE BULD INSERT WITH DEFAULT CONTENTVALUES
+//
+//                contentValues.putApiId(movieObj.getString("id"))
+//                        .putTitle(movieObj.getString("title"))
+//                        .putOverview(movieObj.getString("overview"))
+//                        .putReleaseDate(movieObj.getString("release_date"))
+//                        .putVoteAverage(movieObj.getString("vote_average"))
+//                        .putPosterPath(movieObj.getString("poster_path"));
+//
+//                mContext.getContentResolver().insert(mContentUri, contentValues.values());
 
-                contentValues.putApiId(movieObj.getString("id"))
-                        .putTitle(movieObj.getString("title"))
-                        .putOverview(movieObj.getString("overview"))
-                        .putReleaseDate(movieObj.getString("release_date"))
-                        .putVoteAverage(movieObj.getString("vote_average"))
-                        .putPosterPath(movieObj.getString("poster_path"));
 
-                mContext.getContentResolver().insert(mContentUri, contentValues.values());
-
+                DatabaseUtilities.insertIntoDatabase(movieObj.getString("id"),
+                        movieObj.getString("title"),
+                        movieObj.getString("overview"),
+                        movieObj.getString("release_date"),
+                        movieObj.getString("vote_average"),
+                        movieObj.getString("poster_path"),
+                        mContentUri,
+                        mContext
+                );
 
             }
         } catch (JSONException e) {

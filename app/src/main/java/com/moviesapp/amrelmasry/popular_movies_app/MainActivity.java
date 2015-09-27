@@ -1,6 +1,7 @@
 package com.moviesapp.amrelmasry.popular_movies_app;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,7 +10,7 @@ import android.view.MenuItem;
 
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback {
 
     private String mShowMoviesby;
 
@@ -68,4 +69,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemSelected(String movieApiID, String tableName, Uri contentUri) {
+
+        Intent intent = new Intent(this, MovieDetails.class);
+
+        intent.putExtra(getString(R.string.movie_api_id), movieApiID);
+        intent.putExtra(getString(R.string.table_name), tableName);
+        intent.putExtra(getString(R.string.table_Uri), contentUri.toString());
+
+        startActivity(intent);
+    }
 }

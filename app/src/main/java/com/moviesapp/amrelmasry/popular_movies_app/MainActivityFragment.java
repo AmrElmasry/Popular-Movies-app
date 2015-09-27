@@ -1,6 +1,5 @@
 package com.moviesapp.amrelmasry.popular_movies_app;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,9 +53,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
 
+                if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
 
-                fetchMovies(pageNumber, false);
-                pageNumber++;
+                    fetchMovies(pageNumber, false);
+                    pageNumber++;
+                }
             }
         });
 
@@ -68,15 +69,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 
-                Intent intent = new Intent(getActivity(), MovieDetails.class);
 
-                String movieAPIID = cursor.getString(Utilities.COL_API_ID);
+                if (cursor != null) {
+                    String movieAPIID = cursor.getString(Utilities.COL_API_ID);
+                    ((Callback) getActivity())
+                            .onItemSelected(movieAPIID, tableName, tableUri);
 
-                intent.putExtra(getString(R.string.movie_api_id), movieAPIID);
-                intent.putExtra(getString(R.string.table_name), tableName);
-                intent.putExtra(getString(R.string.table_Uri), tableUri.toString());
 
-                startActivity(intent);
+                }
+
 
             }
         });
@@ -85,6 +86,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
+
+    public interface Callback {
+        public void onItemSelected(String movieApiID, String tableName, Uri contentUri);
+
+    }
 
     @Override
     public void onStart() {
@@ -152,4 +158,5 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public void onLoaderReset(Loader<Cursor> loader) {
         moviesAdapter.swapCursor(null);
     }
+
 }
