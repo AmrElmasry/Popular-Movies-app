@@ -30,6 +30,9 @@ public class MoviesAdapter extends CursorAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.movie_item, parent, false);
 
+        ViewHodler viewHodler = new ViewHodler(view);
+        view.setTag(viewHodler);
+
         return view;
 
 
@@ -38,12 +41,27 @@ public class MoviesAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        ImageView imageView = (ImageView) view;
-        imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
+        ViewHodler viewHodler = (ViewHodler) view.getTag();
+
 
         String posterPath = cursor.getString(Utilities.COL_POSTER_PATH);
 
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(imageView);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(viewHodler.imageView);
 
     }
+
+
+    public static class ViewHodler {
+
+        public final ImageView imageView;
+
+        public ViewHodler(View view) {
+            imageView = (ImageView) view;
+            imageView.setLayoutParams(new GridView.LayoutParams(160, 160));
+        }
+
+
+    }
+
+
 }
