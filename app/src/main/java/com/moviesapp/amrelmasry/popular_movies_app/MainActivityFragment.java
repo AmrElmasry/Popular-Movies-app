@@ -7,83 +7,116 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.Toast;
 
-import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesAdapter;
+import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter;
+import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
-import com.moviesapp.amrelmasry.popular_movies_app.utilities.CustomScrollListener;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
+import com.rockerhieu.rvadapter.endless.EndlessRecyclerViewAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, EndlessRecyclerViewAdapter.RequestToLoadMoreListener {
 
     private static final int MOVIES_LOADER = 0;
 
-    private MoviesAdapter moviesAdapter;
+    private MoviesRecyclerAdapter moviesAdapter;
+    EndlessRecyclerViewAdapter endlessRecyclerViewAdapter;
     private Integer pageNumber;
     String showMoviesBy;
 
-
     public MainActivityFragment() {
     }
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        GridView moviesGridView = (GridView) rootView.findViewById(R.id.main_girdview);
+        final RecyclerView moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
+        final GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+        moviesRecyclerView.setLayoutManager(manager);
 
-        moviesAdapter = new MoviesAdapter(getActivity(), null, 0);
+        ViewHolderClicksListener clicksListener =
+                new MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener() {
 
-        moviesGridView.setAdapter(moviesAdapter);
+
+                    @Override
+                    public void onMovieClick(View view, int position) {
+
+//                        Toast.makeText(getActivity(), "Movie API ID IS : " + moviesAdapter.getMovieApiID(position), Toast.LENGTH_SHORT).show();
+                        Log.i("MOVIE_CILICK", "position b " + position);
+
+                        String movieApiID = moviesAdapter.getMovieApiID(position);
+                        Log.i("MOVIE_CILICK", "api id b " + movieApiID);
+
+
+                        String tableName = Utilities.getTableName(showMoviesBy, getActivity());
+                        Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
+                        ((Callback) getActivity())
+                                .onItemSelected(movieApiID, tableName, tableUri);
+
+                    }
+                };
+        moviesAdapter = new MoviesRecyclerAdapter(R.layout.movie_item, null, getActivity(), clicksListener);
+        endlessRecyclerViewAdapter = new EndlessRecyclerViewAdapter(getActivity(), moviesAdapter, this);
+        moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
+
 
         pageNumber = 2;
 
-        moviesGridView.setOnScrollListener(new CustomScrollListener() {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
 
-                if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
-
-                    fetchMovies(pageNumber, false);
-                    pageNumber++;
-                }
-            }
-        });
-
-        moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String tableName = Utilities.getTableName(showMoviesBy, getActivity());
-                Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
-
-                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-
-
-                if (cursor != null) {
-                    String movieAPIID = cursor.getString(Utilities.COL_API_ID);
-                    ((Callback) getActivity())
-                            .onItemSelected(movieAPIID, tableName, tableUri);
-
-
-                }
-
-
-            }
-        });
+//
+//        moviesRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String tableName = Utilities.getTableName(showMoviesBy, getActivity());
+//                Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
+//
+//                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+//
+//
+//                if (cursor != null) {
+//                    String movieAPIID = cursor.getString(Utilities.COL_API_ID);
+//                    ((Callback) getActivity())
+//                            .onItemSelected(movieAPIID, tableName, tableUri);
+//
+//
+//                }
+//
+//
+//            }
+//        });
 
 
         return rootView;
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+
+        Log.i("LOADING", "Loading page number : " + pageNumber);
+
+        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
+
+            // scroll to load more
+            fetchMovies(pageNumber, false);
+            pageNumber++;
+            Toast.makeText(getActivity(), "Loading More", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 
@@ -92,9 +125,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
+
 
         pageNumber = 2;
 
@@ -117,10 +152,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     void onShowByChanged(String updatedShowBy) {
+
+
         showMoviesBy = updatedShowBy;
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
 
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -151,7 +189,16 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        moviesAdapter.swapCursor(cursor);
+
+        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
+            moviesAdapter.swapCursor(cursor);
+            endlessRecyclerViewAdapter.onDataReady(true);
+        } else {
+            moviesAdapter.swapCursor(cursor);
+            endlessRecyclerViewAdapter.onDataReady(false);
+        }
+
+
     }
 
     @Override

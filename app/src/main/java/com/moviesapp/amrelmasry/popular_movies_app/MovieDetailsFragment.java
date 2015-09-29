@@ -73,13 +73,21 @@ public class MovieDetailsFragment extends Fragment {
             tableName = arguments.getString(getString(R.string.table_name));
             tableUri = arguments.getString(getString(R.string.table_Uri));
 
+//            Log.i("MOVIE_CILICK", "api id 2 " + movieApiId);
+
+
             Cursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, tableName, Uri.parse(tableUri), getActivity());
 
-            movieTitle = movieCursor.getString(Utilities.COL_TITLE);
-            movieOverview = movieCursor.getString(Utilities.COL_OVERVIEW);
-            movieVoteAverage = movieCursor.getString(Utilities.COL_VOTE_AVERAGE);
-            movieReleaseDate = movieCursor.getString(Utilities.COL_RELEASE_DATE);
-            moviePosterPath = movieCursor.getString(Utilities.COL_POSTER_PATH);
+            try {
+                movieTitle = movieCursor.getString(Utilities.COL_TITLE);
+                movieOverview = movieCursor.getString(Utilities.COL_OVERVIEW);
+                movieVoteAverage = movieCursor.getString(Utilities.COL_VOTE_AVERAGE);
+                movieReleaseDate = movieCursor.getString(Utilities.COL_RELEASE_DATE);
+                moviePosterPath = movieCursor.getString(Utilities.COL_POSTER_PATH);
+            } catch (Exception e) {
+
+            }
+
 
             // TODO WHICH IMG SIZE
             Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(moviePoster);
