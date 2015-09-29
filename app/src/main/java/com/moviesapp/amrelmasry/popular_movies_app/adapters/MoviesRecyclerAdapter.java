@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.moviesapp.amrelmasry.popular_movies_app.R;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 import com.squareup.picasso.Picasso;
@@ -53,10 +55,12 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
         String posterPath = cursor.getString(Utilities.COL_POSTER_PATH);
 
-//        moviesApiIDs.add(cursor.getString(Utilities.COL_API_ID));
+        holder.movieVoteAverage.setText(cursor.getString(Utilities.COL_VOTE_AVERAGE));
+        holder.movieTitle.setText(cursor.getString(Utilities.COL_TITLE));
 
 
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(holder.imageView);
+
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(holder.moviePoster);
 
 
     }
@@ -104,14 +108,22 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public ImageView imageView;
-        public ViewHolderClicksListener viewHolderClicksListener;
+        public final ImageView moviePoster;
+        public final ViewHolderClicksListener viewHolderClicksListener;
+        public final TextView movieTitle;
+        public final TextView movieVoteAverage;
 
         public SimpleViewHolder(View itemView, ViewHolderClicksListener listener) {
             super(itemView);
+
             viewHolderClicksListener = listener;
-            imageView = (ImageView) itemView;
-            imageView.setOnClickListener(this);
+
+            moviePoster = (ImageView) itemView.findViewById(R.id.main_movie_poster);
+
+            movieTitle = (TextView) itemView.findViewById(R.id.main_movie_title);
+            movieVoteAverage = (TextView) itemView.findViewById(R.id.main_movie_vote_average);
+
+            moviePoster.setOnClickListener(this);
 
         }
 

@@ -1,16 +1,87 @@
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/Movie_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
 
+    card_view:cardCornerRadius="4dp">
 
-    android:scaleType="centerCrop"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
-    android:paddingBottom="20dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="20dp"
-    >
+        <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
 
-</ImageView>
+            android:id="@+id/main_movie_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:contentDescription="Movie Poster"
+
+
+            android:scaleType="centerCrop"
+
+            android:src="@drawable/insideout_poster">
+
+        </ImageView>
+
+        <LinearLayout
+            android:id="@+id/card_bellow_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF5722"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/main_movie_details"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/main_movie_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="Mad Max , Fury ROAD"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/main_movie_vote_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7.5"
+                    android:textSize="11sp" />
+
+
+            </LinearLayout>
+
+            <!--<Button-->
+            <!--android:id="@+id/main_fav_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="fav" />-->
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/favorite_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="#00ffffff"-->
+            <!--android:src="@android:drawable/btn_star" />-->
+
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

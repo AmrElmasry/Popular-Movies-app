@@ -48,6 +48,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         final RecyclerView moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
         final GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
         moviesRecyclerView.setLayoutManager(manager);
+        moviesRecyclerView.setHasFixedSize(true);
 
         ViewHolderClicksListener clicksListener =
                 new MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener() {
