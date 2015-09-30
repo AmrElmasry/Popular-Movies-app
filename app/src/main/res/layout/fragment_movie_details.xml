@@ -18,31 +18,32 @@
 
             <include layout="@layout/all_movie_details" />
 
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#c0c0c0" />
-
-
-            <!--<include layout="@layout/trailers" />-->
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#c0c0c0" />
-
-            <!--<include layout="@layout/reviews" />-->
-
             <Button
                 android:id="@+id/add_to_favorites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add to favorites" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#c0c0c0" />
+
+
+            <include layout="@layout/trailers" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#c0c0c0" />
+
+            <include layout="@layout/reviews" />
+
+
         </LinearLayout>
 
 
