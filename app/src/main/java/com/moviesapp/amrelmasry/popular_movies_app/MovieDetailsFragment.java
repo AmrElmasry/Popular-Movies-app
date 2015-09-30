@@ -37,7 +37,10 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
+
+        Log.i("CREATE", "FRAGMENT CREATED");
 
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
 
@@ -73,7 +76,6 @@ public class MovieDetailsFragment extends Fragment {
             tableName = arguments.getString(getString(R.string.table_name));
             tableUri = arguments.getString(getString(R.string.table_Uri));
 
-//            Log.i("MOVIE_CILICK", "api id 2 " + movieApiId);
 
 
             Cursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, tableName, Uri.parse(tableUri), getActivity());
@@ -89,7 +91,7 @@ public class MovieDetailsFragment extends Fragment {
             }
 
 
-            // TODO WHICH IMG SIZE
+//            // TODO WHICH IMG SIZE
             Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(moviePoster);
             movieTitleTextView.setText(movieTitle);
             moviePlotTextView.setText(movieOverview);

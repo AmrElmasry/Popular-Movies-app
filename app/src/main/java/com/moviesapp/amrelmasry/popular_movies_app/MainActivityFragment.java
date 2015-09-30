@@ -80,26 +80,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
 //
-//        moviesRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String tableName = Utilities.getTableName(showMoviesBy, getActivity());
-//                Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
-//
-//                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-//
-//
-//                if (cursor != null) {
-//                    String movieAPIID = cursor.getString(Utilities.COL_API_ID);
-//                    ((Callback) getActivity())
-//                            .onItemSelected(movieAPIID, tableName, tableUri);
-//
-//
-//                }
-//
-//
-//            }
-//        });
 
 
         return rootView;

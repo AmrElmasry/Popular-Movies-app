@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     @Override
     public void onItemSelected(String movieApiID, String tableName, Uri contentUri) {
+
+        Log.i("CREATE", "Main Actvity - on ITem Selected - starting Activity");
 
         Intent intent = new Intent(this, MovieDetails.class);
 
