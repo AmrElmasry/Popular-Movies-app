@@ -1,10 +1,15 @@
 package com.moviesapp.amrelmasry.popular_movies_app.loaders;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.ConnectionUtilities;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +18,8 @@ import java.util.List;
  * Created by AmrELmasry on 9/30/2015.
  */
 public class TrailersLoader extends AsyncTaskLoader<List> {
+
+    String movieApiId;
 
     @Override
     public void deliverResult(List data) {
@@ -42,8 +49,9 @@ public class TrailersLoader extends AsyncTaskLoader<List> {
         super.onReset();
     }
 
-    public TrailersLoader(Context context) {
+    public TrailersLoader(Context context, String movieApiId) {
         super(context);
+        this.movieApiId = movieApiId;
         Log.i("LoaderUpdate", "Trailers Loader Constructor invoked");
 
     }
@@ -53,10 +61,27 @@ public class TrailersLoader extends AsyncTaskLoader<List> {
         Log.i("LoaderUpdate", "Get Trailers in Background and return them");
 
         ArrayList<Trailer> trailers = new ArrayList<>();
-        trailers.add(new Trailer("1", "5454", "Trailer 1", "Youtube"));
-        trailers.add(new Trailer("2", "5454", "Trailer 2", "Youtube"));
-        trailers.add(new Trailer("3", "5454", "Trailer 3", "Youtube"));
 
+        // TODO Remove hard coded uri
+
+        Uri uri = Uri.parse("http://api.themoviedb.org/3/movie/" + movieApiId + "/videos?api_key=27c124869ccb88b1134ed9504b7e38af");
+        String jsonString = ConnectionUtilities.getJSONString(uri);
+
+
+        try {
+            JSONObject JSONobj = new JSONObject(jsonString);
+            JSONArray trailersArray = JSONobj.getJSONArray("results");
+
+            for (int i = 0; i < trailersArray.length(); i++) {
+
+                trailers.add(new Trailer(trailersArray.getJSONObject(i).getString("id"),
+                        trailersArray.getJSONObject(i).getString("key"),
+                        trailersArray.getJSONObject(i).getString("name"),
+                        trailersArray.getJSONObject(i).getString("site")));
+            }
+        } catch (Exception e) {
+            Log.e("JSON", "Erorr parsing JSON");
+        }
         return trailers;
     }
 }

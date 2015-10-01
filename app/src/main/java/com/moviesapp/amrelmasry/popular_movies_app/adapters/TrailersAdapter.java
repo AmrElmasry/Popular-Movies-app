@@ -1,6 +1,7 @@
 package com.moviesapp.amrelmasry.popular_movies_app.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
 import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by AmrELmasry on 9/30/2015.
@@ -19,9 +21,13 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
 
 //    private ArrayList<Trailer> mtrailers;
 
+
+    private Context mContext;
+
     public TrailersAdapter(Context context) {
         super(context, R.layout.trailer_item);
-//        this.mtrailers = trailers;
+        mContext = context;
+
     }
 
     @Override
@@ -45,8 +51,9 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
         Trailer trailer = getItem(position);
         Log.i("LoaderUpdate", trailer.getName());
 
+        // TODO CHANGE HARD CODED STRING
         viewHolder.trailerName.setText(trailer.getName());
-        viewHolder.trailerThumbnail.setImageResource(R.drawable.movie_poster_small);
+        Picasso.with(mContext).load(Uri.parse("http://img.youtube.com/vi/" + trailer.getKey() + "/default.jpg")).into(viewHolder.trailerThumbnail);
 //
 //        TextView name = (TextView) view.findViewById(R.id.trailer_name);
 //        name.setText(trailer.getName());

@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.ReviewsAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.TrailersAdapter;
@@ -115,7 +117,19 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             }
         });
+        reviewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        trailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }
@@ -154,10 +168,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         switch (id) {
             case TRAILERS_LOADER_ID:
-                return new TrailersLoader(getActivity());
+                return new TrailersLoader(getActivity(), movieApiId);
 
             case REVIEWS_LOADER_ID:
-                return new ReviewsLoader(getActivity());
+                return new ReviewsLoader(getActivity(), movieApiId);
         }
         return null;
     }
