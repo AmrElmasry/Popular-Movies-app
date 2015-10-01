@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -14,14 +12,30 @@ import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback {
 
     private String mShowMoviesby;
+    private boolean mTwoPane;
+    private static final String MOVIE_DETAILS_FRAGMENT_TAG = "MOVIE_DETAILS";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        if (findViewById(R.id.movie_details_container) != null) {
+            // Two pane mode
+            mTwoPane = true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_details_container, new MovieDetailsFragment(), MOVIE_DETAILS_FRAGMENT_TAG)
+                        .commit();
+            }
+        } else {
+            // one pane mode
+            mTwoPane = false;
+        }
+
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // TODO CHANGE LATER
+//        setSupportActionBar(toolbar);
 
         mShowMoviesby = Utilities.getShowMoviesBy(this);
 
@@ -73,14 +87,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     @Override
     public void onItemSelected(String movieApiID, String tableName, Uri contentUri) {
 
-        Log.i("CREATE", "Main Actvity - on ITem Selected - starting Activity");
+        if (mTwoPane) {
 
-        Intent intent = new Intent(this, MovieDetails.class);
+            MovieDetailsFragment f = MovieDetailsFragment.newInstance(movieApiID, tableName, contentUri.toString(), this);
 
-        intent.putExtra(getString(R.string.movie_api_id), movieApiID);
-        intent.putExtra(getString(R.string.table_name), tableName);
-        intent.putExtra(getString(R.string.table_Uri), contentUri.toString());
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_details_container, f, MOVIE_DETAILS_FRAGMENT_TAG)
+                    .commit();
 
-        startActivity(intent);
+        } else {
+
+            Intent intent = new Intent(this, MovieDetails.class);
+
+            intent.putExtra(getString(R.string.movie_api_id), movieApiID);
+            intent.putExtra(getString(R.string.table_name), tableName);
+            intent.putExtra(getString(R.string.table_Uri), contentUri.toString());
+
+            startActivity(intent);
+
+        }
     }
 }

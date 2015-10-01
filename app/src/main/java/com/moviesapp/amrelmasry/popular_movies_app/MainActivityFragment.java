@@ -38,13 +38,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public MainActivityFragment() {
     }
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         final RecyclerView moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
-        final GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+        final GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
         moviesRecyclerView.setLayoutManager(manager);
         moviesRecyclerView.setHasFixedSize(true);
 
@@ -81,6 +82,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
         return rootView;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.i("ROTATE", "Device rotated");
+        super.onSaveInstanceState(outState);
     }
 
     @Override

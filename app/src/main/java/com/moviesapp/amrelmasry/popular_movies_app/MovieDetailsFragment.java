@@ -88,24 +88,26 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             tableName = arguments.getString(getString(R.string.table_name));
             tableUri = arguments.getString(getString(R.string.table_Uri));
 
-        }
 
-        Cursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, tableName, Uri.parse(tableUri), getActivity());
+            Cursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, tableName, Uri.parse(tableUri), getActivity());
 
-        movieTitle = movieCursor.getString(Utilities.COL_TITLE);
-        movieOverview = movieCursor.getString(Utilities.COL_OVERVIEW);
-        movieVoteAverage = movieCursor.getString(Utilities.COL_VOTE_AVERAGE);
-        movieReleaseDate = movieCursor.getString(Utilities.COL_RELEASE_DATE);
-        moviePosterPath = movieCursor.getString(Utilities.COL_POSTER_PATH);
+            movieTitle = movieCursor.getString(Utilities.COL_TITLE);
+            movieOverview = movieCursor.getString(Utilities.COL_OVERVIEW);
+            movieVoteAverage = movieCursor.getString(Utilities.COL_VOTE_AVERAGE);
+            movieReleaseDate = movieCursor.getString(Utilities.COL_RELEASE_DATE);
+            moviePosterPath = movieCursor.getString(Utilities.COL_POSTER_PATH);
 
 
 //            // TODO WHICH IMG SIZE
-        // TODO REPLACR HARD CODED URL
-        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(moviePoster);
-        movieTitleTextView.setText(movieTitle);
-        moviePlotTextView.setText(movieOverview);
-        movieRatingTextView.setText(movieVoteAverage);
-        movieDateTextView.setText(movieReleaseDate);
+            // TODO REPLACR HARD CODED URL
+            Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(moviePoster);
+            movieTitleTextView.setText(movieTitle);
+            moviePlotTextView.setText(movieOverview);
+            movieRatingTextView.setText(movieVoteAverage);
+            movieDateTextView.setText(movieReleaseDate);
+
+        }
+
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,8 +177,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.i("LoaderUpdate", "Initialize Loader in onActivityCreated");
 
-        getLoaderManager().initLoader(TRAILERS_LOADER_ID, null, this).forceLoad();
-        getLoaderManager().initLoader(REVIEWS_LOADER_ID, null, this).forceLoad();
+        if (movieApiId != null) {
+            getLoaderManager().initLoader(TRAILERS_LOADER_ID, null, this).forceLoad();
+            getLoaderManager().initLoader(REVIEWS_LOADER_ID, null, this).forceLoad();
+        }
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -185,13 +189,17 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     public Loader<List> onCreateLoader(int id, Bundle args) {
         Log.i("LoaderUpdate", "Create Loader in onCreateLoader");
 
-        switch (id) {
-            case TRAILERS_LOADER_ID:
-                return new TrailersLoader(getActivity(), movieApiId);
+        if (movieApiId != null) {
+            switch (id) {
+                case TRAILERS_LOADER_ID:
+                    return new TrailersLoader(getActivity(), movieApiId);
 
-            case REVIEWS_LOADER_ID:
-                return new ReviewsLoader(getActivity(), movieApiId);
+                case REVIEWS_LOADER_ID:
+                    return new ReviewsLoader(getActivity(), movieApiId);
+            }
         }
+
+
         return null;
     }
 
@@ -200,22 +208,22 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     public void onLoadFinished(Loader<List> loader, List data) {
         Log.i("LoaderUpdate", "Loader Finished , start to popualte data");
 
-        switch (loader.getId()) {
-            case TRAILERS_LOADER_ID:
-                trailersAdapter.addAll(data);
-                Utilities.setListViewHeightBasedOnChildren(trailersListView);
-                break;
+        if (data != null) {
+            switch (loader.getId()) {
+                case TRAILERS_LOADER_ID:
+                    trailersAdapter.addAll(data);
+                    Utilities.setListViewHeightBasedOnChildren(trailersListView);
+                    break;
 
-            case REVIEWS_LOADER_ID:
-                // TODO HANDLE NO REVIEWS CASE AND NO CONNECTION CASE
-                if (data.size() > 0) {
-                    reviewsAdapter.addAll(data);
-                    Utilities.setListViewHeightBasedOnChildren(reviewsListView);
-                }
-                break;
+                case REVIEWS_LOADER_ID:
+                    // TODO HANDLE NO REVIEWS CASE AND NO CONNECTION CASE
+                    if (data.size() > 0) {
+                        reviewsAdapter.addAll(data);
+                        Utilities.setListViewHeightBasedOnChildren(reviewsListView);
+                    }
+                    break;
+            }
         }
-
-
     }
 
     @Override

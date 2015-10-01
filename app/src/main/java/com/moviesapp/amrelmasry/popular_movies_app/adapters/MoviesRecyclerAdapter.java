@@ -59,7 +59,6 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
         holder.movieTitle.setText(cursor.getString(Utilities.COL_TITLE));
 
 
-
         Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(holder.moviePoster);
 
 
@@ -67,6 +66,7 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
 
     public String getMovieApiID(int position) {
+
 
         Log.i("MOVIE_CILICK", "position a " + position);
         Log.i("MOVIE_CILICK", "api id b " + moviesApiIDs.get(position));
@@ -78,22 +78,36 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
     @Override
     public Cursor swapCursor(Cursor c) {
-        if (c != null) {
-            // TODO OPTIMIZE THIS LATER
-            this.clearMoviesApiIDs();
 
+
+        if (c != null) {
+            clearMoviesApiIDs();
+
+            Log.i("ROTATE", "Cursor Swapped - Not Null");
+
+            // TODO OPTIMIZE THIS LATER
+
+            Log.i("ROTATE", "Array size before adding is : " + moviesApiIDs.size());
+
+//            c.moveToFirst();
+//            c.moveToPrevious();
+
+            c.moveToPosition(-1);
             while (c.moveToNext()) {
                 moviesApiIDs.add(c.getString(Utilities.COL_API_ID));
             }
-            for (int i = 0; i < c.getCount(); i++) {
 
-                Log.i("MOVIE_CILICK", "Movie Name is : " + moviesApiIDs.get(i));
+//            for (int i = 0; i < c.getCount(); i++) {
+//
+//                Log.i("MOVIE_CILICK", "Movie Name is : " + moviesApiIDs.get(i));
+//
+//            }
 
-            }
-            Log.i("MOVIE_CILICK", "Cursor size is : " + c.getCount());
-            Log.i("MOVIE_CILICK", "Array size is : " + c.getCount());
+            Log.i("ROTATE", "Cursor size is : " + c.getCount());
+            Log.i("ROTATE", "Array size after adding is : " + moviesApiIDs.size());
 
         } else {
+            Log.i("ROTATE", "Cursor Swapped - Null");
             Log.i("MOVIE_CILICK", "Array size is : " + moviesApiIDs.size());
         }
         return super.swapCursor(c);
