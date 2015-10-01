@@ -24,6 +24,12 @@
                 android:layout_height="wrap_content"
                 android:text="Add to favorites" />
 
+            <Button
+                android:id="@+id/share_trailer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share first Trailer" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"

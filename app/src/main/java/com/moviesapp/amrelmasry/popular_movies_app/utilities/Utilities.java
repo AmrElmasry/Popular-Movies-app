@@ -1,6 +1,7 @@
 package com.moviesapp.amrelmasry.popular_movies_app.utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
@@ -47,8 +48,7 @@ public class Utilities {
         } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_most_rated))) {
 
             tableUri = MostRatedMoviesColumns.CONTENT_URI;
-        }
-        else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_favorites))) {
+        } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_favorites))) {
 
             tableUri = FavoritesMoviesColumns.CONTENT_URI;
         }
@@ -94,5 +94,14 @@ public class Utilities {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    public static void shareTrailer(Context context, String trailerUri) {
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "I liked this movie, watch trailer: " + trailerUri);
+        sendIntent.setType("text/plain");
+        context.startActivity(Intent.createChooser(sendIntent, "Share Movie Trailer"));
     }
 }

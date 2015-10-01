@@ -1,6 +1,7 @@
 package com.moviesapp.amrelmasry.popular_movies_app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.moviesapp.amrelmasry.popular_movies_app.adapters.ReviewsAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.TrailersAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.ReviewsLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.TrailersLoader;
+import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 import com.squareup.picasso.Picasso;
@@ -60,7 +62,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         Log.i("CREATE", "FRAGMENT CREATED");
 
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
-        Button favorites = (Button) rootView.findViewById(R.id.add_to_favorites);
+
+        Button favorite = (Button) rootView.findViewById(R.id.add_to_favorites);
+        Button shareTrailer = (Button) rootView.findViewById(R.id.share_trailer);
 
         TextView movieTitleTextView = (TextView) rootView.findViewById(R.id.movie_title);
         TextView moviePlotTextView = (TextView) rootView.findViewById(R.id.movie_plot);  // overview
@@ -103,7 +107,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         movieRatingTextView.setText(movieVoteAverage);
         movieDateTextView.setText(movieReleaseDate);
 
-        favorites.setOnClickListener(new View.OnClickListener() {
+        favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // insert into database
@@ -113,10 +117,20 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                             movieOverview, movieReleaseDate, movieVoteAverage,
                             moviePosterPath, getActivity());
                 }
-
-
             }
         });
+
+        shareTrailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Trailer firstTrailer = trailersAdapter.getItem(0);
+                if (firstTrailer != null) {
+                    Utilities.shareTrailer(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
+
+                }
+            }
+        });
+
         reviewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -128,6 +142,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
+                Trailer trailer = (Trailer) parent.getItemAtPosition(position);
+                // TODO REMOVE HARD CODED URI
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
+                startActivity(intent);
+
             }
         });
 
@@ -188,8 +207,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 break;
 
             case REVIEWS_LOADER_ID:
-                reviewsAdapter.addAll(data);
-                Utilities.setListViewHeightBasedOnChildren(reviewsListView);
+                // TODO HANDLE NO REVIEWS CASE AND NO CONNECTION CASE
+                if (data.size() > 0) {
+                    reviewsAdapter.addAll(data);
+                    Utilities.setListViewHeightBasedOnChildren(reviewsListView);
+                }
                 break;
         }
 
@@ -215,3 +237,4 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
 }
+
