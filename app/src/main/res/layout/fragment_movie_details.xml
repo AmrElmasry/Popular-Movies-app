@@ -11,8 +11,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingEnd="18dp"
             android:paddingLeft="8dp"
             android:paddingRight="18dp"
+            android:paddingStart="8dp"
             android:paddingTop="8dp">
 
 
@@ -24,7 +26,7 @@
                 android:layout_height="2dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#c0c0c0" />
+                android:background="@color/colorDivider" />
 
 
             <include layout="@layout/trailers" />
@@ -34,7 +36,7 @@
                 android:layout_height="2dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#c0c0c0" />
+                android:background="@color/colorDivider" />
 
             <include layout="@layout/reviews" />
 
@@ -53,4 +55,3 @@
         android:src="@drawable/place_holer_ouline_heart" />
 
 </FrameLayout>
-

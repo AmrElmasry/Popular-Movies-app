@@ -3,10 +3,7 @@
     android:id="@+id/Movie_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp"
+   android:layout_margin="6dp"
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -36,7 +33,7 @@
             android:id="@+id/card_bellow_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FF5722"
+            android:background="@color/colorLightPrimary"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -51,6 +48,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textColor="@color/colorPrimaryText"
                     android:id="@+id/main_movie_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -59,6 +57,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/main_movie_vote_average"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -7,12 +7,28 @@
 
     <TextView
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="Trailers:"
-        android:textSize="20sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorPrimaryText"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/no_trailers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_trailers"
+        android:textColor="@color/colorSecondaryText"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/cannot_load_trailers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cannot_load_trailers"
+        android:textColor="@color/colorSecondaryText"
+        android:visibility="gone" />
 
     <ListView
         android:id="@+id/trailers_list"

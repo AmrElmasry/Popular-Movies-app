@@ -7,11 +7,17 @@
     <TextView
         android:id="@+id/review_author"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Amr"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorPrimaryText" />
 
     <TextView
         android:id="@+id/review_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Dsfd fdfdf"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorSecondaryText" />
 
 </LinearLayout>

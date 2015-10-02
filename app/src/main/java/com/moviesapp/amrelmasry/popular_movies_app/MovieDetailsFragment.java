@@ -38,9 +38,14 @@ import java.util.List;
 
 public class MovieDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List> {
 
-    String movieApiId;
-    String tableName;
-    String tableUri;
+    private String movieApiId;
+    private String tableName;
+    private String tableUri;
+
+    private TextView noReviews;
+    private TextView noTrailers;
+    private TextView cannotLoadTrailers;
+    private TextView cannotLoadReviews;
 
     private String movieTitle;
     private String movieOverview;
@@ -78,6 +83,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         TextView moviePlotTextView = (TextView) rootView.findViewById(R.id.movie_plot);  // overview
         TextView movieRatingTextView = (TextView) rootView.findViewById(R.id.movie_rating); //vote_average
         TextView movieDateTextView = (TextView) rootView.findViewById(R.id.movie_release_date); //release date
+
+        noReviews = (TextView) rootView.findViewById(R.id.no_reviews);
+        cannotLoadReviews = (TextView) rootView.findViewById(R.id.cannot_load_reviews);
+        noTrailers = (TextView) rootView.findViewById(R.id.no_trailers);
+        cannotLoadTrailers = (TextView) rootView.findViewById(R.id.cannot_load_trailers);
 
         reviewsListView = (ListView) rootView.findViewById(R.id.reviews_list);
         trailersListView = (ListView) rootView.findViewById(R.id.trailers_list);
@@ -238,28 +248,60 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     public void onLoadFinished(Loader<List> loader, List data) {
         Log.i("LoaderUpdate", "Loader Finished , start to popualte data");
 
-        if (data != null) {
-            switch (loader.getId()) {
-                case TRAILERS_LOADER_ID:
-                    trailersAdapter.clear();
-                    trailersAdapter.addAll(data);
-                    Utilities.setListViewHeightBasedOnChildren(trailersListView);
+        switch (loader.getId()) {
+            case TRAILERS_LOADER_ID:
 
-                    // If onCreateOptionsMenu has already happened, we need to update the share intent now.
-                    if (mShareActionProvider != null) {
-                        shareTrailer();
-                    }
-                    break;
-
-                case REVIEWS_LOADER_ID:
-                    // TODO HANDLE NO REVIEWS CASE AND NO CONNECTION CASE
+                if (data != null) {
                     if (data.size() > 0) {
+                        cannotLoadTrailers.setVisibility(View.GONE);
+                        noTrailers.setVisibility(View.GONE);
+                        trailersAdapter.clear();
+                        trailersAdapter.addAll(data);
+                        Utilities.setListViewHeightBasedOnChildren(trailersListView);
+                        // If onCreateOptionsMenu has already happened, we need to update the share intent now.
+                    } else {
+                        // no trailers
+                        noTrailers.setVisibility(View.VISIBLE);
+
+                    }
+
+                } else {
+                    // no internet
+
+                    Log.i("SHARE", "Null data - clear traileradpater - action provider=null");
+                    cannotLoadTrailers.setVisibility(View.VISIBLE);
+                    trailersAdapter.clear();
+                }
+
+                if (mShareActionProvider != null) {
+
+                    shareTrailer();
+                }
+
+
+                break;
+
+            case REVIEWS_LOADER_ID:
+                if (data != null) {
+                    if (data.size() > 0) {
+                        cannotLoadReviews.setVisibility(View.GONE);
+                        noReviews.setVisibility(View.GONE);
                         reviewsAdapter.clear();
                         reviewsAdapter.addAll(data);
                         Utilities.setListViewHeightBasedOnChildren(reviewsListView);
+                    } else {
+                        // no reviews
+                        noReviews.setVisibility(View.VISIBLE);
                     }
-                    break;
-            }
+                } else {
+                    // no internet
+                    reviewsAdapter.clear();
+                    cannotLoadReviews.setVisibility(View.VISIBLE);
+
+                }
+
+                break;
+
         }
 
 
@@ -283,18 +325,25 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     private void shareTrailer() {
-        if (trailersAdapter.getCount() > 0) {
+        if (trailersAdapter != null && trailersAdapter.getCount() > 0) {
+
+            Log.i("SHARE", "Update action provider - adapter count > 0");
 
             Trailer firstTrailer = trailersAdapter.getItem(0);
             if (firstTrailer != null) {
 //                Utilities.createShareIntent(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
-
+                Log.i("SHARE", "Trailer 1 exists , update my action provider");
                 mShareActionProvider.setShareIntent(
                         Utilities.createShareIntent("http://www.youtube.com/watch?v=" + firstTrailer.getKey()));
 
             }
+        } else {
+            Log.i("SHARE", "set Share = null ");
+
+            mShareActionProvider.setShareIntent(null);
         }
     }
+
 
     ;
 
@@ -303,9 +352,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         inflater.inflate(R.menu.menu_movie_details, menu);
 
+        Log.i("SHARE", "create optiopns menu");
+
+
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
 
+        mShareActionProvider = new ShareActionProvider(getActivity());
         // Get the provider and hold onto it to set/change the share intent.
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 

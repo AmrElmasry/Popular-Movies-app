@@ -27,6 +27,11 @@ public class ReviewsLoader extends AsyncTaskLoader<List> {
     }
 
     @Override
+    public void deliverResult(List data) {
+        super.deliverResult(data);
+    }
+
+    @Override
     public List loadInBackground() {
 
         ArrayList<Review> reviews = new ArrayList<>();
@@ -35,21 +40,28 @@ public class ReviewsLoader extends AsyncTaskLoader<List> {
         Uri uri = Uri.parse("http://api.themoviedb.org/3/movie/" + movieApiId + "/reviews?api_key=27c124869ccb88b1134ed9504b7e38af");
         String jsonString = ConnectionUtilities.getJSONString(uri);
 
-        try {
-            JSONObject JSONobj = new JSONObject(jsonString);
-            JSONArray reviewsArray = JSONobj.getJSONArray("results");
+        if (jsonString != null) {
+            try {
+                JSONObject JSONobj = new JSONObject(jsonString);
+                JSONArray reviewsArray = JSONobj.getJSONArray("results");
 
 
-            for (int i = 0; i < reviewsArray.length(); i++) {
-                reviews.add(new Review(reviewsArray.getJSONObject(i).getString("id"),
-                        reviewsArray.getJSONObject(i).getString("author"),
-                        reviewsArray.getJSONObject(i).getString("content")));
+                for (int i = 0; i < reviewsArray.length(); i++) {
+                    reviews.add(new Review(reviewsArray.getJSONObject(i).getString("id"),
+                            reviewsArray.getJSONObject(i).getString("author"),
+                            reviewsArray.getJSONObject(i).getString("content")));
+                }
+
+                return reviews;
+
+            } catch (Exception e) {
+                Log.e("JSON", "Erorr parsing JSON");
+                return null;
             }
-        } catch (Exception e) {
-            Log.e("JSON", "Erorr parsing JSON");
+        } else {
+            return null;
         }
 
 
-        return reviews;
     }
 }

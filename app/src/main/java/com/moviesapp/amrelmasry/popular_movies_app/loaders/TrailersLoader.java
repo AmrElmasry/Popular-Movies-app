@@ -67,21 +67,28 @@ public class TrailersLoader extends AsyncTaskLoader<List> {
         Uri uri = Uri.parse("http://api.themoviedb.org/3/movie/" + movieApiId + "/videos?api_key=27c124869ccb88b1134ed9504b7e38af");
         String jsonString = ConnectionUtilities.getJSONString(uri);
 
+        if (jsonString != null) {
+            try {
+                JSONObject JSONobj = new JSONObject(jsonString);
+                JSONArray trailersArray = JSONobj.getJSONArray("results");
 
-        try {
-            JSONObject JSONobj = new JSONObject(jsonString);
-            JSONArray trailersArray = JSONobj.getJSONArray("results");
+                for (int i = 0; i < trailersArray.length(); i++) {
 
-            for (int i = 0; i < trailersArray.length(); i++) {
+                    trailers.add(new Trailer(trailersArray.getJSONObject(i).getString("id"),
+                            trailersArray.getJSONObject(i).getString("key"),
+                            trailersArray.getJSONObject(i).getString("name"),
+                            trailersArray.getJSONObject(i).getString("site")));
+                }
+                return trailers;
 
-                trailers.add(new Trailer(trailersArray.getJSONObject(i).getString("id"),
-                        trailersArray.getJSONObject(i).getString("key"),
-                        trailersArray.getJSONObject(i).getString("name"),
-                        trailersArray.getJSONObject(i).getString("site")));
+            } catch (Exception e) {
+                Log.e("JSON", "Erorr parsing JSON");
+                return null;
+
             }
-        } catch (Exception e) {
-            Log.e("JSON", "Erorr parsing JSON");
         }
-        return trailers;
+
+
+        return null;
     }
 }
