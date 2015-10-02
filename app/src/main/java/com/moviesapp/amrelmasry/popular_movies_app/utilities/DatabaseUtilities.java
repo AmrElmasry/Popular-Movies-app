@@ -3,7 +3,6 @@ package com.moviesapp.amrelmasry.popular_movies_app.utilities;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.widget.Toast;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesContentValues;
@@ -57,28 +56,27 @@ public class DatabaseUtilities {
 
     }
 
-    // TODO AD TRY / FINALLY TO CLOSE CURSOR
 
-    public static void changeFavoriteState(String api_id, String title, String overview, String release_date, String vote_average, String poster_path, Context context) {
+    public static boolean isFavoriteMovie(String api_id, Context context) {
 
-        Cursor cursor = getMovieFromDB(api_id, FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, context);
+        try {
+            Cursor cursor = getMovieFromDB(api_id, FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, context);
 
+            if (cursor != null && cursor.getCount() > 0) {
+                return true;
+            } else {
+                return false;
+            }
 
-        if (cursor != null && cursor.getCount() > 0) {
+        } catch (Exception e) {
 
-            // remove from favorites
-            removeFromDatabase(api_id, FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, context);
-            Toast.makeText(context, "Movie removed", Toast.LENGTH_SHORT).show();
-
-
-        } else {
-
-            // add to favorites
-            insertIntoDatabase(api_id, title, overview, release_date, vote_average, poster_path, FavoritesMoviesColumns.CONTENT_URI, context);
-            Toast.makeText(context, "Movie added", Toast.LENGTH_SHORT).show();
-
+            return false;
         }
+
+
     }
+
+
 }
 
 

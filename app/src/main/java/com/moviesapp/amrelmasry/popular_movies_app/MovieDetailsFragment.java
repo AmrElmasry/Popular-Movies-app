@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -18,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +29,7 @@ import com.moviesapp.amrelmasry.popular_movies_app.adapters.TrailersAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.ReviewsLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.TrailersLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
 import com.squareup.picasso.Picasso;
@@ -52,7 +53,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private ListView reviewsListView;
     private ShareActionProvider mShareActionProvider;
 
+    private boolean isFavoriteMovie;
 
+    private FloatingActionButton fab;
     private static final int TRAILERS_LOADER_ID = 1;
     private static final int REVIEWS_LOADER_ID = 2;
 
@@ -61,7 +64,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
@@ -70,10 +73,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         setHasOptionsMenu(true);
 
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
-
-        Button favorite = (Button) rootView.findViewById(R.id.add_to_favorites);
-        Button shareTrailer = (Button) rootView.findViewById(R.id.share_trailer);
-
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         TextView movieTitleTextView = (TextView) rootView.findViewById(R.id.movie_title);
         TextView moviePlotTextView = (TextView) rootView.findViewById(R.id.movie_plot);  // overview
         TextView movieRatingTextView = (TextView) rootView.findViewById(R.id.movie_rating); //vote_average
@@ -116,26 +116,44 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         }
 
+        if (tableUri != null && tableUri.equals(FavoritesMoviesColumns.CONTENT_URI.toString())) {
+            // favorite movie
+            isFavoriteMovie = true;
+        } else {
 
-        favorite.setOnClickListener(new View.OnClickListener() {
+            if (DatabaseUtilities.isFavoriteMovie(movieApiId, getActivity())) {
+                isFavoriteMovie = true;
+            } else {
+                isFavoriteMovie = false;
+            }
+        }
+        changeFavoriteButtonState();
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // insert into database
+            public void onClick(View view) {
 
-                if (arguments != null) {
-                    DatabaseUtilities.changeFavoriteState(movieApiId, movieTitle,
+
+                //TODO
+                fab.setImageResource(R.drawable.place_holer_filled_heart);
+                if (isFavoriteMovie) {
+                    DatabaseUtilities.removeFromDatabase(movieApiId,
+                            FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, getActivity());
+                    isFavoriteMovie = false;
+                    changeFavoriteButtonState();
+                } else {
+                    DatabaseUtilities.insertIntoDatabase(movieApiId, movieTitle,
                             movieOverview, movieReleaseDate, movieVoteAverage,
-                            moviePosterPath, getActivity());
+                            moviePosterPath, FavoritesMoviesColumns.CONTENT_URI, getActivity());
+                    isFavoriteMovie = true;
+                    changeFavoriteButtonState();
                 }
-            }
-        });
 
-        shareTrailer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
             }
         });
+
 
         reviewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -159,6 +177,14 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
+    private void changeFavoriteButtonState() {
+        if (isFavoriteMovie) {
+            fab.setImageResource(R.drawable.place_holer_filled_heart);
+        } else {
+            fab.setImageResource(R.drawable.place_holer_ouline_heart);
+
+        }
+    }
 
     public static MovieDetailsFragment newInstance(String movieApiId, String tableName, String tableUri, Context context) {
         MovieDetailsFragment f = new MovieDetailsFragment();
