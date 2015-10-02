@@ -8,8 +8,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,15 +41,17 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     String tableName;
     String tableUri;
 
-    String movieTitle;
-    String movieOverview;
-    String movieReleaseDate;
-    String movieVoteAverage;
-    String moviePosterPath;
-    TrailersAdapter trailersAdapter;
-    ReviewsAdapter reviewsAdapter;
-    ListView trailersListView;
-    ListView reviewsListView;
+    private String movieTitle;
+    private String movieOverview;
+    private String movieReleaseDate;
+    private String movieVoteAverage;
+    private String moviePosterPath;
+    private TrailersAdapter trailersAdapter;
+    private ReviewsAdapter reviewsAdapter;
+    private ListView trailersListView;
+    private ListView reviewsListView;
+    private ShareActionProvider mShareActionProvider;
+
 
     private static final int TRAILERS_LOADER_ID = 1;
     private static final int REVIEWS_LOADER_ID = 2;
@@ -60,6 +67,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
         Log.i("CREATE", "FRAGMENT CREATED");
+        setHasOptionsMenu(true);
 
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
 
@@ -125,11 +133,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         shareTrailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Trailer firstTrailer = trailersAdapter.getItem(0);
-                if (firstTrailer != null) {
-                    Utilities.shareTrailer(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
 
-                }
             }
         });
 
@@ -213,6 +217,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 case TRAILERS_LOADER_ID:
                     trailersAdapter.addAll(data);
                     Utilities.setListViewHeightBasedOnChildren(trailersListView);
+
+                    // If onCreateOptionsMenu has already happened, we need to update the share intent now.
+                    if (mShareActionProvider != null) {
+                        shareTrailer();
+                    }
                     break;
 
                 case REVIEWS_LOADER_ID:
@@ -224,6 +233,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     break;
             }
         }
+
+
     }
 
     @Override
@@ -241,6 +252,41 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         Log.i("LoaderUpdate", "Clear Adapter");
 
+    }
+
+    // share trailer button :
+
+
+    private void shareTrailer() {
+        if (trailersAdapter.getCount() > 0) {
+
+            Trailer firstTrailer = trailersAdapter.getItem(0);
+            if (firstTrailer != null) {
+//                Utilities.createShareIntent(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
+
+                mShareActionProvider.setShareIntent(
+                        Utilities.createShareIntent("http://www.youtube.com/watch?v=" + firstTrailer.getKey()));
+
+            }
+        }
+    }
+
+    ;
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.menu_movie_details, menu);
+
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+
+        // Get the provider and hold onto it to set/change the share intent.
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+
+        shareTrailer();
     }
 
 

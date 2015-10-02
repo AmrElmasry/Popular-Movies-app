@@ -32,9 +32,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private static final int MOVIES_LOADER = 0;
 
     private MoviesRecyclerAdapter moviesAdapter;
-    EndlessRecyclerViewAdapter endlessRecyclerViewAdapter;
+    private EndlessRecyclerViewAdapter endlessRecyclerViewAdapter;
     private Integer pageNumber;
-    String showMoviesBy;
+    private String showMoviesBy;
+    private RecyclerView moviesRecyclerView;
+
+    private int mPosition = RecyclerView.NO_POSITION;
+    private static final String SELECTED_KEY = "last_selected_position";
+
 
     public MainActivityFragment() {
     }
@@ -44,8 +49,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        final RecyclerView moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
-        final GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
         moviesRecyclerView.setLayoutManager(manager);
         moviesRecyclerView.setHasFixedSize(true);
 
@@ -67,6 +72,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
                         ((Callback) getActivity())
                                 .onItemSelected(movieApiID, tableName, tableUri);
+                        mPosition = position;
 
                     }
                 };
@@ -77,7 +83,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         pageNumber = 2;
 
-
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            // The listview probably hasn't even been populated yet.  Actually perform the
+            // swapout in onLoadFinished.
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
 //
 
 
@@ -88,6 +98,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.i("ROTATE", "Device rotated");
+
+        if (mPosition != RecyclerView.NO_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -185,6 +199,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             endlessRecyclerViewAdapter.onDataReady(false);
         }
 
+        if (mPosition != RecyclerView.NO_POSITION) {
+//            moviesRecyclerView.scrollToPosition(mPosition);
+            // TODO ADD CUSTOM SMOOTH SCROLL TO LATER
+            moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
+        }
 
     }
 

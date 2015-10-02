@@ -96,12 +96,16 @@ public class Utilities {
         listView.requestLayout();
     }
 
-    public static void shareTrailer(Context context, String trailerUri) {
+    public static Intent createShareIntent(String trailerUri) {
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "I liked this movie, watch trailer: " + trailerUri);
         sendIntent.setType("text/plain");
-        context.startActivity(Intent.createChooser(sendIntent, "Share Movie Trailer"));
+//        sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+
+//        Intent.createChooser(sendIntent, "Share Movie Trailer");
+        return sendIntent;
     }
 }

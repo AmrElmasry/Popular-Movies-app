@@ -2,7 +2,6 @@ package com.moviesapp.amrelmasry.popular_movies_app;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 public class MovieDetails extends AppCompatActivity {
@@ -11,8 +10,8 @@ public class MovieDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         // get intent extras and pass it to fragment
         if (savedInstanceState == null) {
@@ -30,7 +29,7 @@ public class MovieDetails extends AppCompatActivity {
                     .commit();
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

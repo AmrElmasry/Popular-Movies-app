@@ -3,7 +3,10 @@
     android:id="@+id/Movie_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -29,6 +32,7 @@
         </ImageView>
 
         <LinearLayout
+
             android:id="@+id/card_bellow_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
