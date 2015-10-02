@@ -215,6 +215,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         if (data != null) {
             switch (loader.getId()) {
                 case TRAILERS_LOADER_ID:
+                    trailersAdapter.clear();
                     trailersAdapter.addAll(data);
                     Utilities.setListViewHeightBasedOnChildren(trailersListView);
 
@@ -227,6 +228,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 case REVIEWS_LOADER_ID:
                     // TODO HANDLE NO REVIEWS CASE AND NO CONNECTION CASE
                     if (data.size() > 0) {
+                        reviewsAdapter.clear();
                         reviewsAdapter.addAll(data);
                         Utilities.setListViewHeightBasedOnChildren(reviewsListView);
                     }
@@ -253,9 +255,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         Log.i("LoaderUpdate", "Clear Adapter");
 
     }
-
-    // share trailer button :
-
 
     private void shareTrailer() {
         if (trailersAdapter.getCount() > 0) {
