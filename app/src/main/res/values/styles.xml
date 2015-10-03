@@ -25,7 +25,7 @@
 
     <style name="ActionBar.Solid.moviesApp.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/minions_thumbnail</item>
+        <item name="logo">@mipmap/ic_launcher</item>
     </style>
 
 

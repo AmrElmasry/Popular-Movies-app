@@ -52,6 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/place_holer_ouline_heart" />
+        android:src="@drawable/ic_heart_outline_red" />
 
 </FrameLayout>

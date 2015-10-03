@@ -3,7 +3,7 @@
     android:id="@+id/Movie_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-   android:layout_margin="6dp"
+    android:layout_margin="6dp"
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -33,7 +33,7 @@
             android:id="@+id/card_bellow_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightPrimary"
+            android:background="@color/colorAccent"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -48,20 +48,20 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="@color/colorPrimaryText"
                     android:id="@+id/main_movie_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="Mad Max , Fury ROAD"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="15sp" />
 
                 <TextView
-                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/main_movie_vote_average"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="7.5"
+                    android:textColor="@color/colorSecondaryText"
                     android:textSize="11sp" />
 
 

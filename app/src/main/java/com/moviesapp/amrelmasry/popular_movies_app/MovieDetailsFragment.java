@@ -146,7 +146,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
                 //TODO
-                fab.setImageResource(R.drawable.place_holer_filled_heart);
                 if (isFavoriteMovie) {
                     DatabaseUtilities.removeFromDatabase(movieApiId,
                             FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, getActivity());
@@ -188,10 +187,19 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     private void changeFavoriteButtonState() {
+//        Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.favorite);
+////        fab.setAnimation(rotate);
+//
+//        RotateAnimation a = new RotateAnimation(0, 90);
+//        a.setFillAfter(true);
+//        a.setDuration(0);
+//        fab.startAnimation(a);
+//
+//        fab.startAnimation(rotate);
         if (isFavoriteMovie) {
-            fab.setImageResource(R.drawable.place_holer_filled_heart);
+            fab.setImageResource(R.drawable.ic_heart_red_filled);
         } else {
-            fab.setImageResource(R.drawable.place_holer_ouline_heart);
+            fab.setImageResource(R.drawable.ic_heart_outline_red);
 
         }
     }
@@ -354,7 +362,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         Log.i("SHARE", "create optiopns menu");
 
-
         // Retrieve the share menu item
         MenuItem menuItem = menu.findItem(R.id.action_share);
 
@@ -363,10 +370,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         // If onLoadFinished happens before this, we can go ahead and set the share intent now.
-
         shareTrailer();
     }
-
-
 }
 
