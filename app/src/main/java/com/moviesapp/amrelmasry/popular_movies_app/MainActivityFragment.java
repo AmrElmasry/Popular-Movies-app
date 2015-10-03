@@ -21,7 +21,8 @@ import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.Favo
 import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
-import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.rockerhieu.rvadapter.endless.EndlessRecyclerViewAdapter;
 
 /**
@@ -71,8 +72,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         Log.i("MOVIE_CILICK", "api id b " + movieApiID);
 
 
-                        String tableName = Utilities.getTableName(showMoviesBy, getActivity());
-                        Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
+                        String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
+                        Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
                         ((Callback) getActivity())
                                 .onItemSelected(movieApiID, tableName, tableUri);
                         mPosition = position;
@@ -147,8 +148,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private void fetchMovies(Integer page, boolean isInitialFetch) {
 
-        String tableName = Utilities.getTableName(showMoviesBy, getActivity());
-        Uri tableUri = Utilities.getTableUri(showMoviesBy, getActivity());
+        String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
+        Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
 
 
         FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page, isInitialFetch, tableName, tableUri);
@@ -167,7 +168,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
-        showMoviesBy = Utilities.getShowMoviesBy(getActivity());
+        showMoviesBy = GeneralUtilities.getShowMoviesBy(getActivity());
 
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);

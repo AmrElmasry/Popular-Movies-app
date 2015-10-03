@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder;
-import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,12 +51,12 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
     @Override
     public void onBindViewHolder(SimpleViewHolder holder, Cursor cursor) {
 
-//        Log.i("MOVIE_CILICK", "Movie Name " + cursor.getString(Utilities.COL_TITLE));
+//        Log.i("MOVIE_CILICK", "Movie Name " + cursor.getString(GeneralUtilities.COL_TITLE));
 
-        String posterPath = cursor.getString(Utilities.COL_POSTER_PATH);
+        String posterPath = cursor.getString(DatabaseUtilities.COL_POSTER_PATH);
 
-        holder.movieVoteAverage.setText(cursor.getString(Utilities.COL_VOTE_AVERAGE));
-        holder.movieTitle.setText(cursor.getString(Utilities.COL_TITLE));
+        holder.movieVoteAverage.setText(cursor.getString(DatabaseUtilities.COL_VOTE_AVERAGE));
+        holder.movieTitle.setText(cursor.getString(DatabaseUtilities.COL_TITLE));
 
 
         Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(holder.moviePoster);
@@ -94,7 +94,7 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
             c.moveToPosition(-1);
             while (c.moveToNext()) {
-                moviesApiIDs.add(c.getString(Utilities.COL_API_ID));
+                moviesApiIDs.add(c.getString(DatabaseUtilities.COL_API_ID));
             }
 
 //            for (int i = 0; i < c.getCount(); i++) {

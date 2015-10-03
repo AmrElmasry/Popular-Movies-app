@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback {
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // TODO CHANGE LATER
 //        setSupportActionBar(toolbar);
 
-        mShowMoviesby = Utilities.getShowMoviesBy(this);
+        mShowMoviesby = GeneralUtilities.getShowMoviesBy(this);
 
 
     }
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     protected void onResume() {
         super.onResume();
 
-        String showBy = Utilities.getShowMoviesBy(this);
+        String showBy = GeneralUtilities.getShowMoviesBy(this);
 
 
         if (showBy != null && !showBy.equals(mShowMoviesby)) {

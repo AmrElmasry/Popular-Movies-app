@@ -31,7 +31,7 @@ import com.moviesapp.amrelmasry.popular_movies_app.loaders.TrailersLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
-import com.moviesapp.amrelmasry.popular_movies_app.utilities.Utilities;
+import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -109,11 +109,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             Cursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, tableName, Uri.parse(tableUri), getActivity());
 
-            movieTitle = movieCursor.getString(Utilities.COL_TITLE);
-            movieOverview = movieCursor.getString(Utilities.COL_OVERVIEW);
-            movieVoteAverage = movieCursor.getString(Utilities.COL_VOTE_AVERAGE);
-            movieReleaseDate = movieCursor.getString(Utilities.COL_RELEASE_DATE);
-            moviePosterPath = movieCursor.getString(Utilities.COL_POSTER_PATH);
+            movieTitle = movieCursor.getString(DatabaseUtilities.COL_TITLE);
+            movieOverview = movieCursor.getString(DatabaseUtilities.COL_OVERVIEW);
+            movieVoteAverage = movieCursor.getString(DatabaseUtilities.COL_VOTE_AVERAGE);
+            movieReleaseDate = movieCursor.getString(DatabaseUtilities.COL_RELEASE_DATE);
+            moviePosterPath = movieCursor.getString(DatabaseUtilities.COL_POSTER_PATH);
 
 
 //            // TODO WHICH IMG SIZE
@@ -265,7 +265,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                         noTrailers.setVisibility(View.GONE);
                         trailersAdapter.clear();
                         trailersAdapter.addAll(data);
-                        Utilities.setListViewHeightBasedOnChildren(trailersListView);
+                        GeneralUtilities.setListViewHeightBasedOnChildren(trailersListView);
                         // If onCreateOptionsMenu has already happened, we need to update the share intent now.
                     } else {
                         // no trailers
@@ -296,7 +296,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                         noReviews.setVisibility(View.GONE);
                         reviewsAdapter.clear();
                         reviewsAdapter.addAll(data);
-                        Utilities.setListViewHeightBasedOnChildren(reviewsListView);
+                        GeneralUtilities.setListViewHeightBasedOnChildren(reviewsListView);
                     } else {
                         // no reviews
                         noReviews.setVisibility(View.VISIBLE);
@@ -339,10 +339,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             Trailer firstTrailer = trailersAdapter.getItem(0);
             if (firstTrailer != null) {
-//                Utilities.createShareIntent(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
+//                GeneralUtilities.createShareIntent(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
                 Log.i("SHARE", "Trailer 1 exists , update my action provider");
                 mShareActionProvider.setShareIntent(
-                        Utilities.createShareIntent("http://www.youtube.com/watch?v=" + firstTrailer.getKey()));
+                        GeneralUtilities.createShareIntent("http://www.youtube.com/watch?v=" + firstTrailer.getKey()));
 
             }
         } else {
