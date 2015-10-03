@@ -50,7 +50,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
-        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+
+        int spanCount = getActivity().getResources().getInteger(R.integer.grid_layout_span_count);
+
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), spanCount);
         moviesRecyclerView.setLayoutManager(manager);
         moviesRecyclerView.setHasFixedSize(true);
 

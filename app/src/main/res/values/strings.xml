@@ -2,7 +2,7 @@
     <string name="app_name">Popular-Movies-app</string>
     <string name="action_settings">Settings</string>
 
-    <string name="title_activity_movie_details">MovieDetails</string>
+    <string name="title_activity_movie_details">Movie Details</string>
 
     <string name="movie_api_id">MovieAPIID</string>
     <string name="table_name">TableName</string>
