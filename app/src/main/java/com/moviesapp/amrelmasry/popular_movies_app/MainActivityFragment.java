@@ -129,12 +129,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     }
 
-
     @Override
-    public void onStart() {
-        super.onStart();
-
-
+    public void onResume() {
+        super.onResume();
         pageNumber = 2;
 
         Log.i("First_Load", "on start - page number =  " + pageNumber);
@@ -145,8 +142,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             fetchMovies(1, true);
         }
-
-
     }
 
 
@@ -167,7 +162,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         Log.i("First_Load", "show by changed - page number is   " + pageNumber);
 
         showMoviesBy = updatedShowBy;
-        fetchMovies(1, true);
+
+        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
+
+            fetchMovies(1, true);
+        }
 
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
 
