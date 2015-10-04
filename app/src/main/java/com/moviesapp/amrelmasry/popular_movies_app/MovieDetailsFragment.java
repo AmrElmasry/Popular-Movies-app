@@ -123,7 +123,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             movieCursor.close();
 
 
-
             final String BASE_MOVIE_IMAGE_URL = "http://image.tmdb.org/t/p";
 
             Uri uri = Uri.parse(BASE_MOVIE_IMAGE_URL)
@@ -365,8 +364,17 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-
     ;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

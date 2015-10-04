@@ -82,7 +82,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
 
 
-        pageNumber = 2;
+//        if (savedInstanceState == null) {
+//            pageNumber = 2;
+//        }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             // The listview probably hasn't even been populated yet.  Actually perform the
@@ -129,17 +131,28 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        Log.i("Finally", "on start reached");
+
+
+    }
+
+    @Override
     public void onResume() {
+
         super.onResume();
-        pageNumber = 2;
+
+        getLoaderManager().initLoader(MOVIES_LOADER, null, this);
+
 
         Log.i("First_Load", "on start - page number =  " + pageNumber);
 
-        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
 
-            Log.i("First_Load", "on start - not favorites - get page 1  ");
-
-            fetchMovies(1, true);
+        if (mPosition != RecyclerView.NO_POSITION) {
+//            moviesRecyclerView.scrollToPosition(mPosition);
+            moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
         }
     }
 
@@ -149,7 +162,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
 
-        Log.i("First_Load", "Fetching page" + page + "From table : " + tableName);
+        Log.i("Really", "Fetching page" + page + "From table : " + tableName);
 
 
         FetchMoviesTask FetchMoviesTask = new FetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
@@ -161,10 +174,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         Log.i("First_Load", "show by changed - page number is   " + pageNumber);
 
         showMoviesBy = updatedShowBy;
+        mPosition = RecyclerView.NO_POSITION;
 
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
 
             fetchMovies(1, true);
+            pageNumber = 2;
         }
 
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
@@ -175,10 +190,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
+        Log.i("Finally", "Activity created");
+
         showMoviesBy = GeneralUtilities.getShowMoviesBy(getActivity());
 
-        getLoaderManager().initLoader(MOVIES_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
+
+
+        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites)) && savedInstanceState == null) {
+
+            Log.i("First_Load", "on start - not favorites - get page 1  ");
+            pageNumber = 2;
+            fetchMovies(1, true);
+
+        }
     }
 
     @Override
@@ -202,6 +227,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
+        Log.i("Finally", "Load finished");
+
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
             moviesAdapter.swapCursor(cursor);
             endlessRecyclerViewAdapter.onDataReady(true);
@@ -210,10 +237,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             endlessRecyclerViewAdapter.onDataReady(false);
         }
 
-        if (mPosition != RecyclerView.NO_POSITION) {
-//            moviesRecyclerView.scrollToPosition(mPosition);
-            moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
-        }
+//        if (mPosition != RecyclerView.NO_POSITION) {
+////            moviesRecyclerView.scrollToPosition(mPosition);
+//            moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
+//        }
 
     }
 

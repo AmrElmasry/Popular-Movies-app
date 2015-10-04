@@ -161,7 +161,8 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
         int count = cursor.getCount();
 
-        Log.i("CURSOR", "First Cursor size = " + String.valueOf(count));
+
+        Log.i("Really", "First Cursor size = " + String.valueOf(count));
 
 
         int rowsToDel = count - FIRST_PAGE_MOVIES_COUNT;
@@ -173,17 +174,14 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         int deletedRows = mContext.getContentResolver().delete(mContentUri,
                 whereClause, null);
 
-        Log.i("CURSOR", "Deleted Rows = " + String.valueOf(deletedRows));
+        Log.i("Really", "Deleted Rows = " + String.valueOf(deletedRows));
 
-
-//        PopularMoviesSelection where3 = new PopularMoviesSelection();
-//        PopularMoviesCursor cursor2 = where3.query(mContext);
 
         Cursor cursor2 = mContext.getContentResolver().query(mContentUri, null, null, null, null);
 
         int count2 = cursor2.getCount();
 
-        Log.i("CURSOR", "Second Cursor size = " + String.valueOf(count2));
+        Log.i("Really", "Second Cursor size = " + String.valueOf(count2));
 
 
     }
