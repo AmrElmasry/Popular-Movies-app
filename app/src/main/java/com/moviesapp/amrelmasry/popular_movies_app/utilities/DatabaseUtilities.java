@@ -5,10 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesContentValues;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesContentValues;
 
 /**
  * Created by AmrELmasry on 9/27/2015.
@@ -24,9 +22,9 @@ public class DatabaseUtilities {
     public static final int COL_POSTER_PATH = 5;
     public static final int COL_VOTE_AVERAGE = 6;
 
-    public static void insertIntoDatabase(String api_id, String title, String overview, String release_date, String vote_average, String poster_path, Uri ContentUri, Context context) {
+    public static void insertIntoDatabase(String api_id, String title, String overview, String release_date, String vote_average, String poster_path, Uri contentUri, Context context) {
 
-        PopularMoviesContentValues contentValues = new PopularMoviesContentValues(); // TODO USE MORE GENERIC OR USE BULD INSERT WITH DEFAULT CONTENTVALUES
+        MoviesContentValues contentValues = new MoviesContentValues(contentUri); // TODO USE MORE GENERIC OR USE BULk INSERT WITH DEFAULT CONTENTVALUES
 
         contentValues.putApiId(api_id)
                 .putTitle(title)
@@ -35,7 +33,7 @@ public class DatabaseUtilities {
                 .putVoteAverage(vote_average)
                 .putPosterPath(poster_path);
 
-        context.getContentResolver().insert(ContentUri, contentValues.values());
+        context.getContentResolver().insert(contentUri, contentValues.values());
 
     }
 
@@ -72,7 +70,7 @@ public class DatabaseUtilities {
     public static boolean isFavoriteMovie(String api_id, Context context) {
 
         try {
-            Cursor cursor = getMovieFromDB(api_id, FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, context);
+            Cursor cursor = getMovieFromDB(api_id, MoviesColumns.FAVORITES_TABLE_NAME, MoviesColumns.FAVORITES_CONTENT_URI, context);
 
             if (cursor != null && cursor.getCount() > 0) {
                 return true;
@@ -93,14 +91,14 @@ public class DatabaseUtilities {
         Uri tableUri = null;
         if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_popular))) {
 
-            tableUri = PopularMoviesColumns.CONTENT_URI;
+            tableUri = MoviesColumns.POPULAR_CONTENT_URI;
 
         } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_most_rated))) {
 
-            tableUri = MostRatedMoviesColumns.CONTENT_URI;
+            tableUri = MoviesColumns.MOST_RATED_CONTENT_URI;
         } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_favorites))) {
 
-            tableUri = FavoritesMoviesColumns.CONTENT_URI;
+            tableUri = MoviesColumns.FAVORITES_CONTENT_URI;
         }
 
         return tableUri;
@@ -111,14 +109,14 @@ public class DatabaseUtilities {
         String tableName = null;
         if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_popular))) {
 
-            tableName = PopularMoviesColumns.TABLE_NAME;
+            tableName = MoviesColumns.POPULAR_TABLE_NAME;
 
         } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_most_rated))) {
 
-            tableName = MostRatedMoviesColumns.TABLE_NAME;
+            tableName = MoviesColumns.MOST_RATED_TABLE_NAME;
         } else if (showMoviesBy.equals(context.getString(R.string.pref_sort_by_favorites))) {
 
-            tableName = FavoritesMoviesColumns.TABLE_NAME;
+            tableName = MoviesColumns.FAVORITES_TABLE_NAME;
         }
 
 

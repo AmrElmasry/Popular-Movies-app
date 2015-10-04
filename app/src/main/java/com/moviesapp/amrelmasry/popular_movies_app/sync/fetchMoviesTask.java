@@ -8,8 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.R;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.ConnectionUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 
@@ -18,7 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
+public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
     private final Integer page;
@@ -28,7 +27,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
     String mtableName;
     Uri mContentUri;
 
-    public FetchPopularMovies(Context mContext, Integer page, boolean isInitialFetch, String tableName, Uri contentUri) {
+    public fetchMoviesTask(Context mContext, Integer page, boolean isInitialFetch, String tableName, Uri contentUri) {
         this.mContext = mContext;
         this.page = page;
         this.isInitialFetch = isInitialFetch;
@@ -41,7 +40,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
 
         // TODO BUILD URI PARAMS IN DETAILS
-        if (mtableName.equals(PopularMoviesColumns.TABLE_NAME)) {
+        if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             final String BASE_URL =
                     "http://api.themoviedb.org/3/discover/movie?";
 
@@ -67,7 +66,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
                     .build();
 
             return uri;
-        } else if (mtableName.equals(MostRatedMoviesColumns.TABLE_NAME)) {
+        } else if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
 
             final String BASE_URL =
                     "http://api.themoviedb.org/3/movie/top_rated?";
@@ -105,11 +104,11 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
                 if (sameLastJSON(JSONstr)) {
 
                     deleteOldDataOnDB();
-                    Log.i("CURSOR", "CASE = 1 ");
+                    Log.i("First_Load", "CASE = 1 ");
 
 
                 } else {
-                    Log.i("CURSOR", "CASE = 2 ");
+                    Log.i("First_Load", "CASE = 2 ");
 
                     Log.i("CURSOR", "SIZE of RETREIVED JSON  " + JSONstr.length());
 
@@ -122,7 +121,7 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
             } else {
                 // scroll fetch
-                Log.i("CURSOR", "CASE = 3 ");
+                Log.i("First_Load", "CASE = 3 ");
 
                 insertMoviesIntoDB(JSONstr);
 
@@ -142,17 +141,6 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
             for (int i = 0; i < moviesArray.length(); i++) {
 
                 JSONObject movieObj = moviesArray.getJSONObject(i);
-
-//                PopularMoviesContentValues contentValues = new PopularMoviesContentValues(); // TODO USE MORE GENERIC OR USE BULD INSERT WITH DEFAULT CONTENTVALUES
-//
-//                contentValues.putApiId(movieObj.getString("id"))
-//                        .putTitle(movieObj.getString("title"))
-//                        .putOverview(movieObj.getString("overview"))
-//                        .putReleaseDate(movieObj.getString("release_date"))
-//                        .putVoteAverage(movieObj.getString("vote_average"))
-//                        .putPosterPath(movieObj.getString("poster_path"));
-//
-//                mContext.getContentResolver().insert(mContentUri, contentValues.values());
 
 
                 DatabaseUtilities.insertIntoDatabase(movieObj.getString("id"),
@@ -222,21 +210,35 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
     private boolean sameLastJSON(String JSONStr) {
 
 
+        Log.i("First_Load", "Comparing JSON str : ");
+        Log.i("First_Load", "Table is : " + mtableName);
+
+
         preferences = mContext.getSharedPreferences("JSON", 0);
 
-        String lastJSONstr = null;
-        if (mtableName.equals(PopularMoviesColumns.TABLE_NAME)) {
-            lastJSONstr = String.valueOf(preferences.getString(mContext.getString(R.string.last_popular_movies_json_str), mContext.getString(R.string.last_json_str_default)));
 
-        } else if (mtableName.equals(MostRatedMoviesColumns.TABLE_NAME)) {
-            lastJSONstr = String.valueOf(preferences.getString(mContext.getString(R.string.last_highest_movies_rated_json_str), mContext.getString(R.string.last_json_str_default)));
+        String lastJSONstr = null;
+        if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
+            Log.i("First_Load", "From Table Popular");
+            lastJSONstr = preferences.getString(mContext.getString(R.string.last_popular_movies_json_str), mContext.getString(R.string.last_json_str_default));
+
+
+        }
+        if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
+            Log.i("First_Load", "From Table Most Rated");
+            lastJSONstr = preferences.getString(mContext.getString(R.string.last_highest_movies_rated_json_str), mContext.getString(R.string.last_json_str_default));
 
         }
 
+
         Log.i("CURSOR", "SAME LAST JSON ? = " + (lastJSONstr.equals(JSONStr)));
 
+        Log.i("First_Load", "Result is " + JSONStr.equals(lastJSONstr));
+        Log.i("First_Load", "First saved JSON form  IS " + lastJSONstr);
+        Log.i("First_Load", "Second  JSON form API  IS " + JSONStr);
 
-        return (lastJSONstr.equals(JSONStr));
+
+        return (JSONStr.equals(lastJSONstr));
     }
 
     private void saveLastJSONString(String JSONStr) {
@@ -246,9 +248,10 @@ public class FetchPopularMovies extends AsyncTask<Void, Void, Void> {
 
         Log.i("CURSOR", "Size BEFORE Saving " + JSONStr.length() + " - Saved Succesfully");
 
-        if (mtableName.equals(PopularMoviesColumns.TABLE_NAME)) {
+        if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             editor.putString(mContext.getString(R.string.last_popular_movies_json_str), JSONStr);
-        } else if (mtableName.equals(MostRatedMoviesColumns.TABLE_NAME)) {
+        }
+        if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
             editor.putString(mContext.getString(R.string.last_highest_movies_rated_json_str), JSONStr);
         }
         Log.i("CURSOR", "Saved Succesfully");

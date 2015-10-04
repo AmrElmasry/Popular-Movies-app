@@ -29,7 +29,7 @@ import com.moviesapp.amrelmasry.popular_movies_app.adapters.TrailersAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.ReviewsLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.TrailersLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.squareup.picasso.Picasso;
@@ -126,7 +126,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         }
 
-        if (tableUri != null && tableUri.equals(FavoritesMoviesColumns.CONTENT_URI.toString())) {
+        if (tableUri != null && tableUri.equals(MoviesColumns.FAVORITES_CONTENT_URI.toString())) {
             // favorite movie
             isFavoriteMovie = true;
         } else {
@@ -148,13 +148,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 //TODO
                 if (isFavoriteMovie) {
                     DatabaseUtilities.removeFromDatabase(movieApiId,
-                            FavoritesMoviesColumns.TABLE_NAME, FavoritesMoviesColumns.CONTENT_URI, getActivity());
+                            MoviesColumns.FAVORITES_TABLE_NAME, MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
                     isFavoriteMovie = false;
                     changeFavoriteButtonState();
                 } else {
                     DatabaseUtilities.insertIntoDatabase(movieApiId, movieTitle,
                             movieOverview, movieReleaseDate, movieVoteAverage,
-                            moviePosterPath, FavoritesMoviesColumns.CONTENT_URI, getActivity());
+                            moviePosterPath, MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
                     isFavoriteMovie = true;
                     changeFavoriteButtonState();
                 }

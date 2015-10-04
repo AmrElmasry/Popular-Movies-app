@@ -1,9 +1,7 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.helper;
 
-import java.util.Date;
-
-import android.content.Context;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,21 +9,29 @@ import android.support.annotation.Nullable;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.AbstractContentValues;
 
 /**
- * Content values wrapper for the {@code most_rated_movies} table.
+ * Created by AmrELmasry on 10/3/2015.
  */
-public class MostRatedMoviesContentValues extends AbstractContentValues {
+public class MoviesContentValues extends AbstractContentValues {
+
+    private Uri contentURI;
+
+    public MoviesContentValues(Uri contentURI) {
+        this.contentURI = contentURI;
+    }
+
     @Override
     public Uri uri() {
-        return MostRatedMoviesColumns.CONTENT_URI;
+        return contentURI;
     }
+
 
     /**
      * Update row(s) using the values stored by this object and the given selection.
      *
      * @param contentResolver The content resolver to use.
-     * @param where The selection to use (can be {@code null}).
+     * @param where           The selection to use (can be {@code null}).
      */
-    public int update(ContentResolver contentResolver, @Nullable MostRatedMoviesSelection where) {
+    public int update(ContentResolver contentResolver, @Nullable MoviesSelection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
@@ -33,18 +39,18 @@ public class MostRatedMoviesContentValues extends AbstractContentValues {
      * Update row(s) using the values stored by this object and the given selection.
      *
      * @param contentResolver The content resolver to use.
-     * @param where The selection to use (can be {@code null}).
+     * @param where           The selection to use (can be {@code null}).
      */
-    public int update(Context context, @Nullable MostRatedMoviesSelection where) {
+    public int update(Context context, @Nullable MoviesSelection where) {
         return context.getContentResolver().update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
     /**
      * Movie tilte
      */
-    public MostRatedMoviesContentValues putTitle(@NonNull String value) {
+    public MoviesContentValues putTitle(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("title must not be null");
-        mContentValues.put(MostRatedMoviesColumns.TITLE, value);
+        mContentValues.put(MoviesColumns.TITLE, value);
         return this;
     }
 
@@ -52,9 +58,9 @@ public class MostRatedMoviesContentValues extends AbstractContentValues {
     /**
      * Movie ID in the API
      */
-    public MostRatedMoviesContentValues putApiId(@NonNull String value) {
+    public MoviesContentValues putApiId(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("apiId must not be null");
-        mContentValues.put(MostRatedMoviesColumns.API_ID, value);
+        mContentValues.put(MoviesColumns.API_ID, value);
         return this;
     }
 
@@ -62,9 +68,9 @@ public class MostRatedMoviesContentValues extends AbstractContentValues {
     /**
      * Movie plot
      */
-    public MostRatedMoviesContentValues putOverview(@NonNull String value) {
+    public MoviesContentValues putOverview(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("overview must not be null");
-        mContentValues.put(MostRatedMoviesColumns.OVERVIEW, value);
+        mContentValues.put(MoviesColumns.OVERVIEW, value);
         return this;
     }
 
@@ -72,9 +78,9 @@ public class MostRatedMoviesContentValues extends AbstractContentValues {
     /**
      * Movie release date
      */
-    public MostRatedMoviesContentValues putReleaseDate(@NonNull String value) {
+    public MoviesContentValues putReleaseDate(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("releaseDate must not be null");
-        mContentValues.put(MostRatedMoviesColumns.RELEASE_DATE, value);
+        mContentValues.put(MoviesColumns.RELEASE_DATE, value);
         return this;
     }
 
@@ -82,9 +88,9 @@ public class MostRatedMoviesContentValues extends AbstractContentValues {
     /**
      * Movie poster path
      */
-    public MostRatedMoviesContentValues putPosterPath(@NonNull String value) {
+    public MoviesContentValues putPosterPath(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("posterPath must not be null");
-        mContentValues.put(MostRatedMoviesColumns.POSTER_PATH, value);
+        mContentValues.put(MoviesColumns.POSTER_PATH, value);
         return this;
     }
 
@@ -92,9 +98,9 @@ public class MostRatedMoviesContentValues extends AbstractContentValues {
     /**
      * Movie vote average
      */
-    public MostRatedMoviesContentValues putVoteAverage(@NonNull String value) {
+    public MoviesContentValues putVoteAverage(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("voteAverage must not be null");
-        mContentValues.put(MostRatedMoviesColumns.VOTE_AVERAGE, value);
+        mContentValues.put(MoviesColumns.VOTE_AVERAGE, value);
         return this;
     }
 

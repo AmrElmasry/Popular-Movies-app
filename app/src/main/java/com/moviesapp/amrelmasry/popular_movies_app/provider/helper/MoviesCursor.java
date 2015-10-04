@@ -1,18 +1,15 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies;
-
-import java.util.Date;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.helper;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.AbstractCursor;
 
 /**
- * Cursor wrapper for the {@code favorites_movies} table.
+ * Created by AmrELmasry on 10/3/2015.
  */
-public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMoviesModel {
-    public FavoritesMoviesCursor(Cursor cursor) {
+public class MoviesCursor extends AbstractCursor implements MovieModel {
+    public MoviesCursor(Cursor cursor) {
         super(cursor);
     }
 
@@ -20,7 +17,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      * Primary key.
      */
     public long getId() {
-        Long res = getLongOrNull(FavoritesMoviesColumns._ID);
+        Long res = getLongOrNull(MoviesColumns._ID);
         if (res == null)
             throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -32,7 +29,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      */
     @NonNull
     public String getTitle() {
-        String res = getStringOrNull(FavoritesMoviesColumns.TITLE);
+        String res = getStringOrNull(MoviesColumns.TITLE);
         if (res == null)
             throw new NullPointerException("The value of 'title' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -44,7 +41,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      */
     @NonNull
     public String getApiId() {
-        String res = getStringOrNull(FavoritesMoviesColumns.API_ID);
+        String res = getStringOrNull(MoviesColumns.API_ID);
         if (res == null)
             throw new NullPointerException("The value of 'api_id' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -56,7 +53,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      */
     @NonNull
     public String getOverview() {
-        String res = getStringOrNull(FavoritesMoviesColumns.OVERVIEW);
+        String res = getStringOrNull(MoviesColumns.OVERVIEW);
         if (res == null)
             throw new NullPointerException("The value of 'overview' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -68,7 +65,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      */
     @NonNull
     public String getReleaseDate() {
-        String res = getStringOrNull(FavoritesMoviesColumns.RELEASE_DATE);
+        String res = getStringOrNull(MoviesColumns.RELEASE_DATE);
         if (res == null)
             throw new NullPointerException("The value of 'release_date' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -80,7 +77,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      */
     @NonNull
     public String getPosterPath() {
-        String res = getStringOrNull(FavoritesMoviesColumns.POSTER_PATH);
+        String res = getStringOrNull(MoviesColumns.POSTER_PATH);
         if (res == null)
             throw new NullPointerException("The value of 'poster_path' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -92,7 +89,7 @@ public class FavoritesMoviesCursor extends AbstractCursor implements FavoritesMo
      */
     @NonNull
     public String getVoteAverage() {
-        String res = getStringOrNull(FavoritesMoviesColumns.VOTE_AVERAGE);
+        String res = getStringOrNull(MoviesColumns.VOTE_AVERAGE);
         if (res == null)
             throw new NullPointerException("The value of 'vote_average' in the database was null, which is not allowed according to the model definition");
         return res;

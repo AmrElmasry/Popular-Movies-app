@@ -1,19 +1,25 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.helper;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.MoviesProvider;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
 
 /**
- * popular movies.
+ * Created by AmrELmasry on 10/3/2015.
  */
-public class MostRatedMoviesColumns implements BaseColumns {
-    public static final String TABLE_NAME = "most_rated_movies";
-    public static final Uri CONTENT_URI = Uri.parse(MoviesProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
+public class MoviesColumns implements BaseColumns {
+
+    public static final String FAVORITES_TABLE_NAME = "favorites_movies";
+    public static final Uri FAVORITES_CONTENT_URI = Uri.parse(MoviesProvider.CONTENT_URI_BASE + "/" + FAVORITES_TABLE_NAME);
+
+
+    public static final String POPULAR_TABLE_NAME = "popular_movies";
+    public static final Uri POPULAR_CONTENT_URI = Uri.parse(MoviesProvider.CONTENT_URI_BASE + "/" + POPULAR_TABLE_NAME);
+
+
+    public static final String MOST_RATED_TABLE_NAME = "most_rated_movies";
+    public static final Uri MOST_RATED_CONTENT_URI = Uri.parse(MoviesProvider.CONTENT_URI_BASE + "/" + MOST_RATED_TABLE_NAME);
 
     /**
      * Primary key.
@@ -51,10 +57,13 @@ public class MostRatedMoviesColumns implements BaseColumns {
     public static final String VOTE_AVERAGE = "vote_average";
 
 
-    public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
+    public static final String FAVORITES_DEFAULT_ORDER = FAVORITES_TABLE_NAME + "." + _ID;
+    public static final String POPULAR_DEFAULT_ORDER = POPULAR_TABLE_NAME + "." + _ID;
+    public static final String MOST_RATED_DEFAULT_ORDER = MOST_RATED_TABLE_NAME + "." + _ID;
+
 
     // @formatter:off
-    public static final String[] ALL_COLUMNS = new String[] {
+    public static final String[] ALL_COLUMNS = new String[]{
             _ID,
             TITLE,
             API_ID,

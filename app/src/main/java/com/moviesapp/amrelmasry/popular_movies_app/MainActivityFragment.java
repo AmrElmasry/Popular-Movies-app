@@ -17,10 +17,8 @@ import android.widget.Toast;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchPopularMovies;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.sync.fetchMoviesTask;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.rockerhieu.rvadapter.endless.EndlessRecyclerViewAdapter;
@@ -116,6 +114,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
 
+
             // scroll to load more
             fetchMovies(pageNumber, false);
             pageNumber++;
@@ -138,7 +137,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         pageNumber = 2;
 
+        Log.i("First_Load", "on start - page number =  " + pageNumber);
+
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
+
+            Log.i("First_Load", "on start - not favorites - get page 1  ");
+
             fetchMovies(1, true);
         }
 
@@ -151,15 +155,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
 
+        Log.i("First_Load", "Fetching page" + page + "From table : " + tableName);
 
-        FetchPopularMovies fetchPopularMovies = new FetchPopularMovies(getActivity(), page, isInitialFetch, tableName, tableUri);
-        fetchPopularMovies.execute();
+
+        fetchMoviesTask fetchMoviesTask = new fetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
+        fetchMoviesTask.execute();
     }
 
     void onShowByChanged(String updatedShowBy) {
 
+        Log.i("First_Load", "show by changed - page number is   " + pageNumber);
 
         showMoviesBy = updatedShowBy;
+        fetchMovies(1, true);
+
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
 
     }
@@ -179,13 +188,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
         if (showMoviesBy.equals(getString(R.string.pref_sort_by_popular))) {
-            return new CursorLoader(getActivity(), PopularMoviesColumns.CONTENT_URI, null, null, null, null);
+            return new CursorLoader(getActivity(), MoviesColumns.POPULAR_CONTENT_URI, null, null, null, null);
 
         } else if (showMoviesBy.equals(getString(R.string.pref_sort_by_most_rated))) {
-            return new CursorLoader(getActivity(), MostRatedMoviesColumns.CONTENT_URI, null, null, null, null);
+            return new CursorLoader(getActivity(), MoviesColumns.MOST_RATED_CONTENT_URI, null, null, null, null);
 
         } else if (showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
-            return new CursorLoader(getActivity(), FavoritesMoviesColumns.CONTENT_URI, null, null, null, null);
+            return new CursorLoader(getActivity(), MoviesColumns.FAVORITES_CONTENT_URI, null, null, null, null);
 
         }
 

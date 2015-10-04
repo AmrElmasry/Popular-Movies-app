@@ -1,16 +1,13 @@
-package com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies;
+package com.moviesapp.amrelmasry.popular_movies_app.provider.helper;
+
+import android.support.annotation.NonNull;
 
 import com.moviesapp.amrelmasry.popular_movies_app.provider.base.BaseModel;
 
-import java.util.Date;
-
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 /**
- * popular movies.
+ * Created by AmrELmasry on 10/3/2015.
  */
-public interface MostRatedMoviesModel extends BaseModel {
+public interface MovieModel extends BaseModel {
 
     /**
      * Movie tilte

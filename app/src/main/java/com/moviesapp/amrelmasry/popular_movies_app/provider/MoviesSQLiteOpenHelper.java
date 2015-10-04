@@ -10,9 +10,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.moviesapp.amrelmasry.popular_movies_app.BuildConfig;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.favoritesmovies.FavoritesMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.mostratedmovies.MostRatedMoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.provider.popularmovies.PopularMoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
 
 public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = MoviesSQLiteOpenHelper.class.getSimpleName();
@@ -25,36 +23,36 @@ public class MoviesSQLiteOpenHelper extends SQLiteOpenHelper {
 
     // @formatter:off
     public static final String SQL_CREATE_TABLE_FAVORITES_MOVIES = "CREATE TABLE IF NOT EXISTS "
-            + FavoritesMoviesColumns.TABLE_NAME + " ( "
-            + FavoritesMoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + FavoritesMoviesColumns.TITLE + " TEXT NOT NULL, "
-            + FavoritesMoviesColumns.API_ID + " TEXT NOT NULL, "
-            + FavoritesMoviesColumns.OVERVIEW + " TEXT NOT NULL, "
-            + FavoritesMoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
-            + FavoritesMoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
-            + FavoritesMoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
+            + MoviesColumns.FAVORITES_TABLE_NAME + " ( "
+            + MoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + MoviesColumns.TITLE + " TEXT NOT NULL, "
+            + MoviesColumns.API_ID + " TEXT NOT NULL, "
+            + MoviesColumns.OVERVIEW + " TEXT NOT NULL, "
+            + MoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
+            + MoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
+            + MoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
             + " );";
 
     public static final String SQL_CREATE_TABLE_MOST_RATED_MOVIES = "CREATE TABLE IF NOT EXISTS "
-            + MostRatedMoviesColumns.TABLE_NAME + " ( "
-            + MostRatedMoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + MostRatedMoviesColumns.TITLE + " TEXT NOT NULL, "
-            + MostRatedMoviesColumns.API_ID + " TEXT NOT NULL, "
-            + MostRatedMoviesColumns.OVERVIEW + " TEXT NOT NULL, "
-            + MostRatedMoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
-            + MostRatedMoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
-            + MostRatedMoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
+            + MoviesColumns.MOST_RATED_TABLE_NAME + " ( "
+            + MoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + MoviesColumns.TITLE + " TEXT NOT NULL, "
+            + MoviesColumns.API_ID + " TEXT NOT NULL, "
+            + MoviesColumns.OVERVIEW + " TEXT NOT NULL, "
+            + MoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
+            + MoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
+            + MoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
             + " );";
 
     public static final String SQL_CREATE_TABLE_POPULAR_MOVIES = "CREATE TABLE IF NOT EXISTS "
-            + PopularMoviesColumns.TABLE_NAME + " ( "
-            + PopularMoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + PopularMoviesColumns.TITLE + " TEXT NOT NULL, "
-            + PopularMoviesColumns.API_ID + " TEXT NOT NULL, "
-            + PopularMoviesColumns.OVERVIEW + " TEXT NOT NULL, "
-            + PopularMoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
-            + PopularMoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
-            + PopularMoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
+            + MoviesColumns.POPULAR_TABLE_NAME + " ( "
+            + MoviesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + MoviesColumns.TITLE + " TEXT NOT NULL, "
+            + MoviesColumns.API_ID + " TEXT NOT NULL, "
+            + MoviesColumns.OVERVIEW + " TEXT NOT NULL, "
+            + MoviesColumns.RELEASE_DATE + " TEXT NOT NULL, "
+            + MoviesColumns.POSTER_PATH + " TEXT NOT NULL, "
+            + MoviesColumns.VOTE_AVERAGE + " TEXT NOT NULL "
             + " );";
 
     // @formatter:on
