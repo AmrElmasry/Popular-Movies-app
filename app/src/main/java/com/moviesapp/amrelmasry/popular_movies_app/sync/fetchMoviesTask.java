@@ -210,49 +210,76 @@ public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private boolean sameLastJSON(String JSONStr) {
 
 
-        Log.i("First_Load", "Comparing JSON str : ");
-        Log.i("First_Load", "Table is : " + mtableName);
+        Log.i("COMPARE", "Comparing JSON str : ");
+        Log.i("COMPARE", "Table is : " + mtableName);
 
 
-        preferences = mContext.getSharedPreferences("JSON", 0);
+        preferences = mContext.getSharedPreferences("JSON", Context.MODE_PRIVATE);
 
 
-        String lastJSONstr = null;
+        String lastJSONstr = new String();
         if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
-            Log.i("First_Load", "From Table Popular");
-            lastJSONstr = preferences.getString(mContext.getString(R.string.last_popular_movies_json_str), mContext.getString(R.string.last_json_str_default));
+            Log.i("JUDGE", "last json saved for Table Popular");
+            lastJSONstr = preferences.getString(mContext.getString(R.string.last_popular_movies_json_str), mContext.getString(R.string.last_json_str_default)).trim();
 
 
         }
         if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
-            Log.i("First_Load", "From Table Most Rated");
-            lastJSONstr = preferences.getString(mContext.getString(R.string.last_highest_movies_rated_json_str), mContext.getString(R.string.last_json_str_default));
+            Log.i("JUDGE", "last json saved for From Table Most Rated");
+            lastJSONstr = preferences.getString(mContext.getString(R.string.last_highest_movies_rated_json_str), mContext.getString(R.string.last_json_str_default)).trim();
 
         }
 
 
-        Log.i("CURSOR", "SAME LAST JSON ? = " + (lastJSONstr.equals(JSONStr)));
+//        int maxLogSize = 1000;
+//
+//        for (int i = 0; i <= JSONStr.length() / maxLogSize; i++) {
+//            int start = i * maxLogSize;
+//            int end = (i + 1) * maxLogSize;
+//            end = end > JSONStr.length() ? JSONStr.length() : end;
+//            Log.v("JUDGE", JSONStr.substring(start, end));
+//        }
+//
+//        Log.i("JUDGE", "---------------------------------------------------------------");
+//        Log.i("JUDGE", "OTHER VALUE");
+//        Log.i("JUDGE", "---------------------------------------------------------------");
+//
+//
+//        for (int i = 0; i <= lastJSONstr.length() / maxLogSize; i++) {
+//            int start = i * maxLogSize;
+//            int end = (i + 1) * maxLogSize;
+//            end = end > lastJSONstr.length() ? lastJSONstr.length() : end;
+//            Log.i("JUDGE", lastJSONstr.substring(start, end));
+//        }
 
-        Log.i("First_Load", "Result is " + JSONStr.equals(lastJSONstr));
-        Log.i("First_Load", "First saved JSON form  IS " + lastJSONstr);
-        Log.i("First_Load", "Second  JSON form API  IS " + JSONStr);
+
+        Log.i("JUDGE", "Result is " + JSONStr.trim().equals(lastJSONstr));
+
+        Log.i("JUDGE", "First saved JSON Size : " + lastJSONstr.length());
+        Log.i("JUDGE", "Second  JSON form API Size " + JSONStr.trim().length());
 
 
-        return (JSONStr.equals(lastJSONstr));
+        Log.i("JUDGE", "First saved JSON form  IS " + lastJSONstr);
+//        Log.i("COMPARE", "Second  JSON form API  IS " + JSONStr);
+
+
+        return (JSONStr.trim().equals(lastJSONstr));
     }
 
     private void saveLastJSONString(String JSONStr) {
 
-        preferences = mContext.getSharedPreferences("JSON", 0);
+
+        preferences = mContext.getSharedPreferences("JSON", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
-        Log.i("CURSOR", "Size BEFORE Saving " + JSONStr.length() + " - Saved Succesfully");
+        editor.clear();
+        Log.i("JUDGE", "Size BEFORE Saving " + JSONStr.trim().length());
 
         if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
-            editor.putString(mContext.getString(R.string.last_popular_movies_json_str), JSONStr);
+            editor.putString(mContext.getString(R.string.last_popular_movies_json_str), JSONStr.trim());
         }
         if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
-            editor.putString(mContext.getString(R.string.last_highest_movies_rated_json_str), JSONStr);
+            editor.putString(mContext.getString(R.string.last_highest_movies_rated_json_str), JSONStr.trim());
         }
         Log.i("CURSOR", "Saved Succesfully");
         editor.apply();
