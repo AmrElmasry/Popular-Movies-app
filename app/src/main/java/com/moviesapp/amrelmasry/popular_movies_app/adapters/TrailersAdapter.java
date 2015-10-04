@@ -54,9 +54,7 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
         // TODO CHANGE HARD CODED STRING
         viewHolder.trailerName.setText(trailer.getName());
         Picasso.with(mContext).load(Uri.parse("http://img.youtube.com/vi/" + trailer.getKey() + "/default.jpg")).into(viewHolder.trailerThumbnail);
-//
-//        TextView name = (TextView) view.findViewById(R.id.trailer_name);
-//        name.setText(trailer.getName());
+
 
         return view;
 
@@ -73,12 +71,4 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
         }
     }
 
-//
-//
-//    public void addTrailers(ArrayList<Trailer> trailers) {
-//        for (Trailer trailer : trailers) {
-//            mtrailers.add(trailer);
-//        }
-//
-//    }
 }

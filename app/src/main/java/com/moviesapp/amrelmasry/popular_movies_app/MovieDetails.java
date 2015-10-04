@@ -20,7 +20,6 @@ public class MovieDetails extends AppCompatActivity {
 
             MovieDetailsFragment f = MovieDetailsFragment.newInstance(
                     getIntent().getStringExtra(getString(R.string.movie_api_id)),
-                    getIntent().getStringExtra(getString(R.string.table_name)),
                     getIntent().getStringExtra(getString(R.string.table_Uri)),
                     this);
 

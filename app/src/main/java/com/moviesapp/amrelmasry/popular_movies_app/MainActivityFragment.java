@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.sync.fetchMoviesTask;
+import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchMoviesTask;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.rockerhieu.rvadapter.endless.EndlessRecyclerViewAdapter;
@@ -70,10 +70,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         Log.i("MOVIE_CILICK", "api id b " + movieApiID);
 
 
-                        String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
                         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
                         ((Callback) getActivity())
-                                .onItemSelected(movieApiID, tableName, tableUri);
+                                .onItemSelected(movieApiID, tableUri);
                         mPosition = position;
 
                     }
@@ -125,7 +124,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
 
     public interface Callback {
-        public void onItemSelected(String movieApiID, String tableName, Uri contentUri);
+        public void onItemSelected(String movieApiID, Uri contentUri);
 
     }
 
@@ -153,8 +152,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         Log.i("First_Load", "Fetching page" + page + "From table : " + tableName);
 
 
-        fetchMoviesTask fetchMoviesTask = new fetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
-        fetchMoviesTask.execute();
+        FetchMoviesTask FetchMoviesTask = new FetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
+        FetchMoviesTask.execute();
     }
 
     void onShowByChanged(String updatedShowBy) {

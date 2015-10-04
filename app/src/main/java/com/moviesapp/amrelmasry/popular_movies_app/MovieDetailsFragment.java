@@ -2,7 +2,6 @@ package com.moviesapp.amrelmasry.popular_movies_app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +29,7 @@ import com.moviesapp.amrelmasry.popular_movies_app.loaders.ReviewsLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.loaders.TrailersLoader;
 import com.moviesapp.amrelmasry.popular_movies_app.models.Trailer;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
+import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesCursor;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.squareup.picasso.Picasso;
@@ -39,7 +39,6 @@ import java.util.List;
 public class MovieDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<List> {
 
     private String movieApiId;
-    private String tableName;
     private String tableUri;
 
     private TextView noReviews;
@@ -103,18 +102,25 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         if (arguments != null) {
             movieApiId = arguments.getString(getString(R.string.movie_api_id));
-            tableName = arguments.getString(getString(R.string.table_name));
             tableUri = arguments.getString(getString(R.string.table_Uri));
 
 
-            Cursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, tableName, Uri.parse(tableUri), getActivity());
+            MoviesCursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, Uri.parse(tableUri), getActivity());
 
-            movieTitle = movieCursor.getString(DatabaseUtilities.COL_TITLE);
-            movieOverview = movieCursor.getString(DatabaseUtilities.COL_OVERVIEW);
-            movieVoteAverage = movieCursor.getString(DatabaseUtilities.COL_VOTE_AVERAGE);
-            movieReleaseDate = movieCursor.getString(DatabaseUtilities.COL_RELEASE_DATE);
-            moviePosterPath = movieCursor.getString(DatabaseUtilities.COL_POSTER_PATH);
+//            movieTitle = movieCursor.getString(DatabaseUtilities.COL_TITLE);
+//            movieOverview = movieCursor.getString(DatabaseUtilities.COL_OVERVIEW);
+//            movieVoteAverage = movieCursor.getString(DatabaseUtilities.COL_VOTE_AVERAGE);
+//            movieReleaseDate = movieCursor.getString(DatabaseUtilities.COL_RELEASE_DATE);
+//            moviePosterPath = movieCursor.getString(DatabaseUtilities.COL_POSTER_PATH);
 
+            movieTitle = movieCursor.getTitle();
+            movieOverview = movieCursor.getOverview();
+            movieVoteAverage = movieCursor.getVoteAverage();
+            movieReleaseDate = movieCursor.getReleaseDate();
+            moviePosterPath = movieCursor.getPosterPath();
+
+
+            movieCursor.close();
 
 //            // TODO WHICH IMG SIZE
             // TODO REPLACR HARD CODED URL
@@ -148,7 +154,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 //TODO
                 if (isFavoriteMovie) {
                     DatabaseUtilities.removeFromDatabase(movieApiId,
-                            MoviesColumns.FAVORITES_TABLE_NAME, MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
+                            MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
                     isFavoriteMovie = false;
                     changeFavoriteButtonState();
                 } else {
@@ -204,7 +210,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    public static MovieDetailsFragment newInstance(String movieApiId, String tableName, String tableUri, Context context) {
+    public static MovieDetailsFragment newInstance(String movieApiId, String tableUri, Context context) {
         MovieDetailsFragment f = new MovieDetailsFragment();
 
         Bundle arguments = new Bundle();
@@ -212,7 +218,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         Log.i("INTENT", "Sent :" + movieApiId);
 
-        arguments.putString(context.getString(R.string.table_name), tableName);
         arguments.putString(context.getString(R.string.table_Uri), tableUri);
 
         f.setArguments(arguments);

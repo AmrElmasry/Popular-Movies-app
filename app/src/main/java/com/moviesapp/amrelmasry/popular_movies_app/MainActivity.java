@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
 
     @Override
-    public void onItemSelected(String movieApiID, String tableName, Uri contentUri) {
+    public void onItemSelected(String movieApiID, Uri contentUri) {
 
         if (mTwoPane) {
 
-            MovieDetailsFragment f = MovieDetailsFragment.newInstance(movieApiID, tableName, contentUri.toString(), this);
+            MovieDetailsFragment f = MovieDetailsFragment.newInstance(movieApiID, contentUri.toString(), this);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_details_container, f, MOVIE_DETAILS_FRAGMENT_TAG)
@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             Intent intent = new Intent(this, MovieDetails.class);
 
             intent.putExtra(getString(R.string.movie_api_id), movieApiID);
-            intent.putExtra(getString(R.string.table_name), tableName);
             intent.putExtra(getString(R.string.table_Uri), contentUri.toString());
 
             startActivity(intent);

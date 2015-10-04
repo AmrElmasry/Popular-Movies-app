@@ -17,9 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
+public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
+    private final int FIRST_PAGE_MOVIES_COUNT = 20;
     private final Integer page;
     boolean isInitialFetch;
     SharedPreferences preferences;
@@ -27,7 +28,7 @@ public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
     String mtableName;
     Uri mContentUri;
 
-    public fetchMoviesTask(Context mContext, Integer page, boolean isInitialFetch, String tableName, Uri contentUri) {
+    public FetchMoviesTask(Context mContext, Integer page, boolean isInitialFetch, String tableName, Uri contentUri) {
         this.mContext = mContext;
         this.page = page;
         this.isInitialFetch = isInitialFetch;
@@ -169,21 +170,21 @@ public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
         Cursor cursor = mContext.getContentResolver().query(mContentUri, null, null, null, null);
 
-        Integer count = cursor.getCount();
+        int count = cursor.getCount();
 
-        Log.i("CURSOR", "First Cursor size = " + count.toString());
+        Log.i("CURSOR", "First Cursor size = " + String.valueOf(count));
 
 
-        Integer rowsToDel = count - 20;
+        int rowsToDel = count - FIRST_PAGE_MOVIES_COUNT;
 
         String whereClause =
-                String.format(" _id IN ( SELECT DISTINCT _id FROM " + mtableName + " ORDER BY _id DESC LIMIT " + rowsToDel.toString() + "  ) ");
+                " _id IN ( SELECT DISTINCT _id FROM " + mtableName + " ORDER BY _id DESC LIMIT " + String.valueOf(rowsToDel) + "  ) ";
 
 
-        Integer deletedRows = mContext.getContentResolver().delete(mContentUri,
+        int deletedRows = mContext.getContentResolver().delete(mContentUri,
                 whereClause, null);
 
-        Log.i("CURSOR", "Deleted Rows = " + deletedRows.toString());
+        Log.i("CURSOR", "Deleted Rows = " + String.valueOf(deletedRows));
 
 
 //        PopularMoviesSelection where3 = new PopularMoviesSelection();
@@ -191,9 +192,9 @@ public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
         Cursor cursor2 = mContext.getContentResolver().query(mContentUri, null, null, null, null);
 
-        Integer count2 = cursor2.getCount();
+        int count2 = cursor2.getCount();
 
-        Log.i("CURSOR", "Second Cursor size = " + count2.toString());
+        Log.i("CURSOR", "Second Cursor size = " + String.valueOf(count2));
 
 
     }
@@ -231,27 +232,7 @@ public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
         }
 
 
-//        int maxLogSize = 1000;
 //
-//        for (int i = 0; i <= JSONStr.length() / maxLogSize; i++) {
-//            int start = i * maxLogSize;
-//            int end = (i + 1) * maxLogSize;
-//            end = end > JSONStr.length() ? JSONStr.length() : end;
-//            Log.v("JUDGE", JSONStr.substring(start, end));
-//        }
-//
-//        Log.i("JUDGE", "---------------------------------------------------------------");
-//        Log.i("JUDGE", "OTHER VALUE");
-//        Log.i("JUDGE", "---------------------------------------------------------------");
-//
-//
-//        for (int i = 0; i <= lastJSONstr.length() / maxLogSize; i++) {
-//            int start = i * maxLogSize;
-//            int end = (i + 1) * maxLogSize;
-//            end = end > lastJSONstr.length() ? lastJSONstr.length() : end;
-//            Log.i("JUDGE", lastJSONstr.substring(start, end));
-//        }
-
 
         Log.i("JUDGE", "Result is " + JSONStr.trim().equals(lastJSONstr));
 
@@ -285,14 +266,5 @@ public class fetchMoviesTask extends AsyncTask<Void, Void, Void> {
         editor.apply();
     }
 
-//    private boolean firstTimeSaving() {
-//        preferences = mContext.getSharedPreferences("JSON", 0);
-//        String lastJSONstr = preferences.getString(mContext.getString(R.string.last_json_str), mContext.getString(R.string.last_json_str_default));
-//
-//        Log.i("CURSOR", lastJSONstr);
-//
-//        return lastJSONstr.equals(mContext.getString(R.string.last_json_str_default));
-//
-//    }
 
 }

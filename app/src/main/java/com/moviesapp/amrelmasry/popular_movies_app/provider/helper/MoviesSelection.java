@@ -12,9 +12,16 @@ import com.moviesapp.amrelmasry.popular_movies_app.provider.base.AbstractSelecti
  */
 public class MoviesSelection extends AbstractSelection<MoviesSelection> {
 
+    private Uri contentUri;
+
+    public MoviesSelection(Uri contentUri) {
+        this.contentUri = contentUri;
+    }
+
+
     @Override
     protected Uri baseUri() {
-        return MoviesColumns.FAVORITES_CONTENT_URI;
+        return contentUri;
     }
 
     /**
