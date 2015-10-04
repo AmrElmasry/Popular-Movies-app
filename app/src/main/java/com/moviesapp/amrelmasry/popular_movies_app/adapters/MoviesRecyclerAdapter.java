@@ -85,12 +85,8 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
             Log.i("ROTATE", "Cursor Swapped - Not Null");
 
-            // TODO OPTIMIZE THIS LATER
 
             Log.i("ROTATE", "Array size before adding is : " + moviesApiIDs.size());
-
-//            c.moveToFirst();
-//            c.moveToPrevious();
 
             c.moveToPosition(-1);
             while (c.moveToNext()) {

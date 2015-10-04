@@ -1,7 +1,6 @@
 package com.moviesapp.amrelmasry.popular_movies_app.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +52,7 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
 
         // TODO CHANGE HARD CODED STRING
         viewHolder.trailerName.setText(trailer.getName());
-        Picasso.with(mContext).load(Uri.parse("http://img.youtube.com/vi/" + trailer.getKey() + "/default.jpg")).into(viewHolder.trailerThumbnail);
+        Picasso.with(mContext).load(trailer.getThumbnailUri()).into(viewHolder.trailerThumbnail);
 
 
         return view;

@@ -1,21 +1,17 @@
 package com.moviesapp.amrelmasry.popular_movies_app.models;
 
+import android.net.Uri;
+
 public class Trailer {
-    private String id;
     private String key;
     private String name;
-    private String site;
 
-    public Trailer(String id, String key, String name, String site) {
-        this.id = id;
+
+    public Trailer(String key, String name) {
         this.key = key;
         this.name = name;
-        this.site = site;
     }
 
-    public String getId() {
-        return id;
-    }
 
     public String getKey() {
         return key;
@@ -25,7 +21,15 @@ public class Trailer {
         return name;
     }
 
-    public String getSite() {
-        return site;
+
+    public Uri getThumbnailUri() {
+        // uri : "http://img.youtube.com/vi/" + getKey() + "/default.jpg"
+        final String BASE_URL = "http://img.youtube.com";
+        return Uri.parse(BASE_URL).buildUpon().appendPath("vi").appendPath(getKey()).appendPath("default.jpg").build();
+    }
+
+    public Uri getUri() {
+        final String BASE_URL = "http://www.youtube.com/watch?";
+        return Uri.parse(BASE_URL).buildUpon().appendQueryParameter("v", getKey()).build();
     }
 }

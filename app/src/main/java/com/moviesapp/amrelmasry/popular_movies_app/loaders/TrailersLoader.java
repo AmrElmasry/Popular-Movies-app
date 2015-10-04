@@ -74,10 +74,9 @@ public class TrailersLoader extends AsyncTaskLoader<List> {
 
                 for (int i = 0; i < trailersArray.length(); i++) {
 
-                    trailers.add(new Trailer(trailersArray.getJSONObject(i).getString("id"),
+                    trailers.add(new Trailer(
                             trailersArray.getJSONObject(i).getString("key"),
-                            trailersArray.getJSONObject(i).getString("name"),
-                            trailersArray.getJSONObject(i).getString("site")));
+                            trailersArray.getJSONObject(i).getString("name")));
                 }
                 return trailers;
 

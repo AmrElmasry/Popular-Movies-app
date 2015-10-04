@@ -183,7 +183,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
                 Trailer trailer = (Trailer) parent.getItemAtPosition(position);
                 // TODO REMOVE HARD CODED URI
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + trailer.getKey()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, trailer.getUri());
                 startActivity(intent);
 
             }
