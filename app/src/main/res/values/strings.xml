@@ -96,6 +96,9 @@
     <string name="cannot_load_reviews">Cann\'t load reviews, check your internet connection.</string>
     <string name="no_trailers">No trailers for this movie.</string>
     <string name="cannot_load_trailers">Cannot load trailers, check your Intenrnet connection</string>
+    <string name="choose_movie">Choose a movie to show details</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
 
 
 </resources>

@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Trailers:"
+        android:text="@string/trailers"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorPrimaryText"
         android:textStyle="bold" />
@@ -16,21 +16,20 @@
     <TextView
         android:id="@+id/no_trailers"
         android:layout_width="match_parent"
-
+        android:text="@string/no_trailers"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/no_trailers"
         android:textColor="@color/colorSecondaryText"
         android:visibility="gone" />
 
     <TextView
+        android:text="@string/cannot_load_trailers"
         android:id="@+id/cannot_load_trailers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/cannot_load_trailers"
         android:textColor="@color/colorSecondaryText"
         android:visibility="gone" />
 

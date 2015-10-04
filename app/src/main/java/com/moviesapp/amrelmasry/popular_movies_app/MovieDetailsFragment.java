@@ -76,6 +76,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         Log.i("CREATE", "FRAGMENT CREATED");
         setHasOptionsMenu(true);
 
+        View exist_movie_view = rootView.findViewById(R.id.exist_movie_view);
+        TextView no_movie_view = (TextView) rootView.findViewById(R.id.no_movie_view);
+
+
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
         fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         TextView movieTitleTextView = (TextView) rootView.findViewById(R.id.movie_title);
@@ -101,6 +105,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
         if (arguments != null) {
+            no_movie_view.setVisibility(View.GONE);
+            exist_movie_view.setVisibility(View.VISIBLE);
+
             movieApiId = arguments.getString(getString(R.string.movie_api_id));
             tableUri = arguments.getString(getString(R.string.table_Uri));
 
@@ -137,6 +144,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             moviePlotTextView.setText(movieOverview);
             movieRatingTextView.setText(movieVoteAverage);
             movieDateTextView.setText(movieReleaseDate);
+
+        } else {
+            exist_movie_view.setVisibility(View.GONE);
+            no_movie_view.setVisibility(View.VISIBLE);
 
         }
 
@@ -177,13 +188,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         });
 
 
-        reviewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         trailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -200,15 +204,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     private void changeFavoriteButtonState() {
-//        Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.favorite);
-////        fab.setAnimation(rotate);
-//
-//        RotateAnimation a = new RotateAnimation(0, 90);
-//        a.setFillAfter(true);
-//        a.setDuration(0);
-//        fab.startAnimation(a);
-//
-//        fab.startAnimation(rotate);
+
         if (isFavoriteMovie) {
             fab.setImageResource(R.drawable.ic_heart_red_filled);
         } else {

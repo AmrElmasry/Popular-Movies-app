@@ -14,15 +14,14 @@
 
         <ImageView
             android:id="@+id/movie_poster"
-            android:minWidth="150dp"
-
-            android:minHeight="180dp"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:contentDescription="@string/image_desc"
-            android:src="@drawable/insideout_poster" />
+            android:minHeight="180dp"
+            android:minWidth="150dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -36,7 +35,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Inside Out"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/colorPrimaryText" />
 
@@ -45,7 +43,6 @@
                 android:id="@+id/movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7.8"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/colorPrimaryText" />
 
@@ -54,7 +51,6 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
-                android:text="18/7/2015"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/colorPrimaryText" />
         </LinearLayout>
@@ -65,7 +61,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order. There's Max, a man of action and a man of few words, who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos. And Furiosa, a woman of action and a woman who believes her path to survival may be achieved if she can make it across the desert back to her childhood homeland"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorSecondaryText" />
 </LinearLayout>
