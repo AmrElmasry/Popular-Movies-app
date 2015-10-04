@@ -2,6 +2,7 @@ package com.moviesapp.amrelmasry.popular_movies_app.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,8 +59,15 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
         holder.movieVoteAverage.setText(cursor.getString(DatabaseUtilities.COL_VOTE_AVERAGE));
         holder.movieTitle.setText(cursor.getString(DatabaseUtilities.COL_TITLE));
 
+        final String BASE_MOVIE_IMAGE_URL = "http://image.tmdb.org/t/p";
 
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + posterPath).into(holder.moviePoster);
+        Uri uri = Uri.parse(BASE_MOVIE_IMAGE_URL)
+                .buildUpon()
+                .appendPath("w185")
+                .appendEncodedPath(posterPath)
+                .build();
+
+        Picasso.with(mContext).load(uri).into(holder.moviePoster);
 
 
     }

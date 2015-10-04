@@ -122,9 +122,18 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             movieCursor.close();
 
-//            // TODO WHICH IMG SIZE
-            // TODO REPLACR HARD CODED URL
-            Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(moviePoster);
+
+
+            final String BASE_MOVIE_IMAGE_URL = "http://image.tmdb.org/t/p";
+
+            Uri uri = Uri.parse(BASE_MOVIE_IMAGE_URL)
+                    .buildUpon()
+                    .appendPath("w185")
+                    .appendEncodedPath(moviePosterPath)
+                    .build();
+
+
+            Picasso.with(getActivity()).load(uri).into(moviePoster);
             movieTitleTextView.setText(movieTitle);
             moviePlotTextView.setText(movieOverview);
             movieRatingTextView.setText(movieVoteAverage);
@@ -151,7 +160,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             public void onClick(View view) {
 
 
-                //TODO
                 if (isFavoriteMovie) {
                     DatabaseUtilities.removeFromDatabase(movieApiId,
                             MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
@@ -182,7 +190,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
                 Trailer trailer = (Trailer) parent.getItemAtPosition(position);
-                // TODO REMOVE HARD CODED URI
+
                 Intent intent = new Intent(Intent.ACTION_VIEW, trailer.getUri());
                 startActivity(intent);
 

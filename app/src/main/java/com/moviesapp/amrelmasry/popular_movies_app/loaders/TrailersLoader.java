@@ -62,10 +62,13 @@ public class TrailersLoader extends AsyncTaskLoader<List> {
 
         ArrayList<Trailer> trailers = new ArrayList<>();
 
-        // TODO Remove hard coded uri
 
-        Uri uri = Uri.parse("http://api.themoviedb.org/3/movie/" + movieApiId + "/videos?api_key=27c124869ccb88b1134ed9504b7e38af");
+        final String BASE_URL = "http://api.themoviedb.org/3/movie/";
+        Uri uri = Uri.parse(BASE_URL).buildUpon().appendPath(movieApiId).appendPath("videos")
+                .appendQueryParameter(ConnectionUtilities.API_QUERY_KEY, ConnectionUtilities.API_KEY)
+                .build();
         String jsonString = ConnectionUtilities.getJSONString(uri);
+
 
         if (jsonString != null) {
             try {

@@ -50,7 +50,6 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
         Trailer trailer = getItem(position);
         Log.i("LoaderUpdate", trailer.getName());
 
-        // TODO CHANGE HARD CODED STRING
         viewHolder.trailerName.setText(trailer.getName());
         Picasso.with(mContext).load(trailer.getThumbnailUri()).into(viewHolder.trailerThumbnail);
 

@@ -40,7 +40,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private Uri getUri() {
 
 
-        // TODO BUILD URI PARAMS IN DETAILS
         if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             final String BASE_URL =
                     "http://api.themoviedb.org/3/discover/movie?";
@@ -52,35 +51,30 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
             // top rated URL example : "http://api.themoviedb.org/3/movie/top_rated?page=1&api_key=27c124869ccb88b1134ed9504b7e38af"
 
             String sort_by = "popularity.desc";
-            final String api_key = "27c124869ccb88b1134ed9504b7e38af";
 
             final String PAGE_NUM = "page";
             final String SORT_BY = "sort_by";
-            final String API_KEY = "api_key";
 
 
 //            Uri builtUri = Uri.parse("http://api.themoviedb.org/3/discover/movie?page=" + pageIndex + "&sort_by=popularity.desc&api_key=27c124869ccb88b1134ed9504b7e38af");
-            Uri uri = Uri.parse(BASE_URL).buildUpon()
+
+            return Uri.parse(BASE_URL).buildUpon()
                     .appendQueryParameter(PAGE_NUM, page_num)
                     .appendQueryParameter(SORT_BY, sort_by)
-                    .appendQueryParameter(API_KEY, api_key)
+                    .appendQueryParameter(ConnectionUtilities.API_QUERY_KEY, ConnectionUtilities.API_KEY)
                     .build();
-
-            return uri;
         } else if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
 
             final String BASE_URL =
                     "http://api.themoviedb.org/3/movie/top_rated?";
             String page_num = page.toString();
-            final String api_key = "27c124869ccb88b1134ed9504b7e38af";
 
             final String PAGE_NUM = "page";
-            final String API_KEY = "api_key";
 
 
             Uri uri = Uri.parse(BASE_URL).buildUpon()
                     .appendQueryParameter(PAGE_NUM, page_num)
-                    .appendQueryParameter(API_KEY, api_key)
+                    .appendQueryParameter(ConnectionUtilities.API_QUERY_KEY, ConnectionUtilities.API_KEY)
                     .build();
             return uri;
 
@@ -163,11 +157,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private void deleteOldDataOnDB() {
 
 
-        // TODO Create another method to delete only if first page isn't new
-
-//        PopularMoviesSelection where = new PopularMoviesSelection();
-//        PopularMoviesCursor cursor = where.query(mContext);
-
         Cursor cursor = mContext.getContentResolver().query(mContentUri, null, null, null, null);
 
         int count = cursor.getCount();
@@ -231,8 +220,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
         }
 
-
-//
 
         Log.i("JUDGE", "Result is " + JSONStr.trim().equals(lastJSONstr));
 

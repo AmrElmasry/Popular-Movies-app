@@ -212,7 +212,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         if (mPosition != RecyclerView.NO_POSITION) {
 //            moviesRecyclerView.scrollToPosition(mPosition);
-            // TODO ADD CUSTOM SMOOTH SCROLL TO LATER
             moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
         }
 

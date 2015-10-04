@@ -26,13 +26,11 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: Add preferences from XML
         addPreferencesFromResource(R.xml.pref_sort_by);
 
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
-        // TODO: Add preferences
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_sort_by_key)));
 
     }

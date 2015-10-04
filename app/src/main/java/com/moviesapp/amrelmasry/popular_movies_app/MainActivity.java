@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             mTwoPane = false;
         }
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // TODO CHANGE LATER
-//        setSupportActionBar(toolbar);
+
 
         mShowMoviesby = GeneralUtilities.getShowMoviesBy(this);
 

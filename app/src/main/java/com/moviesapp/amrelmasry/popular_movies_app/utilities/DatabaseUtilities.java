@@ -26,8 +26,7 @@ public class DatabaseUtilities {
 
     public static void insertIntoDatabase(String api_id, String title, String overview, String release_date, String vote_average, String poster_path, Uri contentUri, Context context) {
 
-        MoviesContentValues contentValues = new MoviesContentValues(contentUri); // TODO USE MORE GENERIC OR USE BULk INSERT WITH DEFAULT CONTENTVALUES
-
+        MoviesContentValues contentValues = new MoviesContentValues(contentUri);
         contentValues.putApiId(api_id)
                 .putTitle(title)
                 .putOverview(overview)
