@@ -105,6 +105,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
         if (arguments != null) {
+            fab.setVisibility(View.VISIBLE);
             no_movie_view.setVisibility(View.GONE);
             exist_movie_view.setVisibility(View.VISIBLE);
 
@@ -146,6 +147,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             movieDateTextView.setText(movieReleaseDate);
 
         } else {
+            fab.setVisibility(View.GONE);
             exist_movie_view.setVisibility(View.GONE);
             no_movie_view.setVisibility(View.VISIBLE);
 

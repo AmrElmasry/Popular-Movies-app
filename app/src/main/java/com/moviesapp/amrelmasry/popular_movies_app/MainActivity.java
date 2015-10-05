@@ -126,4 +126,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         }
     }
+
+//    @Override
+//    public int scrollToTopVisibility() {
+//        if (mTwoPane) {
+//            return View.GONE;
+//        } else {
+//            return View.VISIBLE;
+//        }
+//    }
 }

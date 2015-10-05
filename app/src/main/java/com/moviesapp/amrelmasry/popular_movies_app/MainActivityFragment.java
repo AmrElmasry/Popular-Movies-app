@@ -3,6 +3,7 @@ package com.moviesapp.amrelmasry.popular_movies_app;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -35,6 +36,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private int pageNumber;
     private String showMoviesBy;
     private RecyclerView moviesRecyclerView;
+    private FloatingActionButton scrollToTop;
 
     private int mPosition = RecyclerView.NO_POSITION;
     private static final String LAST_SELECTED_POSITION = "last_selected_position";
@@ -49,6 +51,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        scrollToTop = (FloatingActionButton) rootView.findViewById(R.id.scroll_to_top);
+
+//        checkScrollTopVisibility();
+
 
         moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
 
@@ -85,15 +92,32 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
 
 
-
-
-
-//
-
+        scrollToTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moviesRecyclerView.smoothScrollToPosition(1);
+                scrollToTop.hide();
+            }
+        });
 
         return rootView;
     }
 
+//    private void checkScrollTopVisibility() {
+//
+//
+//        int tag = ((Callback) getActivity())
+//                .scrollToTopVisibility();
+//
+//        if (tag == View.GONE) {
+//            scrollToTop.setVisibility(View.GONE);
+//        } else if (tag == View.VISIBLE) {
+//            scrollToTop.setVisibility(View.VISIBLE);
+//
+//        }
+//
+//
+//    }
 
 
     @Override
@@ -133,6 +157,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     public interface Callback {
         public void onItemSelected(String movieApiID, Uri contentUri);
+
+//        public int scrollToTopVisibility();
 
     }
 
