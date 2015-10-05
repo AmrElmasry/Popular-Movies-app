@@ -21,14 +21,14 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
     private final int FIRST_PAGE_MOVIES_COUNT = 20;
-    private final Integer page;
+    private final int page;
     boolean isInitialFetch;
     SharedPreferences preferences;
 
     String mtableName;
     Uri mContentUri;
 
-    public FetchMoviesTask(Context mContext, Integer page, boolean isInitialFetch, String tableName, Uri contentUri) {
+    public FetchMoviesTask(Context mContext, int page, boolean isInitialFetch, String tableName, Uri contentUri) {
         this.mContext = mContext;
         this.page = page;
         this.isInitialFetch = isInitialFetch;
@@ -45,7 +45,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
                     "http://api.themoviedb.org/3/discover/movie?";
 
 //        String page_num = pageIndex.toString();
-            String page_num = page.toString();
+            String page_num = String.valueOf(page);
 
             // populariy URL example : "http://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc&api_key=27c124869ccb88b1134ed9504b7e38af"
             // top rated URL example : "http://api.themoviedb.org/3/movie/top_rated?page=1&api_key=27c124869ccb88b1134ed9504b7e38af"
@@ -67,7 +67,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
             final String BASE_URL =
                     "http://api.themoviedb.org/3/movie/top_rated?";
-            String page_num = page.toString();
+            String page_num = String.valueOf(page);
 
             final String PAGE_NUM = "page";
 

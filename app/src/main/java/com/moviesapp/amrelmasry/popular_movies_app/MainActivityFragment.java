@@ -32,12 +32,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     private MoviesRecyclerAdapter moviesAdapter;
     private EndlessRecyclerViewAdapter endlessRecyclerViewAdapter;
-    private Integer pageNumber;
+    private int pageNumber;
     private String showMoviesBy;
     private RecyclerView moviesRecyclerView;
 
     private int mPosition = RecyclerView.NO_POSITION;
-    private static final String SELECTED_KEY = "last_selected_position";
+    private static final String LAST_SELECTED_POSITION = "last_selected_position";
+    private static final String Last_PAGE_NUMBER_KEY = "last_page_number_used";
 
 
     public MainActivityFragment() {
@@ -73,6 +74,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
                         ((Callback) getActivity())
                                 .onItemSelected(movieApiID, tableUri);
+
                         mPosition = position;
 
                     }
@@ -82,15 +84,23 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
 
 
-//        if (savedInstanceState == null) {
-//            pageNumber = 2;
-//        }
+        if (savedInstanceState != null) {
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
-            // The listview probably hasn't even been populated yet.  Actually perform the
-            // swapout in onLoadFinished.
-            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            if (savedInstanceState.containsKey(Last_PAGE_NUMBER_KEY)) {
+                pageNumber = savedInstanceState.getInt(Last_PAGE_NUMBER_KEY);
+                Log.i("Really", "Load last page = " + pageNumber);
+
+
+            }
+            if (savedInstanceState.containsKey(LAST_SELECTED_POSITION)) {
+                mPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
+                Log.i("Really", "Load last position = " + mPosition);
+
+            }
+
         }
+
+
 //
 
 
@@ -101,11 +111,18 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.i("ROTATE", "Device rotated");
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(Last_PAGE_NUMBER_KEY, pageNumber);
 
         if (mPosition != RecyclerView.NO_POSITION) {
-            outState.putInt(SELECTED_KEY, mPosition);
+            outState.putInt(LAST_SELECTED_POSITION, mPosition);
+            Log.i("Really", "Save last Position " + mPosition);
+
         }
-        super.onSaveInstanceState(outState);
+
+        Log.i("Really", "Save last page " + pageNumber);
+
     }
 
     @Override
@@ -153,11 +170,13 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         if (mPosition != RecyclerView.NO_POSITION) {
 //            moviesRecyclerView.scrollToPosition(mPosition);
             moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
+            Log.i("Really", "Scrolled to position" + mPosition);
+
         }
     }
 
 
-    private void fetchMovies(Integer page, boolean isInitialFetch) {
+    private void fetchMovies(int page, boolean isInitialFetch) {
 
         String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
@@ -175,15 +194,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         showMoviesBy = updatedShowBy;
         mPosition = RecyclerView.NO_POSITION;
+        Log.i("Really", "Show BY CHANGED - INITIAL SET UP");
 
+        initialSetup();
+
+        getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
+
+    }
+
+    private void initialSetup() {
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
 
             fetchMovies(1, true);
             pageNumber = 2;
         }
-
-        getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
-
     }
 
 
@@ -197,11 +221,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         super.onActivityCreated(savedInstanceState);
 
 
-        if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites)) && savedInstanceState == null) {
+        if (savedInstanceState == null) {
 
-            Log.i("First_Load", "on start - not favorites - get page 1  ");
-            pageNumber = 2;
-            fetchMovies(1, true);
+            initialSetup();
 
         }
     }
