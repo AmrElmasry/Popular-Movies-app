@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,6 +16,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     private boolean mTwoPane;
     private static final String MOVIE_DETAILS_FRAGMENT_TAG = "MOVIE_DETAILS";
 
+    final String key = "LASTSHOWBY";
+    private boolean isChangedWhenDead = false;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(key, mShowMoviesby);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +42,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             // one pane mode
             mTwoPane = false;
         }
-
-
-
         mShowMoviesby = GeneralUtilities.getShowMoviesBy(this);
+
+        // check if the activity destroyed and the value has changed
+        // useful when rotating device in settings activity and changing the value
+
+        if (savedInstanceState != null) {
+            String old = savedInstanceState.getString(key);
+            if (old != null && !old.equals(mShowMoviesby)) {
+                Log.i("Really", "Something wrong");
+                isChangedWhenDead = true;
+
+            }
+        }
 
 
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        Log.i("Really", "onResume");
+
         String showBy = GeneralUtilities.getShowMoviesBy(this);
 
 
-        if (showBy != null && !showBy.equals(mShowMoviesby)) {
+        if ((showBy != null && !showBy.equals(mShowMoviesby)) || isChangedWhenDead) {
 
             MainActivityFragment mainf = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.mainActivityFragment);
             if (null != mainf) {

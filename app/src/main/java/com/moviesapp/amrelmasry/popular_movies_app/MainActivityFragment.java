@@ -39,6 +39,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     private int mPosition = RecyclerView.NO_POSITION;
     private static final String LAST_SELECTED_POSITION = "last_selected_position";
     private static final String Last_PAGE_NUMBER_KEY = "last_page_number_used";
+    private static final String Last_SHOW_BY_KEY = "last_show_b";
 
 
     public MainActivityFragment() {
@@ -84,21 +85,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
 
 
-        if (savedInstanceState != null) {
 
-            if (savedInstanceState.containsKey(Last_PAGE_NUMBER_KEY)) {
-                pageNumber = savedInstanceState.getInt(Last_PAGE_NUMBER_KEY);
-                Log.i("Really", "Load last page = " + pageNumber);
-
-
-            }
-            if (savedInstanceState.containsKey(LAST_SELECTED_POSITION)) {
-                mPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
-                Log.i("Really", "Load last position = " + mPosition);
-
-            }
-
-        }
 
 
 //
@@ -108,12 +95,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.i("ROTATE", "Device rotated");
         super.onSaveInstanceState(outState);
 
         outState.putInt(Last_PAGE_NUMBER_KEY, pageNumber);
+        outState.putString(Last_SHOW_BY_KEY, showMoviesBy);
 
         if (mPosition != RecyclerView.NO_POSITION) {
             outState.putInt(LAST_SELECTED_POSITION, mPosition);
@@ -190,7 +179,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     void onShowByChanged(String updatedShowBy) {
 
-        Log.i("First_Load", "show by changed - page number is   " + pageNumber);
+        Log.i("First_Load", "show by changed from activity - page number is   " + pageNumber);
 
         showMoviesBy = updatedShowBy;
         mPosition = RecyclerView.NO_POSITION;
@@ -213,6 +202,31 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) {
+
+            if (savedInstanceState.containsKey(Last_PAGE_NUMBER_KEY)) {
+                pageNumber = savedInstanceState.getInt(Last_PAGE_NUMBER_KEY);
+                Log.i("Really", "Load last page = " + pageNumber);
+
+
+            }
+            if (savedInstanceState.containsKey(LAST_SELECTED_POSITION)) {
+                mPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
+                Log.i("Really", "Load last position = " + mPosition);
+
+            }
+
+//            if (savedInstanceState.containsKey(Last_SHOW_BY_KEY)) {
+//                String lastShowBy = savedInstanceState.getString(Last_SHOW_BY_KEY);
+//                if (!showMoviesBy.equals(lastShowBy)) {
+//                    Log.i("Really", "show by changed from state - ");
+//                    onShowByChanged(GeneralUtilities.getShowMoviesBy(getActivity()));
+//                }
+//            }
+
+
+        }
 
         Log.i("Finally", "Activity created");
 
