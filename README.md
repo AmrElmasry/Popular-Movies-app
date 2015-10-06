@@ -22,6 +22,11 @@ and images are loaded from cache
 as a result the user won't see a blank page at any time.
 
 ## Screensots:
+#### Phone:
+ ![alt text](../master/device_art/Phone (1).png "Phone Main Activity - Portrait")
+
+
+#### Tablet:
 
 
 
