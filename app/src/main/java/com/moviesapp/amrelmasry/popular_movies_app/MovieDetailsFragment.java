@@ -58,6 +58,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private ShareActionProvider mShareActionProvider;
 
     private boolean isFavoriteMovie;
+    private MenuItem menuShareItem;
 
     private FloatingActionButton fab;
     private static final int TRAILERS_LOADER_ID = 1;
@@ -280,6 +281,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     } else {
                         // no trailers
                         noTrailers.setVisibility(View.VISIBLE);
+                        menuShareItem.setVisible(false);
+
 
                     }
 
@@ -288,6 +291,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
                     Log.i("SHARE", "Null data - clear traileradpater - action provider=null");
                     cannotLoadTrailers.setVisibility(View.VISIBLE);
+                    menuShareItem.setVisible(false);
                     trailersAdapter.clear();
                 }
 
@@ -382,11 +386,11 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         Log.i("SHARE", "create optiopns menu");
 
         // Retrieve the share menu item
-        MenuItem menuItem = menu.findItem(R.id.action_share);
+        menuShareItem = menu.findItem(R.id.action_share);
 
         mShareActionProvider = new ShareActionProvider(getActivity());
         // Get the provider and hold onto it to set/change the share intent.
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuShareItem);
 
         // If onLoadFinished happens before this, we can go ahead and set the share intent now.
         shareTrailer();
