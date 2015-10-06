@@ -98,9 +98,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         return rootView;
     }
-
-
-
+    
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

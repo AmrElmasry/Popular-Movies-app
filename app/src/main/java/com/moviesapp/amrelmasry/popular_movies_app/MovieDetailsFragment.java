@@ -140,6 +140,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             movieRatingTextView.setText(movieVoteAverage);
             movieDateTextView.setText(movieReleaseDate);
 
+            moviePoster.setContentDescription(getString(R.string.movie_poster_desc) + movieTitle);
         } else {
             favorite.setVisibility(View.GONE);
             exist_movie_view.setVisibility(View.GONE);

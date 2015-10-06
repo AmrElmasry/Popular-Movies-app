@@ -26,11 +26,11 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
     private int mLayout;
     private Context mContext;
-   private SimpleViewHolder.ViewHolderClicksListener mListener;
+    private SimpleViewHolder.ViewHolderClicksListener mListener;
     private ArrayList<String> moviesApiIDs;
 
 
-    public MoviesRecyclerAdapter( Cursor c, Context context, SimpleViewHolder.ViewHolderClicksListener listener) {
+    public MoviesRecyclerAdapter(Cursor c, Context context, SimpleViewHolder.ViewHolderClicksListener listener) {
         super(c);
         mLayout = R.layout.movie_item;
         this.mContext = context;
@@ -66,14 +66,13 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
                 .build();
 
         Picasso.with(mContext).load(uri).into(holder.moviePoster);
+        holder.moviePoster.setContentDescription(mContext.getString(R.string.movie_poster_desc) + cursor.getString(DatabaseUtilities.COL_TITLE));
 
 
     }
 
 
     public String getMovieApiID(int position) {
-
-
 
 
         return moviesApiIDs.get(position);
@@ -87,14 +86,10 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
             clearMoviesApiIDs();
 
 
-
-
             c.moveToPosition(-1);
             while (c.moveToNext()) {
                 moviesApiIDs.add(c.getString(DatabaseUtilities.COL_API_ID));
             }
-
-
 
 
         }
