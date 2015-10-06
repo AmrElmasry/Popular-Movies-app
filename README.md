@@ -23,10 +23,19 @@ as a result the user won't see a blank page at any time.
 
 ## Screensots:
 #### Phone:
- ![alt text](../master/device_art/Phone (1).png "Phone Main Activity - Portrait")
-
+ ![alt text](../master/device_art/Phone (1).png)
+ ![alt text](../master/device_art/Phone (2).png)
+ ![alt text](../master/device_art/Phone (3).png)
+ ![alt text](../master/device_art/Phone (4).png)
 
 #### Tablet:
+ ![alt text](../master/device_art/Tablet (1).png)
+ ![alt text](../master/device_art/Tablet (2).png)
+ ![alt text](../master/device_art/Tablet (3).png)
+ ![alt text](../master/device_art/Tablet (4).png)
+ ![alt text](../master/device_art/Tablet (5).png)
+
+
 
 
 
