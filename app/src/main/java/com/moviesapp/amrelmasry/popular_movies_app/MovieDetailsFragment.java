@@ -63,6 +63,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private FloatingActionButton fab;
     private static final int TRAILERS_LOADER_ID = 1;
     private static final int REVIEWS_LOADER_ID = 2;
+    private TextView no_movie_view;
 
 
     public MovieDetailsFragment() {
@@ -78,7 +79,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         setHasOptionsMenu(true);
 
         View exist_movie_view = rootView.findViewById(R.id.exist_movie_view);
-        TextView no_movie_view = (TextView) rootView.findViewById(R.id.no_movie_view);
+        no_movie_view = (TextView) rootView.findViewById(R.id.no_movie_view);
 
 
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
@@ -148,6 +149,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             no_movie_view.setVisibility(View.VISIBLE);
 
         }
+
 
         if (tableUri != null && tableUri.equals(MoviesColumns.FAVORITES_CONTENT_URI.toString())) {
             // favorite movie
@@ -275,7 +277,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     } else {
                         // no trailers
                         noTrailers.setVisibility(View.VISIBLE);
-                        menuShareItem.setVisible(false);
+                        if (menuShareItem != null) {
+                            menuShareItem.setVisible(false);
+                        }
 
 
                     }
@@ -285,7 +289,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
                     Log.i("SHARE", "Null data - clear traileradpater - action provider=null");
                     cannotLoadTrailers.setVisibility(View.VISIBLE);
-                    menuShareItem.setVisible(false);
+                    if (menuShareItem != null) {
+                        menuShareItem.setVisible(false);
+                    }
                     trailersAdapter.clear();
                 }
 
@@ -336,7 +342,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
 
 
-
     }
 
     private void shareTrailer() {
@@ -385,6 +390,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         // If onLoadFinished happens before this, we can go ahead and set the share intent now.
         shareTrailer();
+
+        if ((menuShareItem != null && (noTrailers.getVisibility() == View.VISIBLE
+                || cannotLoadTrailers.getVisibility() == View.VISIBLE))
+                || no_movie_view.getVisibility() == View.VISIBLE) {
+            menuShareItem.setVisible(false);
+        }
+
     }
 }
 

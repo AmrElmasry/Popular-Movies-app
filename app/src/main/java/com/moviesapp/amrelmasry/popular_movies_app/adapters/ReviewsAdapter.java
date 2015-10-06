@@ -35,7 +35,8 @@ public class ReviewsAdapter extends ArrayAdapter<Review> {
         viewHolder.reviewContent.setText(review.getContent());
         return view;
     }
-    
+
+
     public static class ReviewViewHolder {
         public TextView reviewAuthor;
         public TextView reviewContent;
