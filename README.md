@@ -36,7 +36,8 @@ and images are loaded from cache
  ![alt text](../master/device_art/Tablet (5).png)
 
 
-
+## Notes:
+To build the app you should provide your key for TMDB API in ConnectionUtilities class.
 
 
 
