@@ -16,13 +16,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     private boolean mTwoPane;
     private static final String MOVIE_DETAILS_FRAGMENT_TAG = "MOVIE_DETAILS";
 
-    final String key = "LASTSHOWBY";
+    final String LAST_SHOW_BY_KEY = "LAST_SHOW_BY";
     private boolean isChangedWhenDead = false;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(key, mShowMoviesby);
+        outState.putString(LAST_SHOW_BY_KEY, mShowMoviesby);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         // useful when rotating device in settings activity and changing the value
 
         if (savedInstanceState != null) {
-            String old = savedInstanceState.getString(key);
+            String old = savedInstanceState.getString(LAST_SHOW_BY_KEY);
             if (old != null && !old.equals(mShowMoviesby)) {
                 Log.i("Really", "Something wrong");
                 isChangedWhenDead = true;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     protected void onResume() {
         super.onResume();
 
+
         Log.i("Really", "onResume");
 
         String showBy = GeneralUtilities.getShowMoviesBy(this);
@@ -71,10 +72,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
         if ((showBy != null && !showBy.equals(mShowMoviesby)) || isChangedWhenDead) {
 
+            // update main fragmrnt with the new feed
+
             MainActivityFragment mainf = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.mainActivityFragment);
             if (null != mainf) {
                 mainf.onShowByChanged(showBy);
             }
+
+
+            // make the details fragment empty
+            if (mTwoPane) {
+
+                MovieDetailsFragment ff = new MovieDetailsFragment();
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_details_container, ff, MOVIE_DETAILS_FRAGMENT_TAG)
+                        .commit();
+            }
+
             mShowMoviesby = showBy;
         }
     }
