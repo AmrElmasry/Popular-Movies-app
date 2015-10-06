@@ -87,7 +87,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
                     }
                 };
-        moviesAdapter = new MoviesRecyclerAdapter(R.layout.movie_item, null, getActivity(), clicksListener);
+        moviesAdapter = new MoviesRecyclerAdapter(null, getActivity(), clicksListener);
         endlessRecyclerViewAdapter = new EndlessRecyclerViewAdapter(getActivity(), moviesAdapter, this);
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
 

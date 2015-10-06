@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     private boolean mTwoPane;
     private static final String MOVIE_DETAILS_FRAGMENT_TAG = "MOVIE_DETAILS";
 
-    final String LAST_SHOW_BY_KEY = "LAST_SHOW_BY";
+   private final String LAST_SHOW_BY_KEY = "LAST_SHOW_BY";
     private boolean isChangedWhenDead = false;
 
     @Override

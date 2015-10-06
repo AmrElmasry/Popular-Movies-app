@@ -22,11 +22,11 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private final Context mContext;
     private final int FIRST_PAGE_MOVIES_COUNT = 20;
     private final int page;
-    boolean isInitialFetch;
-    SharedPreferences preferences;
+    private boolean isInitialFetch;
+    private SharedPreferences preferences;
 
-    String mtableName;
-    Uri mContentUri;
+    private String mtableName;
+  private   Uri mContentUri;
 
     public FetchMoviesTask(Context mContext, int page, boolean isInitialFetch, String tableName, Uri contentUri) {
         this.mContext = mContext;

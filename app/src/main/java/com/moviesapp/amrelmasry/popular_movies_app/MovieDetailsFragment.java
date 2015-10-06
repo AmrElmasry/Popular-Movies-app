@@ -174,8 +174,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
                 if (isFavoriteMovie) {
-                    DatabaseUtilities.removeFromDatabase(movieApiId,
-                            MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
+                    DatabaseUtilities.removeFromFavorites(movieApiId, getActivity());
                     isFavoriteMovie = false;
                     changeFavoriteButtonState();
                 } else {
@@ -366,7 +365,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    ;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

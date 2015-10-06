@@ -19,35 +19,8 @@ import java.util.List;
  */
 public class TrailersLoader extends AsyncTaskLoader<List> {
 
-    String movieApiId;
+    private String movieApiId;
 
-    @Override
-    public void deliverResult(List data) {
-
-        super.deliverResult(data);
-    }
-
-    @Override
-    protected void onStartLoading() {
-        super.onStartLoading();
-        Log.i("LoaderUpdate", "Start Loading");
-
-    }
-
-    @Override
-    public void onCanceled(List data) {
-        super.onCanceled(data);
-    }
-
-    @Override
-    protected void onStopLoading() {
-        super.onStopLoading();
-    }
-
-    @Override
-    protected void onReset() {
-        super.onReset();
-    }
 
     public TrailersLoader(Context context, String movieApiId) {
         super(context);

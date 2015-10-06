@@ -99,6 +99,7 @@
     <string name="choose_movie">Choose a movie to show details</string>
     <string name="trailers">Trailers:</string>
     <string name="reviews">Reviews:</string>
+    <string name="movie_poster_desc">Movie Poster</string>
 
 
 </resources>

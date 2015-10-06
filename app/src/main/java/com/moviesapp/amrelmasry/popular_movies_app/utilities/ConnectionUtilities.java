@@ -30,7 +30,6 @@ public class ConnectionUtilities {
 
             URL url = new URL(uri.toString());
 
-            Log.v("URI : ", "Built URI " + uri.toString());
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();

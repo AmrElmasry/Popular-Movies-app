@@ -57,7 +57,7 @@ public class ReviewsLoader extends AsyncTaskLoader<List> {
 
 
                 for (int i = 0; i < reviewsArray.length(); i++) {
-                    reviews.add(new Review(reviewsArray.getJSONObject(i).getString("id"),
+                    reviews.add(new Review(
                             reviewsArray.getJSONObject(i).getString("author"),
                             reviewsArray.getJSONObject(i).getString("content")));
                 }

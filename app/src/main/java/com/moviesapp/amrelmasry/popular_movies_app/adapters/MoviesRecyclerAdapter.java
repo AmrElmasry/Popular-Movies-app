@@ -27,13 +27,13 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
     private int mLayout;
     private Context mContext;
-    SimpleViewHolder.ViewHolderClicksListener mListener;
+   private SimpleViewHolder.ViewHolderClicksListener mListener;
     private ArrayList<String> moviesApiIDs;
 
 
-    public MoviesRecyclerAdapter(int layout, Cursor c, Context context, SimpleViewHolder.ViewHolderClicksListener listener) {
+    public MoviesRecyclerAdapter( Cursor c, Context context, SimpleViewHolder.ViewHolderClicksListener listener) {
         super(c);
-        mLayout = layout;
+        mLayout = R.layout.movie_item;
         this.mContext = context;
         this.mListener = listener;
         moviesApiIDs = new ArrayList<>();
@@ -117,7 +117,7 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
         return super.swapCursor(c);
     }
 
-    public void clearMoviesApiIDs() {
+    private void clearMoviesApiIDs() {
         this.moviesApiIDs.clear();
 
         Log.i("MOVIE_CILICK", "ArrayList Clreared");
@@ -153,8 +153,8 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
         }
 
-        public static interface ViewHolderClicksListener {
-            public void onMovieClick(View view, int position);
+        public interface ViewHolderClicksListener {
+            void onMovieClick(View view, int position);
         }
     }
 }

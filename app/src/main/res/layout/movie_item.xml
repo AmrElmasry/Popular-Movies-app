@@ -19,12 +19,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
-            android:contentDescription="Movie Poster"
-
-
-            android:scaleType="centerCrop"
-
-            android:src="@drawable/insideout_poster">
+            android:contentDescription="@string/movie_poster_desc"
+            android:scaleType="centerCrop">
 
         </ImageView>
 
@@ -52,7 +48,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="Mad Max , Fury ROAD"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="15sp" />
 
@@ -60,9 +55,8 @@
                     android:id="@+id/main_movie_vote_average"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="7.5"
                     android:textColor="@color/colorSecondaryText"
-                    android:textSize="11sp" />
+                    android:textSize="12sp" />
 
 
             </LinearLayout>
