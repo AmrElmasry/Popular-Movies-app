@@ -9,7 +9,7 @@ Android app to explore movies from the tmdb api. It's the final project of Udaci
 4. Add movies to favorites
 5. Support phones and tablets
 6. Explore content offline by saving last downloaded data
-7. Adapt material design and the new Floating Action Button
+7. Material design with the new Floating Action Button and Recycler View
 8. On online user can share movie trailer by share action provider
 
 
