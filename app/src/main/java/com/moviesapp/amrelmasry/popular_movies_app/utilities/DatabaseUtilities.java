@@ -41,13 +41,6 @@ public class DatabaseUtilities {
 
     public static MoviesCursor getMovieFromDB(String movieApiId, Uri contentUri, Context context) {
 
-//        String selection = tableName + ".api_id = ? ";
-//        String[] selectionArgs = new String[]{movieApiId};
-//
-//        Cursor cursor = context.getContentResolver().query(contentUri, null, selection, selectionArgs, null);
-
-
-        // another way
         MoviesSelection where = new MoviesSelection(contentUri);
         where.apiId(movieApiId);
         MoviesCursor moviesCursor = where.query(context);

@@ -1,7 +1,6 @@
 package com.moviesapp.amrelmasry.popular_movies_app.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        View view = super.getView(position, convertView, parent);
 
         View view;
 
@@ -45,10 +43,8 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
         TrailerViewHolder viewHolder = new TrailerViewHolder(view);
 
 
-        Log.i("LoaderUpdate", "Adapter popualting data");
 
         Trailer trailer = getItem(position);
-        Log.i("LoaderUpdate", trailer.getName());
 
         viewHolder.trailerName.setText(trailer.getName());
         Picasso.with(mContext).load(trailer.getThumbnailUri()).into(viewHolder.trailerThumbnail);

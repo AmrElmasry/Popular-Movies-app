@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,6 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
     @Override
     public void onBindViewHolder(SimpleViewHolder holder, Cursor cursor) {
 
-//        Log.i("MOVIE_CILICK", "Movie Name " + cursor.getString(GeneralUtilities.COL_TITLE));
 
         String posterPath = cursor.getString(DatabaseUtilities.COL_POSTER_PATH);
 
@@ -76,9 +74,6 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
     public String getMovieApiID(int position) {
 
 
-        Log.i("MOVIE_CILICK", "position a " + position);
-        Log.i("MOVIE_CILICK", "api id b " + moviesApiIDs.get(position));
-        Log.i("MOVIE_CILICK", "Array Length " + moviesApiIDs.size());
 
 
         return moviesApiIDs.get(position);
@@ -91,28 +86,17 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
         if (c != null) {
             clearMoviesApiIDs();
 
-            Log.i("ROTATE", "Cursor Swapped - Not Null");
 
 
-            Log.i("ROTATE", "Array size before adding is : " + moviesApiIDs.size());
 
             c.moveToPosition(-1);
             while (c.moveToNext()) {
                 moviesApiIDs.add(c.getString(DatabaseUtilities.COL_API_ID));
             }
 
-//            for (int i = 0; i < c.getCount(); i++) {
-//
-//                Log.i("MOVIE_CILICK", "Movie Name is : " + moviesApiIDs.get(i));
-//
-//            }
 
-            Log.i("ROTATE", "Cursor size is : " + c.getCount());
-            Log.i("ROTATE", "Array size after adding is : " + moviesApiIDs.size());
 
-        } else {
-            Log.i("ROTATE", "Cursor Swapped - Null");
-            Log.i("MOVIE_CILICK", "Array size is : " + moviesApiIDs.size());
+
         }
         return super.swapCursor(c);
     }
@@ -120,7 +104,6 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
     private void clearMoviesApiIDs() {
         this.moviesApiIDs.clear();
 
-        Log.i("MOVIE_CILICK", "ArrayList Clreared");
 
     }
 

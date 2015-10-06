@@ -10,11 +10,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener;
@@ -54,9 +52,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         scrollToTop = (FloatingActionButton) rootView.findViewById(R.id.scroll_to_top);
 
-//        checkScrollTopVisibility();
-
-
         moviesRecyclerView = (RecyclerView) rootView.findViewById(R.id.movies_recycler_view);
 
         int spanCount = getActivity().getResources().getInteger(R.integer.grid_layout_span_count);
@@ -72,11 +67,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                     @Override
                     public void onMovieClick(View view, int position) {
 
-//                        Toast.makeText(getActivity(), "Movie API ID IS : " + moviesAdapter.getMovieApiID(position), Toast.LENGTH_SHORT).show();
-                        Log.i("MOVIE_CILICK", "position b " + position);
 
                         String movieApiID = moviesAdapter.getMovieApiID(position);
-                        Log.i("MOVIE_CILICK", "api id b " + movieApiID);
 
 
                         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
@@ -107,26 +99,10 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         return rootView;
     }
 
-//    private void checkScrollTopVisibility() {
-//
-//
-//        int tag = ((Callback) getActivity())
-//                .scrollToTopVisibility();
-//
-//        if (tag == View.GONE) {
-//            scrollToTop.setVisibility(View.GONE);
-//        } else if (tag == View.VISIBLE) {
-//            scrollToTop.setVisibility(View.VISIBLE);
-//
-//        }
-//
-//
-//    }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.i("ROTATE", "Device rotated");
         super.onSaveInstanceState(outState);
 
         outState.putInt(Last_PAGE_NUMBER_KEY, pageNumber);
@@ -134,26 +110,22 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         if (mPosition != RecyclerView.NO_POSITION) {
             outState.putInt(LAST_SELECTED_POSITION, mPosition);
-            Log.i("Really", "Save last Position " + mPosition);
 
         }
 
-        Log.i("Really", "Save last page " + pageNumber);
 
     }
 
     @Override
     public void onLoadMoreRequested() {
 
-        Log.i("LOADING", "Loading page number : " + pageNumber);
 
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
 
 
-            // scroll to load more
+            // load more on scrolling
             fetchMovies(pageNumber, false);
             pageNumber++;
-            Toast.makeText(getActivity(), "Loading More", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -162,15 +134,12 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public interface Callback {
         public void onItemSelected(String movieApiID, Uri contentUri);
 
-//        public int scrollToTopVisibility();
 
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        Log.i("Finally", "on start reached");
 
 
     }
@@ -183,13 +152,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
 
 
-        Log.i("First_Load", "on start - page number =  " + pageNumber);
-
-
         if (mPosition != RecyclerView.NO_POSITION) {
-//            moviesRecyclerView.scrollToPosition(mPosition);
             moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
-            Log.i("Really", "Scrolled to position" + mPosition);
 
         }
     }
@@ -200,8 +164,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
 
-        Log.i("Really", "Fetching page" + page + "From table : " + tableName);
-
 
         FetchMoviesTask FetchMoviesTask = new FetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
         FetchMoviesTask.execute();
@@ -209,11 +171,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     void onShowByChanged(String updatedShowBy) {
 
-        Log.i("First_Load", "show by changed from activity - page number is   " + pageNumber);
 
         showMoviesBy = updatedShowBy;
         mPosition = RecyclerView.NO_POSITION;
-        Log.i("Really", "Show BY CHANGED - INITIAL SET UP");
 
         initialSetup();
 
@@ -237,28 +197,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
             if (savedInstanceState.containsKey(Last_PAGE_NUMBER_KEY)) {
                 pageNumber = savedInstanceState.getInt(Last_PAGE_NUMBER_KEY);
-                Log.i("Really", "Load last page = " + pageNumber);
 
 
             }
             if (savedInstanceState.containsKey(LAST_SELECTED_POSITION)) {
                 mPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
-                Log.i("Really", "Load last position = " + mPosition);
 
             }
-
-//            if (savedInstanceState.containsKey(Last_SHOW_BY_KEY)) {
-//                String lastShowBy = savedInstanceState.getString(Last_SHOW_BY_KEY);
-//                if (!showMoviesBy.equals(lastShowBy)) {
-//                    Log.i("Really", "show by changed from state - ");
-//                    onShowByChanged(GeneralUtilities.getShowMoviesBy(getActivity()));
-//                }
-//            }
 
 
         }
 
-        Log.i("Finally", "Activity created");
 
         showMoviesBy = GeneralUtilities.getShowMoviesBy(getActivity());
 
@@ -293,7 +242,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-        Log.i("Finally", "Load finished");
 
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
             moviesAdapter.swapCursor(cursor);
@@ -303,10 +251,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             endlessRecyclerViewAdapter.onDataReady(false);
         }
 
-//        if (mPosition != RecyclerView.NO_POSITION) {
-////            moviesRecyclerView.scrollToPosition(mPosition);
-//            moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
-//        }
 
     }
 

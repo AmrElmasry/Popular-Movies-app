@@ -25,13 +25,12 @@ public class TrailersLoader extends AsyncTaskLoader<List> {
     public TrailersLoader(Context context, String movieApiId) {
         super(context);
         this.movieApiId = movieApiId;
-        Log.i("LoaderUpdate", "Trailers Loader Constructor invoked");
 
     }
 
     @Override
     public ArrayList<Trailer> loadInBackground() {
-        Log.i("LoaderUpdate", "Get Trailers in Background and return them");
+
 
         ArrayList<Trailer> trailers = new ArrayList<>();
 

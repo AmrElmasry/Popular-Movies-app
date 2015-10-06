@@ -12,7 +12,7 @@ import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.Callback {
 
-    private String mShowMoviesby;
+    private String mShowMoviesBy;
     private boolean mTwoPane;
     private static final String MOVIE_DETAILS_FRAGMENT_TAG = "MOVIE_DETAILS";
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(LAST_SHOW_BY_KEY, mShowMoviesby);
+        outState.putString(LAST_SHOW_BY_KEY, mShowMoviesBy);
     }
 
     @Override
@@ -42,14 +42,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             // one pane mode
             mTwoPane = false;
         }
-        mShowMoviesby = GeneralUtilities.getShowMoviesBy(this);
+        mShowMoviesBy = GeneralUtilities.getShowMoviesBy(this);
 
         // check if the activity destroyed and the value has changed
         // useful when rotating device in settings activity and changing the value
 
         if (savedInstanceState != null) {
             String old = savedInstanceState.getString(LAST_SHOW_BY_KEY);
-            if (old != null && !old.equals(mShowMoviesby)) {
+            if (old != null && !old.equals(mShowMoviesBy)) {
                 Log.i("Really", "Something wrong");
                 isChangedWhenDead = true;
 
@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         String showBy = GeneralUtilities.getShowMoviesBy(this);
 
 
-        if ((showBy != null && !showBy.equals(mShowMoviesby)) || isChangedWhenDead) {
+        if ((showBy != null && !showBy.equals(mShowMoviesBy)) || isChangedWhenDead) {
 
-            // update main fragmrnt with the new feed
+            // update main fragment with the new feed
 
             MainActivityFragment mainf = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.mainActivityFragment);
             if (null != mainf) {
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
                         .commit();
             }
 
-            mShowMoviesby = showBy;
+            mShowMoviesBy = showBy;
         }
     }
 
@@ -103,12 +103,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
@@ -142,12 +139,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         }
     }
 
-//    @Override
-//    public int scrollToTopVisibility() {
-//        if (mTwoPane) {
-//            return View.GONE;
-//        } else {
-//            return View.VISIBLE;
-//        }
-//    }
+
 }

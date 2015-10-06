@@ -55,9 +55,6 @@ public class GeneralUtilities {
         sendIntent.putExtra(Intent.EXTRA_TEXT, "I liked this movie, watch trailer: " + trailerUri);
         sendIntent.setType("text/plain");
         sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-//        sendIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-
-//        Intent.createChooser(sendIntent, "Share Movie Trailer");
         return sendIntent;
     }
 }

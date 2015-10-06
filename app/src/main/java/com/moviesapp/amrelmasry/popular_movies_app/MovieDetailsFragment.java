@@ -116,11 +116,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             MoviesCursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, Uri.parse(tableUri), getActivity());
 
-//            movieTitle = movieCursor.getString(DatabaseUtilities.COL_TITLE);
-//            movieOverview = movieCursor.getString(DatabaseUtilities.COL_OVERVIEW);
-//            movieVoteAverage = movieCursor.getString(DatabaseUtilities.COL_VOTE_AVERAGE);
-//            movieReleaseDate = movieCursor.getString(DatabaseUtilities.COL_RELEASE_DATE);
-//            moviePosterPath = movieCursor.getString(DatabaseUtilities.COL_POSTER_PATH);
 
             movieTitle = movieCursor.getTitle();
             movieOverview = movieCursor.getOverview();
@@ -341,7 +336,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         }
 
 
-        Log.i("LoaderUpdate", "Clear Adapter");
 
     }
 
@@ -352,8 +346,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             Trailer firstTrailer = trailersAdapter.getItem(0);
             if (firstTrailer != null) {
-//                GeneralUtilities.createShareIntent(getActivity(), "http://www.youtube.com/watch?v=" + firstTrailer.getKey());
-                Log.i("SHARE", "Trailer 1 exists , update my action provider");
+
+
                 mShareActionProvider.setShareIntent(
                         GeneralUtilities.createShareIntent("http://www.youtube.com/watch?v=" + firstTrailer.getKey()));
 
@@ -381,7 +375,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         inflater.inflate(R.menu.menu_movie_details, menu);
 
-        Log.i("SHARE", "create optiopns menu");
 
         // Retrieve the share menu item
         menuShareItem = menu.findItem(R.id.action_share);

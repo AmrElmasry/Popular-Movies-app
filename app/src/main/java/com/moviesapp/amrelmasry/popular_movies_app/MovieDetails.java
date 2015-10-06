@@ -10,8 +10,7 @@ public class MovieDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+
 
         // get intent extras and pass it to fragment
         if (savedInstanceState == null) {
@@ -28,7 +27,6 @@ public class MovieDetails extends AppCompatActivity {
                     .commit();
         }
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 }

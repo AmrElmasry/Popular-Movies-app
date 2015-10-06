@@ -29,20 +29,13 @@ public class ReviewsAdapter extends ArrayAdapter<Review> {
             view = convertView;
         }
 
-
         ReviewViewHolder viewHolder = new ReviewViewHolder(view);
-
-
         Review review = getItem(position);
-
-
         viewHolder.reviewAuthor.setText(review.getAuthor());
         viewHolder.reviewContent.setText(review.getContent());
-
         return view;
     }
-
-
+    
     public static class ReviewViewHolder {
         public TextView reviewAuthor;
         public TextView reviewContent;

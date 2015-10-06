@@ -26,7 +26,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private SharedPreferences preferences;
 
     private String mtableName;
-  private   Uri mContentUri;
+    private Uri mContentUri;
 
     public FetchMoviesTask(Context mContext, int page, boolean isInitialFetch, String tableName, Uri contentUri) {
         this.mContext = mContext;
@@ -44,19 +44,16 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
             final String BASE_URL =
                     "http://api.themoviedb.org/3/discover/movie?";
 
-//        String page_num = pageIndex.toString();
             String page_num = String.valueOf(page);
 
-            // populariy URL example : "http://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc&api_key=27c124869ccb88b1134ed9504b7e38af"
-            // top rated URL example : "http://api.themoviedb.org/3/movie/top_rated?page=1&api_key=27c124869ccb88b1134ed9504b7e38af"
+            // populariy URL example : "http://api.themoviedb.org/3/discover/movie?page=1&sort_by=popularity.desc&api_key=****"
+            // top rated URL example : "http://api.themoviedb.org/3/movie/top_rated?page=1&api_key=****"
 
             String sort_by = "popularity.desc";
 
             final String PAGE_NUM = "page";
             final String SORT_BY = "sort_by";
 
-
-//            Uri builtUri = Uri.parse("http://api.themoviedb.org/3/discover/movie?page=" + pageIndex + "&sort_by=popularity.desc&api_key=27c124869ccb88b1134ed9504b7e38af");
 
             return Uri.parse(BASE_URL).buildUpon()
                     .appendQueryParameter(PAGE_NUM, page_num)
@@ -99,13 +96,10 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
                 if (sameLastJSON(JSONstr)) {
 
                     deleteOldDataOnDB();
-                    Log.i("First_Load", "CASE = 1 ");
 
 
                 } else {
-                    Log.i("First_Load", "CASE = 2 ");
 
-                    Log.i("CURSOR", "SIZE of RETREIVED JSON  " + JSONstr.length());
 
                     saveLastJSONString(JSONstr);
                     deleteAllDataOnDB();
@@ -116,7 +110,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
             } else {
                 // scroll fetch
-                Log.i("First_Load", "CASE = 3 ");
 
                 insertMoviesIntoDB(JSONstr);
 
@@ -162,7 +155,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         int count = cursor.getCount();
 
 
-        Log.i("Really", "First Cursor size = " + String.valueOf(count));
+
 
 
         int rowsToDel = count - FIRST_PAGE_MOVIES_COUNT;
@@ -171,26 +164,15 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
                 " _id IN ( SELECT DISTINCT _id FROM " + mtableName + " ORDER BY _id DESC LIMIT " + String.valueOf(rowsToDel) + "  ) ";
 
 
-        int deletedRows = mContext.getContentResolver().delete(mContentUri,
+        mContext.getContentResolver().delete(mContentUri,
                 whereClause, null);
-
-        Log.i("Really", "Deleted Rows = " + String.valueOf(deletedRows));
-
-
-        Cursor cursor2 = mContext.getContentResolver().query(mContentUri, null, null, null, null);
-
-        int count2 = cursor2.getCount();
-
-        Log.i("Really", "Second Cursor size = " + String.valueOf(count2));
 
 
     }
 
     private void deleteAllDataOnDB() {
 
-//        PopularSelection where = new PopularSelection();
-//        where.query(mContext);
-//        where.delete(mContext);
+
         mContext.getContentResolver().delete(mContentUri, null, null);
 
     }
@@ -198,35 +180,19 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private boolean sameLastJSON(String JSONStr) {
 
 
-        Log.i("COMPARE", "Comparing JSON str : ");
-        Log.i("COMPARE", "Table is : " + mtableName);
-
-
         preferences = mContext.getSharedPreferences("JSON", Context.MODE_PRIVATE);
 
 
         String lastJSONstr = new String();
         if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
-            Log.i("JUDGE", "last json saved for Table Popular");
             lastJSONstr = preferences.getString(mContext.getString(R.string.last_popular_movies_json_str), mContext.getString(R.string.last_json_str_default)).trim();
 
 
         }
         if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
-            Log.i("JUDGE", "last json saved for From Table Most Rated");
             lastJSONstr = preferences.getString(mContext.getString(R.string.last_highest_movies_rated_json_str), mContext.getString(R.string.last_json_str_default)).trim();
 
         }
-
-
-        Log.i("JUDGE", "Result is " + JSONStr.trim().equals(lastJSONstr));
-
-        Log.i("JUDGE", "First saved JSON Size : " + lastJSONstr.length());
-        Log.i("JUDGE", "Second  JSON form API Size " + JSONStr.trim().length());
-
-
-        Log.i("JUDGE", "First saved JSON form  IS " + lastJSONstr);
-//        Log.i("COMPARE", "Second  JSON form API  IS " + JSONStr);
 
 
         return (JSONStr.trim().equals(lastJSONstr));
@@ -239,7 +205,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.clear();
-        Log.i("JUDGE", "Size BEFORE Saving " + JSONStr.trim().length());
 
         if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             editor.putString(mContext.getString(R.string.last_popular_movies_json_str), JSONStr.trim());
@@ -247,7 +212,6 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
             editor.putString(mContext.getString(R.string.last_highest_movies_rated_json_str), JSONStr.trim());
         }
-        Log.i("CURSOR", "Saved Succesfully");
         editor.apply();
     }
 
