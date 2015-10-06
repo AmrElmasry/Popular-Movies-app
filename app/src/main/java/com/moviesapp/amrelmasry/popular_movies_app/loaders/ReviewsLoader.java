@@ -36,10 +36,8 @@ public class ReviewsLoader extends AsyncTaskLoader<List> {
 
         ArrayList<Review> reviews = new ArrayList<>();
 
-
         final String BASE_URL = "http://api.themoviedb.org/3/movie/";
 
-//        Uri uri = Uri.parse(BASE_URL + movieApiId + "/reviews?api_key=*****");
 
         Uri uri = Uri.parse(BASE_URL)
                 .buildUpon()

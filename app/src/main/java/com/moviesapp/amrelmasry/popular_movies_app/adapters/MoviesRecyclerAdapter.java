@@ -27,6 +27,8 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
     private int mLayout;
     private Context mContext;
     private SimpleViewHolder.ViewHolderClicksListener mListener;
+
+    // hold movies api ids
     private ArrayList<String> moviesApiIDs;
 
 
@@ -46,7 +48,6 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
         return new SimpleViewHolder(v, mListener);
     }
 
-    int i = 0;
 
     @Override
     public void onBindViewHolder(SimpleViewHolder holder, Cursor cursor) {
@@ -65,8 +66,8 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
                 .appendEncodedPath(posterPath)
                 .build();
 
-        Picasso.with(mContext).load(uri).into(holder.moviePoster);
-        holder.moviePoster.setContentDescription(mContext.getString(R.string.movie_poster_desc) + cursor.getString(DatabaseUtilities.COL_TITLE));
+        Picasso.with(mContext).load(uri).placeholder(R.drawable.movie_poster_place_holder).into(holder.moviePoster);
+        holder.moviePoster.setContentDescription(mContext.getString(R.string.movie_poster_desc, cursor.getString(DatabaseUtilities.COL_TITLE)));
 
 
     }
@@ -74,13 +75,13 @@ public class MoviesRecyclerAdapter extends CursorRecyclerAdapter<SimpleViewHolde
 
     public String getMovieApiID(int position) {
 
-
         return moviesApiIDs.get(position);
     }
 
     @Override
     public Cursor swapCursor(Cursor c) {
 
+        // Ensure that the moviesApiIDs is updated to fit the last cursor
 
         if (c != null) {
             clearMoviesApiIDs();

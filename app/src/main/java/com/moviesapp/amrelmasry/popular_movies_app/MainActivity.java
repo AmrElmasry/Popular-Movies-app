@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     private boolean mTwoPane;
     private static final String MOVIE_DETAILS_FRAGMENT_TAG = "MOVIE_DETAILS";
 
-   private final String LAST_SHOW_BY_KEY = "LAST_SHOW_BY";
+    private final String LAST_SHOW_BY_KEY = "LAST_SHOW_BY";
     private boolean isChangedWhenDead = false;
 
     @Override
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         if (savedInstanceState != null) {
             String old = savedInstanceState.getString(LAST_SHOW_BY_KEY);
             if (old != null && !old.equals(mShowMoviesBy)) {
-                Log.i("Really", "Something wrong");
                 isChangedWhenDead = true;
 
             }
@@ -64,11 +62,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
     protected void onResume() {
         super.onResume();
 
-
-        Log.i("Really", "onResume");
-
         String showBy = GeneralUtilities.getShowMoviesBy(this);
-
 
         if ((showBy != null && !showBy.equals(mShowMoviesBy)) || isChangedWhenDead) {
 
@@ -84,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
             if (mTwoPane) {
 
                 MovieDetailsFragment ff = new MovieDetailsFragment();
-
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_details_container, ff, MOVIE_DETAILS_FRAGMENT_TAG)
                         .commit();

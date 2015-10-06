@@ -25,7 +25,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private boolean isInitialFetch;
     private SharedPreferences preferences;
 
-    private String mtableName;
+    private String mTableName;
     private Uri mContentUri;
 
     public FetchMoviesTask(Context mContext, int page, boolean isInitialFetch, String tableName, Uri contentUri) {
@@ -33,14 +33,14 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         this.page = page;
         this.isInitialFetch = isInitialFetch;
         this.mContentUri = contentUri;
-        this.mtableName = tableName;
+        this.mTableName = tableName;
     }
 
 
     private Uri getUri() {
 
 
-        if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
+        if (mTableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             final String BASE_URL =
                     "http://api.themoviedb.org/3/discover/movie?";
 
@@ -60,7 +60,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
                     .appendQueryParameter(SORT_BY, sort_by)
                     .appendQueryParameter(ConnectionUtilities.API_QUERY_KEY, ConnectionUtilities.API_KEY)
                     .build();
-        } else if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
+        } else if (mTableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
 
             final String BASE_URL =
                     "http://api.themoviedb.org/3/movie/top_rated?";
@@ -69,11 +69,10 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
             final String PAGE_NUM = "page";
 
 
-            Uri uri = Uri.parse(BASE_URL).buildUpon()
+            return Uri.parse(BASE_URL).buildUpon()
                     .appendQueryParameter(PAGE_NUM, page_num)
                     .appendQueryParameter(ConnectionUtilities.API_QUERY_KEY, ConnectionUtilities.API_KEY)
                     .build();
-            return uri;
 
         }
 
@@ -89,17 +88,24 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         String JSONstr = ConnectionUtilities.getJSONString(uri);
 
 
+        // if the json feed is null -when the api call fails- the last saved Movies in DB are kept in the DB
+        // and it returns null so that the app loads the movie from the DB
+
         if (JSONstr != null) {
+            // initialFetch  isto distinguish between initial call to the api and calls on scrolling
+
+
             if (isInitialFetch) {
-                // initial fetch , clear database and insert new data
+                // initial setup on launching the app or changing the sort from settings
+                // here we check if the first page is the same as the last saved one so no need to delete it from the
+                // DB, if not so the first page hap updates so delete all the DB and retrieve the new data
+                // This algorithm makes the app loads movies very fast and doesn't keep flashing the view
+                // continuously with no need
 
                 if (sameLastJSON(JSONstr)) {
-
                     deleteOldDataOnDB();
 
-
                 } else {
-
 
                     saveLastJSONString(JSONstr);
                     deleteAllDataOnDB();
@@ -109,8 +115,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
 
             } else {
-                // scroll fetch
-
+                // scroll call , insert new movies into DB directly
                 insertMoviesIntoDB(JSONstr);
 
             }
@@ -155,13 +160,10 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
         int count = cursor.getCount();
 
 
-
-
-
         int rowsToDel = count - FIRST_PAGE_MOVIES_COUNT;
 
         String whereClause =
-                " _id IN ( SELECT DISTINCT _id FROM " + mtableName + " ORDER BY _id DESC LIMIT " + String.valueOf(rowsToDel) + "  ) ";
+                " _id IN ( SELECT DISTINCT _id FROM " + mTableName + " ORDER BY _id DESC LIMIT " + String.valueOf(rowsToDel) + "  ) ";
 
 
         mContext.getContentResolver().delete(mContentUri,
@@ -171,10 +173,7 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     }
 
     private void deleteAllDataOnDB() {
-
-
         mContext.getContentResolver().delete(mContentUri, null, null);
-
     }
 
     private boolean sameLastJSON(String JSONStr) {
@@ -182,34 +181,34 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
         preferences = mContext.getSharedPreferences("JSON", Context.MODE_PRIVATE);
 
+        // compare last saved json for the first page with current one
 
         String lastJSONstr = new String();
-        if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
+        if (mTableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             lastJSONstr = preferences.getString(mContext.getString(R.string.last_popular_movies_json_str), mContext.getString(R.string.last_json_str_default)).trim();
 
-
         }
-        if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
+        if (mTableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
             lastJSONstr = preferences.getString(mContext.getString(R.string.last_highest_movies_rated_json_str), mContext.getString(R.string.last_json_str_default)).trim();
 
         }
-
 
         return (JSONStr.trim().equals(lastJSONstr));
     }
 
     private void saveLastJSONString(String JSONStr) {
 
+        // save the first page of api feed as json
 
         preferences = mContext.getSharedPreferences("JSON", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.clear();
 
-        if (mtableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
+        if (mTableName.equals(MoviesColumns.POPULAR_TABLE_NAME)) {
             editor.putString(mContext.getString(R.string.last_popular_movies_json_str), JSONStr.trim());
         }
-        if (mtableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
+        if (mTableName.equals(MoviesColumns.MOST_RATED_TABLE_NAME)) {
             editor.putString(mContext.getString(R.string.last_highest_movies_rated_json_str), JSONStr.trim());
         }
         editor.apply();

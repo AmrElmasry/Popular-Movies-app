@@ -63,26 +63,22 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         ViewHolderClicksListener clicksListener =
                 new MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener() {
 
-
                     @Override
                     public void onMovieClick(View view, int position) {
 
-
                         String movieApiID = moviesAdapter.getMovieApiID(position);
-
-
                         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
-                        ((Callback) getActivity())
-                                .onItemSelected(movieApiID, tableUri);
 
+                        if (tableUri != null && movieApiID != null) {
+                            ((Callback) getActivity())
+                                    .onItemSelected(movieApiID, tableUri);
+                        }
                         mPosition = position;
-
                     }
                 };
         moviesAdapter = new MoviesRecyclerAdapter(null, getActivity(), clicksListener);
         endlessRecyclerViewAdapter = new EndlessRecyclerViewAdapter(getActivity(), moviesAdapter, this);
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
-
 
         if (scrollToTop != null) {
             // it's a phone layout , set the scroll listener
@@ -94,11 +90,9 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 }
             });
         }
-
-
         return rootView;
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -108,7 +102,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
         if (mPosition != RecyclerView.NO_POSITION) {
             outState.putInt(LAST_SELECTED_POSITION, mPosition);
-
         }
 
 
@@ -117,9 +110,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onLoadMoreRequested() {
 
-
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
-
 
             // load more on scrolling
             fetchMovies(pageNumber, false);
@@ -144,11 +135,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onResume() {
-
         super.onResume();
-
         getLoaderManager().initLoader(MOVIES_LOADER, null, this);
-
 
         if (mPosition != RecyclerView.NO_POSITION) {
             moviesRecyclerView.getLayoutManager().scrollToPosition(mPosition);
@@ -162,26 +150,20 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
 
-
         FetchMoviesTask FetchMoviesTask = new FetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
         FetchMoviesTask.execute();
     }
 
     void onShowByChanged(String updatedShowBy) {
-
-
         showMoviesBy = updatedShowBy;
         mPosition = RecyclerView.NO_POSITION;
-
         initialSetup();
-
         getLoaderManager().restartLoader(MOVIES_LOADER, null, this);
 
     }
 
     private void initialSetup() {
         if (!showMoviesBy.equals(getString(R.string.pref_sort_by_favorites))) {
-
             fetchMovies(1, true);
             pageNumber = 2;
         }
@@ -190,32 +172,19 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-
         if (savedInstanceState != null) {
-
             if (savedInstanceState.containsKey(Last_PAGE_NUMBER_KEY)) {
                 pageNumber = savedInstanceState.getInt(Last_PAGE_NUMBER_KEY);
-
-
             }
             if (savedInstanceState.containsKey(LAST_SELECTED_POSITION)) {
                 mPosition = savedInstanceState.getInt(LAST_SELECTED_POSITION);
-
             }
-
-
         }
-
-
         showMoviesBy = GeneralUtilities.getShowMoviesBy(getActivity());
 
         super.onActivityCreated(savedInstanceState);
-
-
         if (savedInstanceState == null) {
-
             initialSetup();
-
         }
     }
 

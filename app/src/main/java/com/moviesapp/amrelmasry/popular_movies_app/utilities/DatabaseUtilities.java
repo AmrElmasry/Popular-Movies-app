@@ -54,8 +54,6 @@ public class DatabaseUtilities {
     }
 
     public static void removeFromFavorites(String movieApiID, Context context) {
-
-
         MoviesSelection where = new MoviesSelection(MoviesColumns.FAVORITES_CONTENT_URI);
         where.apiId(movieApiID).delete(context);
 

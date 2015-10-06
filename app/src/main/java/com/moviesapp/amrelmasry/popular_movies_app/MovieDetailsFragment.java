@@ -38,12 +38,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     private String movieApiId;
     private String tableUri;
-
     private TextView noReviews;
     private TextView noTrailers;
     private TextView cannotLoadTrailers;
     private TextView cannotLoadReviews;
-
     private String movieTitle;
     private String movieOverview;
     private String movieReleaseDate;
@@ -54,10 +52,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private ListView trailersListView;
     private ListView reviewsListView;
     private ShareActionProvider mShareActionProvider;
-
     private boolean isFavoriteMovie;
     private MenuItem menuShareItem;
-
     private FloatingActionButton favorite;
     private static final int TRAILERS_LOADER_ID = 1;
     private static final int REVIEWS_LOADER_ID = 2;
@@ -115,18 +111,16 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             MoviesCursor movieCursor = DatabaseUtilities.getMovieFromDB(movieApiId, Uri.parse(tableUri), getActivity());
 
 
-            movieTitle = movieCursor.getTitle();
-            movieOverview = movieCursor.getOverview();
-            movieVoteAverage = movieCursor.getVoteAverage();
-            movieReleaseDate = movieCursor.getReleaseDate();
-            moviePosterPath = movieCursor.getPosterPath();
-
-
-            movieCursor.close();
-
+            if (movieCursor != null) {
+                movieTitle = movieCursor.getTitle();
+                movieOverview = movieCursor.getOverview();
+                movieVoteAverage = movieCursor.getVoteAverage();
+                movieReleaseDate = movieCursor.getReleaseDate();
+                moviePosterPath = movieCursor.getPosterPath();
+                movieCursor.close();
+            }
 
             final String BASE_MOVIE_IMAGE_URL = "http://image.tmdb.org/t/p";
-
             Uri uri = Uri.parse(BASE_MOVIE_IMAGE_URL)
                     .buildUpon()
                     .appendPath("w185")
@@ -139,8 +133,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             moviePlotTextView.setText(movieOverview);
             movieRatingTextView.setText(movieVoteAverage);
             movieDateTextView.setText(movieReleaseDate);
+            moviePoster.setContentDescription(getActivity().getString(R.string.movie_poster_desc, movieTitle));
 
-            moviePoster.setContentDescription(getString(R.string.movie_poster_desc) + movieTitle);
         } else {
             favorite.setVisibility(View.GONE);
             exist_movie_view.setVisibility(View.GONE);
@@ -160,6 +154,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 isFavoriteMovie = false;
             }
         }
+
         changeFavoriteButtonState();
 
 
@@ -171,16 +166,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 if (isFavoriteMovie) {
                     DatabaseUtilities.removeFromFavorites(movieApiId, getActivity());
                     isFavoriteMovie = false;
-                    changeFavoriteButtonState();
                 } else {
                     DatabaseUtilities.insertIntoDatabase(movieApiId, movieTitle,
                             movieOverview, movieReleaseDate, movieVoteAverage,
                             moviePosterPath, MoviesColumns.FAVORITES_CONTENT_URI, getActivity());
                     isFavoriteMovie = true;
-                    changeFavoriteButtonState();
                 }
-
-
+                changeFavoriteButtonState();
             }
         });
 
@@ -189,7 +181,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Trailer trailer = (Trailer) parent.getItemAtPosition(position);
-
                 Intent intent = new Intent(Intent.ACTION_VIEW, trailer.getUri());
                 startActivity(intent);
 
@@ -200,12 +191,10 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     }
 
     private void changeFavoriteButtonState() {
-
         if (isFavoriteMovie) {
             favorite.setImageResource(R.drawable.ic_heart_red_filled);
         } else {
             favorite.setImageResource(R.drawable.ic_heart_outline_red);
-
         }
     }
 
@@ -214,7 +203,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         Bundle arguments = new Bundle();
         arguments.putString(context.getString(R.string.movie_api_id), movieApiId);
-
 
         arguments.putString(context.getString(R.string.table_Uri), tableUri);
 
@@ -247,8 +235,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     return new ReviewsLoader(getActivity(), movieApiId);
             }
         }
-
-
         return null;
     }
 
@@ -288,10 +274,8 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 }
 
                 if (mShareActionProvider != null) {
-
                     shareTrailer();
                 }
-
 
                 break;
 
@@ -313,9 +297,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                     cannotLoadReviews.setVisibility(View.VISIBLE);
 
                 }
-
                 break;
-
         }
 
     }
@@ -338,17 +320,13 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private void shareTrailer() {
         if (trailersAdapter != null && trailersAdapter.getCount() > 0) {
 
-
             Trailer firstTrailer = trailersAdapter.getItem(0);
             if (firstTrailer != null) {
 
-
                 mShareActionProvider.setShareIntent(
-                        GeneralUtilities.createShareIntent("http://www.youtube.com/watch?v=" + firstTrailer.getKey()));
-
+                        GeneralUtilities.createShareIntent(movieTitle, firstTrailer.getUri(), getActivity()));
             }
         } else {
-
             mShareActionProvider.setShareIntent(null);
         }
     }

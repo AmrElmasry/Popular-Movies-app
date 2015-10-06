@@ -3,6 +3,7 @@ package com.moviesapp.amrelmasry.popular_movies_app.utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +49,11 @@ public class GeneralUtilities {
         listView.requestLayout();
     }
 
-    public static Intent createShareIntent(String trailerUri) {
+    public static Intent createShareIntent(String movieTitle, Uri trailerUri, Context context) {
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "I liked this movie, watch trailer: " + trailerUri);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_trailer_message, movieTitle, trailerUri));
         sendIntent.setType("text/plain");
         sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         return sendIntent;

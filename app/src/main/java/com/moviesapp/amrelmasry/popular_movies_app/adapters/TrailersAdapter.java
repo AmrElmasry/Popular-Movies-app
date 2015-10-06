@@ -33,7 +33,6 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
 
         View view;
 
-
         if (convertView == null) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trailer_item, parent, false);
         } else {
@@ -41,9 +40,6 @@ public class TrailersAdapter extends ArrayAdapter<Trailer> {
         }
 
         TrailerViewHolder viewHolder = new TrailerViewHolder(view);
-
-
-
         Trailer trailer = getItem(position);
 
         viewHolder.trailerName.setText(trailer.getName());
