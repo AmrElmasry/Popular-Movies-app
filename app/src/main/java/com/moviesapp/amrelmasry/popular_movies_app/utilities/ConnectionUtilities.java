@@ -16,7 +16,7 @@ import java.net.URL;
 public class ConnectionUtilities {
 
 
-    public static final String API_KEY = "27c124869ccb88b1134ed9504b7e38af";
+    public static final String API_KEY = "YOUR_API_KEY_HERE";
     public static final String API_QUERY_KEY = "api_key";
 
 
