@@ -10,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.ReviewsAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.TrailersAdapter;
@@ -60,7 +58,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private boolean isFavoriteMovie;
     private MenuItem menuShareItem;
 
-    private FloatingActionButton fab;
+    private FloatingActionButton favorite;
     private static final int TRAILERS_LOADER_ID = 1;
     private static final int REVIEWS_LOADER_ID = 2;
     private TextView no_movie_view;
@@ -75,7 +73,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         View rootView = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
-        Log.i("CREATE", "FRAGMENT CREATED");
         setHasOptionsMenu(true);
 
         View exist_movie_view = rootView.findViewById(R.id.exist_movie_view);
@@ -83,7 +80,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
         ImageView moviePoster = (ImageView) rootView.findViewById(R.id.movie_poster);
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        favorite = (FloatingActionButton) rootView.findViewById(R.id.fab);
         TextView movieTitleTextView = (TextView) rootView.findViewById(R.id.movie_title);
         TextView moviePlotTextView = (TextView) rootView.findViewById(R.id.movie_plot);  // overview
         TextView movieRatingTextView = (TextView) rootView.findViewById(R.id.movie_rating); //vote_average
@@ -107,7 +104,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
 
         if (arguments != null) {
-            fab.setVisibility(View.VISIBLE);
+            favorite.setVisibility(View.VISIBLE);
             no_movie_view.setVisibility(View.GONE);
             exist_movie_view.setVisibility(View.VISIBLE);
 
@@ -144,7 +141,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
             movieDateTextView.setText(movieReleaseDate);
 
         } else {
-            fab.setVisibility(View.GONE);
+            favorite.setVisibility(View.GONE);
             exist_movie_view.setVisibility(View.GONE);
             no_movie_view.setVisibility(View.VISIBLE);
 
@@ -165,7 +162,7 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         changeFavoriteButtonState();
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -190,7 +187,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         trailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
                 Trailer trailer = (Trailer) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, trailer.getUri());
@@ -205,9 +201,9 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private void changeFavoriteButtonState() {
 
         if (isFavoriteMovie) {
-            fab.setImageResource(R.drawable.ic_heart_red_filled);
+            favorite.setImageResource(R.drawable.ic_heart_red_filled);
         } else {
-            fab.setImageResource(R.drawable.ic_heart_outline_red);
+            favorite.setImageResource(R.drawable.ic_heart_outline_red);
 
         }
     }
@@ -218,7 +214,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
         Bundle arguments = new Bundle();
         arguments.putString(context.getString(R.string.movie_api_id), movieApiId);
 
-        Log.i("INTENT", "Sent :" + movieApiId);
 
         arguments.putString(context.getString(R.string.table_Uri), tableUri);
 
@@ -230,7 +225,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.i("LoaderUpdate", "Initialize Loader in onActivityCreated");
 
         if (movieApiId != null) {
             getLoaderManager().initLoader(TRAILERS_LOADER_ID, null, this).forceLoad();
@@ -242,7 +236,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public Loader<List> onCreateLoader(int id, Bundle args) {
-        Log.i("LoaderUpdate", "Create Loader in onCreateLoader");
 
         if (movieApiId != null) {
             switch (id) {
@@ -261,7 +254,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onLoadFinished(Loader<List> loader, List data) {
-        Log.i("LoaderUpdate", "Loader Finished , start to popualte data");
 
         switch (loader.getId()) {
             case TRAILERS_LOADER_ID:
@@ -287,7 +279,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
                 } else {
                     // no internet
 
-                    Log.i("SHARE", "Null data - clear traileradpater - action provider=null");
                     cannotLoadTrailers.setVisibility(View.VISIBLE);
                     if (menuShareItem != null) {
                         menuShareItem.setVisible(false);
@@ -326,7 +317,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
         }
 
-
     }
 
     @Override
@@ -347,7 +337,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
     private void shareTrailer() {
         if (trailersAdapter != null && trailersAdapter.getCount() > 0) {
 
-            Log.i("SHARE", "Update action provider - adapter count > 0");
 
             Trailer firstTrailer = trailersAdapter.getItem(0);
             if (firstTrailer != null) {
@@ -358,7 +347,6 @@ public class MovieDetailsFragment extends Fragment implements LoaderManager.Load
 
             }
         } else {
-            Log.i("SHARE", "set Share = null ");
 
             mShareActionProvider.setShareIntent(null);
         }
