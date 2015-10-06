@@ -92,13 +92,17 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         moviesRecyclerView.setAdapter(endlessRecyclerViewAdapter);
 
 
-        scrollToTop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                moviesRecyclerView.smoothScrollToPosition(1);
-                scrollToTop.hide();
-            }
-        });
+        if (scrollToTop != null) {
+            // it's a phone layout , set the scroll listener
+            scrollToTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    moviesRecyclerView.smoothScrollToPosition(1);
+                    scrollToTop.hide();
+                }
+            });
+        }
+
 
         return rootView;
     }
