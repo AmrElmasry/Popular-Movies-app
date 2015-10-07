@@ -17,7 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
+public class mmm extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
     private final int FIRST_PAGE_MOVIES_COUNT = 20;
@@ -25,10 +25,12 @@ public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
     private boolean isInitialFetch;
     private SharedPreferences preferences;
 
+
+
     private String mTableName;
     private Uri mContentUri;
 
-    public FetchMoviesTask(Context mContext, int page, boolean isInitialFetch, String tableName, Uri contentUri) {
+    public mmm(Context mContext, int page, boolean isInitialFetch, String tableName, Uri contentUri) {
         this.mContext = mContext;
         this.page = page;
         this.isInitialFetch = isInitialFetch;
