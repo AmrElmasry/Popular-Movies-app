@@ -1,6 +1,10 @@
 # Popular-Movies-app
 Android app to explore movies from the tmdb api. It's the final project of Udacity course : [Developing Android Apps: Android Fundamentals](https://www.udacity.com/course/ud853)
 
+My App is evaluated as `Exceeds Specifications` by the `Udacity Team`.
+![alt text](../master/device_art/Evaluation.JPG "Udacity Review")
+
+
 
 ### Features:
 1. explore popular movies provided by the api
