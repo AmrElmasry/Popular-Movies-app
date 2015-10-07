@@ -45,6 +45,8 @@ To build the app you should provide your key for TMDB API in ConnectionUtilities
 
 
 
-### Libraries Used:
+### Tools & Libraries Used:
 - [Picasso](http://square.github.io/picasso/)
 - [EndlessRecyclerViewAdapter](https://github.com/rockerhieu/rv-adapter-endless)
+- [ContentProvider Generator](https://github.com/BoD/android-contentprovider-generator)
+
