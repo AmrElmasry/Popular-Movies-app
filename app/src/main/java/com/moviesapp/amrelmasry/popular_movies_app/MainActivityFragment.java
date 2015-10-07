@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter;
 import com.moviesapp.amrelmasry.popular_movies_app.adapters.MoviesRecyclerAdapter.SimpleViewHolder.ViewHolderClicksListener;
 import com.moviesapp.amrelmasry.popular_movies_app.provider.helper.MoviesColumns;
-import com.moviesapp.amrelmasry.popular_movies_app.sync.mmm;
+import com.moviesapp.amrelmasry.popular_movies_app.sync.FetchMoviesTask;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.DatabaseUtilities;
 import com.moviesapp.amrelmasry.popular_movies_app.utilities.GeneralUtilities;
 import com.rockerhieu.rvadapter.endless.EndlessRecyclerViewAdapter;
@@ -150,8 +150,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         String tableName = DatabaseUtilities.getTableName(showMoviesBy, getActivity());
         Uri tableUri = DatabaseUtilities.getTableUri(showMoviesBy, getActivity());
 
-        mmm mmm = new mmm(getActivity(), page, isInitialFetch, tableName, tableUri);
-        mmm.execute();
+        FetchMoviesTask FetchMoviesTask = new FetchMoviesTask(getActivity(), page, isInitialFetch, tableName, tableUri);
+        FetchMoviesTask.execute();
     }
 
     void onShowByChanged(String updatedShowBy) {
